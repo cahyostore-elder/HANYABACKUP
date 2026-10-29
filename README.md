@@ -1,64 +1,63 @@
-# FityoraStore — Ultimate No-VIP (Phase 56)
+# FityoraStore ⚡
 
-Website top-up berbasis React, TypeScript, Vite, dan Supabase. Source aktif berada di root proyek (`src/`, `supabase/`, `scripts/`). File pada paket ini mempertahankan katalog, checkout, autentikasi, riwayat transaksi, dan dashboard admin yang sudah ada.
+Top up game jadi lebih gampang, tampilannya tetap nyaman, dan harga jelas.
 
-## Phase 55 — Buyer Experience
+FityoraStore dibuat dengan React, TypeScript, Vite, dan Supabase. Source utama website ada langsung di folder project ini.
 
-- Dashboard member premium: avatar inisial, konteks akun, email dari sesi login, shortcut top-up dan riwayat.
-- Statistik dashboard hanya memakai data pesanan akun yang sedang login; statistik menampilkan placeholder saat data masih dimuat.
-- Riwayat transaksi mempertahankan pencarian, filter status, pagination, penyalinan kode dan detail pesanan.
-- Edit profil dibatasi ke `display_name` dan `bio`, dengan batas 40/160 karakter, konfirmasi baris yang benar-benar diperbarui, serta pesan error yang tidak membocorkan detail internal database.
-- Halaman utama menampilkan shortcut dashboard hanya ketika pengguna sudah login.
-- Animasi CSS halus, fokus keyboard terlihat, dan dukungan `prefers-reduced-motion`.
-- Phase 55 tidak menambahkan tabel atau migrasi Supabase baru.
+## Yang tersedia
 
+- Katalog game dan paket top up
+- Login, daftar akun, profil, dan riwayat pesanan
+- Checkout dan pengecekan status order
+- Dashboard admin untuk mengelola katalog dan konten website
+- Pengelolaan harga jual dan modal supplier secara terpisah
+- Pemeriksaan akses database dan konfigurasi agar lebih aman
 
-## Phase 56 — Admin Edit Repair & Resilience
+## Mulai di Codespaces
 
-- Fixed the shared edit-modal focus lifecycle: controlled inputs no longer lose focus whenever their value changes, and the first actual form field is focused instead of the close button.
-- Package metadata, selling price, and supplier cost now save in one `admin_save_package` database RPC. The operation is atomic: any validation or database error rolls back the whole save rather than leaving a package with updated metadata but an old/zero price.
-- Added server-side validation for staff role, brand existence, package name, integer Rupiah prices, supplier cost, and sort order. The RPC is not executable by `anon`/`PUBLIC`.
-- Brand, category, promo, testimonial, FAQ and maintenance saves handle rejected network calls, show an error, and always release loading state. Cancel/close actions are blocked during an active save to prevent ambiguous requests.
-- Failed dashboard refreshes keep the last loaded list visible rather than replacing it with empty arrays.
-- Added Phase 56 regression tests to the full release audit. See `PHASE56_ADMIN_EDIT_REPAIR.md`.
+Pastikan terminal berada di root project `FITYORATOPUP`.
 
-**Important:** Before deploying the Phase 56 frontend, run `supabase/migrations/20261028040000_phase56_atomic_admin_package_save.sql` once in the SQL Editor of the correct Supabase project. This creates the atomic RPC and asks PostgREST to reload its schema. The migration does not rewrite existing packages or prices.
+Salin `.env.example` menjadi `.env.local`, lalu isi konfigurasi Supabase:
 
-## Menjalankan secara lokal
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
 
-Diperlukan Node.js 20.19+ atau 22.12+.
+Jangan masukkan service-role key atau secret key ke variabel `VITE_*`, karena nilainya bisa ikut masuk ke aplikasi browser. File `.env.local` jangan di-upload ke GitHub.
 
-1. Salin `.env.example` menjadi `.env.local`.
-2. Isi `VITE_SUPABASE_URL` serta `VITE_SUPABASE_PUBLISHABLE_KEY` dengan URL dan publishable/anon key dari proyek Supabase yang benar. Nama lama `VITE_SUPABASE_ANON_KEY` tetap didukung.
-3. Jangan masukkan service-role/secret key ke variabel `VITE_*`; nilainya akan terekspos ke browser.
-4. Instal dependensi dengan `npm ci`.
-5. Jalankan `node --test scripts/*.test.mjs` untuk seluruh tes regresi.
-6. Jalankan `npm run check` untuk typecheck, lint, dan build.
-
-File `.env.local` sengaja tidak disertakan di ZIP. Buat file tersebut sendiri dan jangan commit ke Git.
-
-## Pemeriksaan
-
-Tes regresi statis memeriksa struktur, validasi, dan perilaku yang dapat diuji tanpa kredensial live. Tes tersebut bukan pengganti uji transaksi live. Sebelum produksi, jalankan seluruh tes:
+Install dan cek project:
 
 ```bash
+npm ci
 node --test scripts/*.test.mjs
 npm run check
 ```
 
-Pastikan konfigurasi Supabase dan migrasi dari fase sebelumnya sudah sesuai dengan project yang aktif. Kebijakan RLS dan hak kolom tetap menjadi batas akses utama; jangan mencoba menggantinya dengan pemeriksaan UI. Konfigurasi build yang memeriksa kunci publik/rahasia berada di `vite.config.ts`. Jangan menjalankan ulang migration seed lama secara membabi buta. Backup database sebelum menjalankan migration yang mengubah data atau hak akses.
+Kalau pemeriksaan gagal, bereskan error-nya dulu sebelum deploy.
+
+## Soal harga
+
+Harga modal supplier berbeda dari harga jual. Mengubah modal tidak boleh diam-diam mengubah harga jual. Perubahan harga jual harus dilakukan secara sengaja melalui alur admin yang sesuai.
+
+Aturan penting tetap harus diperiksa di database Supabase, bukan hanya di tampilan website. File migrasi SQL di repository belum berarti migrasi itu sudah dijalankan di database live.
 
 ## Deploy ke Vercel
+
+Gunakan root repository ini sebagai Root Directory.
 
 - Framework: Vite
 - Build command: `npm run build`
 - Output directory: `dist`
-- Environment Variables: atur `VITE_SUPABASE_URL` dan `VITE_SUPABASE_PUBLISHABLE_KEY` pada proyek Vercel yang benar (`fityora39`).
+- Install command: `npm ci`
 
-Setelah deployment preview berhasil, uji login, edit profil, riwayat pesanan, alur checkout, status pembayaran, role admin, dan tampilan mobile. Patch ini belum otomatis mengubah website live.
+Tambahkan `VITE_SUPABASE_URL` dan `VITE_SUPABASE_PUBLISHABLE_KEY` di Environment Variables Vercel. Coba Preview terlebih dahulu, lalu cek login, checkout, status pesanan, dashboard admin, penyimpanan harga, dan tampilan HP sebelum memakai Production.
 
-## Batasan fitur
+## Catatan penting
 
-- Pembayaran masih memerlukan verifikasi manual staf; jangan menandai pesanan berhasil sebelum pembayaran benar-benar terverifikasi.
-- Otomatisasi pengiriman top-up/gateway pembayaran tidak dijanjikan oleh UI.
-- Data email hanya ditampilkan dari sesi autentikasi; mengubah email akun harus menggunakan alur autentikasi Supabase yang terpisah.
+- Pembayaran masih perlu diverifikasi manual.
+- Jangan menandai pesanan berhasil sebelum pembayaran benar-benar dicek.
+- Upload `FIX.zip` ke GitHub tidak otomatis menerapkan isi ZIP ke source project.
+- Jangan menjalankan semua file SQL lama secara asal. Periksa migrasi yang dibutuhkan dan pastikan project Supabase yang dipilih benar.
+
+---
+
+**FityoraStore — top up gampang, harga jelas.**
