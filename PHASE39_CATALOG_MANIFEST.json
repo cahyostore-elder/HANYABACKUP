@@ -1,0 +1,2329 @@
+{
+  "phase": 39,
+  "total_entries": 258,
+  "note": "Prices are intentionally null until verified. Provider codes are source-derived only; no supplier API connection is implied.",
+  "products": [
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 5.000",
+      "provider_code": "PAXS5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 10.000",
+      "provider_code": "PAXS10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 15.000",
+      "provider_code": "PAXS15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 20.000",
+      "provider_code": "PAXS20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 25.000",
+      "provider_code": "PAXS25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 30.000",
+      "provider_code": "PAXS30",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 50.000",
+      "provider_code": "PAXS50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Axis",
+      "name": "Axis 100.000",
+      "provider_code": "PAXS100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 5.000",
+      "provider_code": "PNDST5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 10.000",
+      "provider_code": "PNDST10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 15.000",
+      "provider_code": "PNDST15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 20.000",
+      "provider_code": "PNDST20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 25.000",
+      "provider_code": "PNDST25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 30.000",
+      "provider_code": "PNDST30",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 40.000",
+      "provider_code": "PNDST40",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 50.000",
+      "provider_code": "PNDST50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 60.000",
+      "provider_code": "PNDST60",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 80.000",
+      "provider_code": "PNDST80",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 100.000",
+      "provider_code": "PNDST100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 125.000",
+      "provider_code": "PNDST125",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 150.000",
+      "provider_code": "PNDST150",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 200.000",
+      "provider_code": "PNDST200",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 250.000",
+      "provider_code": "PNDST250",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 300.000",
+      "provider_code": "PNDST300",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 400.000",
+      "provider_code": "PNDST400",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Indosat IM3",
+      "name": "Indosat IM3 500.000",
+      "provider_code": "PNDST500",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 2.000",
+      "provider_code": "PTSEL2",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 5.000",
+      "provider_code": "PTSEL5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 10.000",
+      "provider_code": "PTSEL10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 15.000",
+      "provider_code": "PTSEL15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 20.000",
+      "provider_code": "PTSEL20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 25.000",
+      "provider_code": "PTSEL25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 30.000",
+      "provider_code": "PTSEL30",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 35.000",
+      "provider_code": "PTSEL35",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 40.000",
+      "provider_code": "PTSEL40",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 50.000",
+      "provider_code": "PTSEL50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 60.000",
+      "provider_code": "PTSEL60",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 70.000",
+      "provider_code": "PTSEL70",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 75.000",
+      "provider_code": "PTSEL75",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 80.000",
+      "provider_code": "PTSEL80",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Telkomsel",
+      "name": "Telkomsel 100.000",
+      "provider_code": "PTSEL100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 5.000",
+      "provider_code": "PTRI5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 10.000",
+      "provider_code": "PTRI10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 15.000",
+      "provider_code": "PTRI15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 20.000",
+      "provider_code": "PTRI20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 25.000",
+      "provider_code": "PTRI25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 40.000",
+      "provider_code": "PTRI40",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 50.000",
+      "provider_code": "PTRI50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 75.000",
+      "provider_code": "PTRI75",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 100.000",
+      "provider_code": "PTRI100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 150.000",
+      "provider_code": "PTRI150",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 200.000",
+      "provider_code": "PTRI200",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 300.000",
+      "provider_code": "PTRI300",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Tri (3)",
+      "name": "Tri (3) 500.000",
+      "provider_code": "PTRI500",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 5.000",
+      "provider_code": "PSMPN5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 10.000",
+      "provider_code": "PSMPN10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 15.000",
+      "provider_code": "PSMPN15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 20.000",
+      "provider_code": "PSMPN20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 25.000",
+      "provider_code": "PSMPN25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 30.000",
+      "provider_code": "PSMPN30",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 50.000",
+      "provider_code": "PSMPN50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 60.000",
+      "provider_code": "PSMPN60",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 70.000",
+      "provider_code": "PSMPN70",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 75.000",
+      "provider_code": "PSMPN75",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 80.000",
+      "provider_code": "PSMPN80",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 100.000",
+      "provider_code": "PSMPN100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 150.000",
+      "provider_code": "PSMPN150",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 200.000",
+      "provider_code": "PSMPN200",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 300.000",
+      "provider_code": "PSMPN300",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 400.000",
+      "provider_code": "PSMPN400",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "Smartfren",
+      "name": "Smartfren 500.000",
+      "provider_code": "PSMPN500",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 5.000",
+      "provider_code": "PTXLS5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 10.000",
+      "provider_code": "PTLXS10",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 15.000",
+      "provider_code": "PTXLS15",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 25.000",
+      "provider_code": "PTXLS25",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 30.000",
+      "provider_code": "PTXLS30",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 50.000",
+      "provider_code": "PTXLS50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 100.000",
+      "provider_code": "PTXLS100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 150.000",
+      "provider_code": "PTXLS150",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 200.000",
+      "provider_code": "PTXLS200",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 300.000",
+      "provider_code": "PTXLS300",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Pulsa",
+      "brand": "XL Axiata",
+      "name": "XL Axiata 500.000",
+      "provider_code": "PTXLS500",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Token PLN",
+      "brand": "PLN Prabayar",
+      "name": "Token 5.000",
+      "provider_code": "TKNPLN5",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Token PLN",
+      "brand": "PLN Prabayar",
+      "name": "Token 20.000",
+      "provider_code": "TKNPLN20",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Token PLN",
+      "brand": "PLN Prabayar",
+      "name": "Token 50.000",
+      "provider_code": "TKNPLN50",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Token PLN",
+      "brand": "PLN Prabayar",
+      "name": "Token 100.000",
+      "provider_code": "TKNPLN100",
+      "price_idr": null,
+      "source": "User-pasted Glory Voucher HTML/list",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "31 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "63 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "128 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "321 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "645 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "800 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "1373 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "2060 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "2750 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "3564 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "5618 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "7656 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "15312 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "38280 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Call of Duty Mobile",
+      "name": "76560 CP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "40 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "100 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "520 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "1.070 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "2.200 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "5.750 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "FC Mobile",
+      "name": "12.000 FC Points",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "5 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "20 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "50 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "55 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "70 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "80 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "100 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "120 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "130 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "140 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "145 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "150 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "190 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "200 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "210 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "Membership Mingguan",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "280 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "350 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "355 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "425 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "500 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "545 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "635 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "Membership Bulanan",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "720 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "800 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "860 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "925 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "930 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "1000 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "1050 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "1075 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "1080 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "1440 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "2160 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "2515 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "3600 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "4320 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "7290 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "36500 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Free Fire",
+      "name": "73100 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "60 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "300+30 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "980+110 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "1980+260 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "3280+600 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Genshin Impact",
+      "name": "6480+1600 Genesis Crystals",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "16 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "80 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "Weekly Card",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "240 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "Weekly Card Plus",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "400 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "560 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "800 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "1.200 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "4.000 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Honor of Kings",
+      "name": "8.000 Tokens",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "5 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "12 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "19 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "28 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "44 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "59 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "85 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "170 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "240 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "296 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "408 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "568 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "875 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "2.010 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Magic Chess Go Go",
+      "name": "4.830 Diamonds",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "5 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "12 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "14 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "19 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "28 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "42 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "59 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "70 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "85 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "Weekly Diamond Pass",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "140 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "170 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "Weekly Diamond Pass 2x",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "240 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "284 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "296 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "Weekly Diamond Pass 3x",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "355 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "408 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "Weekly Diamond Pass 4x",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "Weekly Diamond Pass 5x",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "568 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "875 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "2010 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "2976 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "4394 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Mobile Legends",
+      "name": "4830 Diamond",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "30 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "60 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "120 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "180 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "240 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "325 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "445 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "565 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "660 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "780 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "900 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "1100 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "1320 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "1500 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "1800 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "2125 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "2460 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "2785 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "3120 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "3850 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "4835 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "6310 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "PUBG Mobile",
+      "name": "8100 UC",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "50 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "100 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "200 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "300 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "400 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "500 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "1000 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "1500 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "2000 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Roblox",
+      "name": "2500 Robux",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "100 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "Weekly Card",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "310 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "520 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "Super Pass",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "Super Pass Bundle",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "1.060 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "Monthly Card",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "Super VIP Card",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "2.180 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Super Sus",
+      "name": "5.600 Goldstar",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "475 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "1.000 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "1.475 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "2.050 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "3.050 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    },
+    {
+      "category": "Game",
+      "brand": "Valorant",
+      "name": "3.650 VP",
+      "provider_code": "",
+      "price_idr": null,
+      "source": "User-provided catalog JSON derived from submitted product pages",
+      "status": "needs_price_verification"
+    }
+  ]
+}

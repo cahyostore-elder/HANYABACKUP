@@ -1,0 +1,1030 @@
+TAP version 13
+# Subtest: homepage includes accessible game search input
+ok 1 - homepage includes accessible game search input
+  ---
+  duration_ms: 1.285518
+  type: 'test'
+  ...
+# Subtest: game list is filtered by case-insensitive brand name
+ok 2 - game list is filtered by case-insensitive brand name
+  ---
+  duration_ms: 0.116726
+  type: 'test'
+  ...
+# Subtest: catalog failures show a retry action instead of a silent empty state
+ok 3 - catalog failures show a retry action instead of a silent empty state
+  ---
+  duration_ms: 0.237979
+  type: 'test'
+  ...
+# Subtest: empty search results have a clear recovery action
+ok 4 - empty search results have a clear recovery action
+  ---
+  duration_ms: 0.113551
+  type: 'test'
+  ...
+# Subtest: Phase 11 UI audit command is registered
+ok 5 - Phase 11 UI audit command is registered
+  ---
+  duration_ms: 0.157407
+  type: 'test'
+  ...
+# Subtest: dashboard has accessible order search and status filter
+ok 6 - dashboard has accessible order search and status filter
+  ---
+  duration_ms: 0.668548
+  type: 'test'
+  ...
+# Subtest: dashboard reports failed order history and exposes retry
+ok 7 - dashboard reports failed order history and exposes retry
+  ---
+  duration_ms: 0.118028
+  type: 'test'
+  ...
+# Subtest: dashboard protects against late responses after unmount
+ok 8 - dashboard protects against late responses after unmount
+  ---
+  duration_ms: 0.17252
+  type: 'test'
+  ...
+# Subtest: admin order list already supports search and status filtering
+ok 9 - admin order list already supports search and status filtering
+  ---
+  duration_ms: 0.107042
+  type: 'test'
+  ...
+# Subtest: Phase 12 audit command is registered
+ok 10 - Phase 12 audit command is registered
+  ---
+  duration_ms: 0.114463
+  type: 'test'
+  ...
+# Subtest: checkout clearly states manual payment and admin verification
+ok 11 - checkout clearly states manual payment and admin verification
+  ---
+  duration_ms: 0.779415
+  type: 'test'
+  ...
+# Subtest: order creation button does not imply payment was processed
+ok 12 - order creation button does not imply payment was processed
+  ---
+  duration_ms: 0.212661
+  type: 'test'
+  ...
+# Subtest: checkout preview wraps long target values on narrow screens
+ok 13 - checkout preview wraps long target values on narrow screens
+  ---
+  duration_ms: 0.138208
+  type: 'test'
+  ...
+# Subtest: order confirmation status message is announced accessibly
+ok 14 - order confirmation status message is announced accessibly
+  ---
+  duration_ms: 0.109455
+  type: 'test'
+  ...
+# Subtest: Phase 13 audit command is registered
+ok 15 - Phase 13 audit command is registered
+  ---
+  duration_ms: 0.233202
+  type: 'test'
+  ...
+# Subtest: admin order list supports date range filters
+ok 16 - admin order list supports date range filters
+  ---
+  duration_ms: 0.669529
+  type: 'test'
+  ...
+# Subtest: admin can reset all order filters
+ok 17 - admin can reset all order filters
+  ---
+  duration_ms: 0.108915
+  type: 'test'
+  ...
+# Subtest: status changes require explicit confirmation
+ok 18 - status changes require explicit confirmation
+  ---
+  duration_ms: 0.17946
+  type: 'test'
+  ...
+# Subtest: order search includes package names
+ok 19 - order search includes package names
+  ---
+  duration_ms: 0.109596
+  type: 'test'
+  ...
+# Subtest: Phase 14 audit command is registered
+ok 20 - Phase 14 audit command is registered
+  ---
+  duration_ms: 0.237989
+  type: 'test'
+  ...
+# Subtest: admin overview uses premium statistic cards with tabular values
+ok 21 - admin overview uses premium statistic cards with tabular values
+  ---
+  duration_ms: 0.740576
+  type: 'test'
+  ...
+# Subtest: admin navigation exposes active state to assistive technology
+ok 22 - admin navigation exposes active state to assistive technology
+  ---
+  duration_ms: 0.12624
+  type: 'test'
+  ...
+# Subtest: admin order rows become stacked on narrow screens
+ok 23 - admin order rows become stacked on narrow screens
+  ---
+  duration_ms: 0.309206
+  type: 'test'
+  ...
+# Subtest: admin card interactions respect reduced-motion and touch devices
+ok 24 - admin card interactions respect reduced-motion and touch devices
+  ---
+  duration_ms: 0.195866
+  type: 'test'
+  ...
+# Subtest: Phase 15 audit command is registered without adding dependencies
+ok 25 - Phase 15 audit command is registered without adding dependencies
+  ---
+  duration_ms: 0.130827
+  type: 'test'
+  ...
+# Subtest: hero provides primary top-up and order-status navigation
+ok 26 - hero provides primary top-up and order-status navigation
+  ---
+  duration_ms: 0.660065
+  type: 'test'
+  ...
+# Subtest: hero service shortcuts route to game, pulsa, and PLN pages
+ok 27 - hero service shortcuts route to game, pulsa, and PLN pages
+  ---
+  duration_ms: 0.176767
+  type: 'test'
+  ...
+# Subtest: storefront stats are data-driven and do not claim hard-coded payment counts
+ok 28 - storefront stats are data-driven and do not claim hard-coded payment counts
+  ---
+  duration_ms: 0.148674
+  type: 'test'
+  ...
+# Subtest: catalog category and operator sections have loading and empty states
+ok 29 - catalog category and operator sections have loading and empty states
+  ---
+  duration_ms: 0.133251
+  type: 'test'
+  ...
+# Subtest: hero and stats have responsive and reduced-motion styling
+ok 30 - hero and stats have responsive and reduced-motion styling
+  ---
+  duration_ms: 0.247804
+  type: 'test'
+  ...
+# Subtest: Phase 16 audit is registered without introducing dependencies
+ok 31 - Phase 16 audit is registered without introducing dependencies
+  ---
+  duration_ms: 0.131718
+  type: 'test'
+  ...
+# Subtest: package count updates with the search and remains announced accessibly
+ok 32 - package count updates with the search and remains announced accessibly
+  ---
+  duration_ms: 0.724061
+  type: 'test'
+  ...
+# Subtest: search reset returns the catalog after a no-results state
+ok 33 - search reset returns the catalog after a no-results state
+  ---
+  duration_ms: 0.123817
+  type: 'test'
+  ...
+# Subtest: switching brand and category resets package search and sort state
+ok 34 - switching brand and category resets package search and sort state
+  ---
+  duration_ms: 0.18563
+  type: 'test'
+  ...
+# Subtest: nominal cards use catalog prices and accessible button labels
+ok 35 - nominal cards use catalog prices and accessible button labels
+  ---
+  duration_ms: 0.161453
+  type: 'test'
+  ...
+# Subtest: Phase 17 catalog enhancements preserve mobile and reduced-motion styles
+ok 36 - Phase 17 catalog enhancements preserve mobile and reduced-motion styles
+  ---
+  duration_ms: 0.177508
+  type: 'test'
+  ...
+# Subtest: Phase 17 audit command includes both catalog test suites without adding dependencies
+ok 37 - Phase 17 audit command includes both catalog test suites without adding dependencies
+  ---
+  duration_ms: 0.165359
+  type: 'test'
+  ...
+# Subtest: package search matches name and description with Indonesian locale handling
+ok 38 - package search matches name and description with Indonesian locale handling
+  ---
+  duration_ms: 0.728848
+  type: 'test'
+  ...
+# Subtest: package sort supports catalog order and ascending or descending price
+ok 39 - package sort supports catalog order and ascending or descending price
+  ---
+  duration_ms: 0.31188
+  type: 'test'
+  ...
+# Subtest: changing brand resets package filters and stale checkout choices
+ok 40 - changing brand resets package filters and stale checkout choices
+  ---
+  duration_ms: 0.1459
+  type: 'test'
+  ...
+# Subtest: package cards expose accessible selection state and a readable label
+ok 41 - package cards expose accessible selection state and a readable label
+  ---
+  duration_ms: 0.114192
+  type: 'test'
+  ...
+# Subtest: prices remain derived from the package catalog and use IDR formatting
+ok 42 - prices remain derived from the package catalog and use IDR formatting
+  ---
+  duration_ms: 0.253412
+  type: 'test'
+  ...
+# Subtest: empty search has a recovery action to restore all packages
+ok 43 - empty search has a recovery action to restore all packages
+  ---
+  duration_ms: 0.123316
+  type: 'test'
+  ...
+# Subtest: package selection styling is responsive and respects reduced motion
+ok 44 - package selection styling is responsive and respects reduced motion
+  ---
+  duration_ms: 0.174603
+  type: 'test'
+  ...
+# Subtest: Phase 17 audit is registered without adding runtime dependencies
+ok 45 - Phase 17 audit is registered without adding runtime dependencies
+  ---
+  duration_ms: 0.111859
+  type: 'test'
+  ...
+# Subtest: phone destination validation checks 8–15 digits after permitted formatting is removed
+ok 46 - phone destination validation checks 8–15 digits after permitted formatting is removed
+  ---
+  duration_ms: 0.946777
+  type: 'test'
+  ...
+# Subtest: PLN destination validation accepts only 8–20 digits after spaces and hyphens
+ok 47 - PLN destination validation accepts only 8–20 digits after spaces and hyphens
+  ---
+  duration_ms: 0.117076
+  type: 'test'
+  ...
+# Subtest: destination and server validation errors are connected to inputs accessibly
+ok 48 - destination and server validation errors are connected to inputs accessibly
+  ---
+  duration_ms: 0.206762
+  type: 'test'
+  ...
+# Subtest: target and server fields have explicit maximum lengths
+ok 49 - target and server fields have explicit maximum lengths
+  ---
+  duration_ms: 0.163507
+  type: 'test'
+  ...
+# Subtest: order creation uses a synchronous lock to prevent rapid duplicate submission
+ok 50 - order creation uses a synchronous lock to prevent rapid duplicate submission
+  ---
+  duration_ms: 0.150537
+  type: 'test'
+  ...
+# Subtest: Phase 18 checkout validation audit is registered
+ok 51 - Phase 18 checkout validation audit is registered
+  ---
+  duration_ms: 0.163246
+  type: 'test'
+  ...
+# Subtest: status page has manual refresh using existing order code
+ok 52 - status page has manual refresh using existing order code
+  ---
+  duration_ms: 0.663821
+  type: 'test'
+  ...
+# Subtest: status page explains pending is not success
+ok 53 - status page explains pending is not success
+  ---
+  duration_ms: 0.110146
+  type: 'test'
+  ...
+# Subtest: lookup validates code and reports format errors
+ok 54 - lookup validates code and reports format errors
+  ---
+  duration_ms: 0.800967
+  type: 'test'
+  ...
+# Subtest: input is accessible and disables repeated lookup while loading
+ok 55 - input is accessible and disables repeated lookup while loading
+  ---
+  duration_ms: 0.170107
+  type: 'test'
+  ...
+# Subtest: status details include explicit messaging for each known state
+ok 56 - status details include explicit messaging for each known state
+  ---
+  duration_ms: 0.212581
+  type: 'test'
+  ...
+# Subtest: history hooks execute before the unauthenticated early return
+ok 57 - history hooks execute before the unauthenticated early return
+  ---
+  duration_ms: 0.90906
+  type: 'test'
+  ...
+# Subtest: order history filters by code, target, brand, package and status
+ok 58 - order history filters by code, target, brand, package and status
+  ---
+  duration_ms: 0.164328
+  type: 'test'
+  ...
+# Subtest: order history paginates long lists and exposes paging state
+ok 59 - order history paginates long lists and exposes paging state
+  ---
+  duration_ms: 0.157137
+  type: 'test'
+  ...
+# Subtest: filters reset page to avoid landing on an empty later page
+ok 60 - filters reset page to avoid landing on an empty later page
+  ---
+  duration_ms: 0.094813
+  type: 'test'
+  ...
+# Subtest: orders expose copy-code affordance and honest clipboard fallback
+ok 61 - orders expose copy-code affordance and honest clipboard fallback
+  ---
+  duration_ms: 0.182284
+  type: 'test'
+  ...
+# Subtest: order detail disclosure is accessible and provides date/payment/status explanations
+ok 62 - order detail disclosure is accessible and provides date/payment/status explanations
+  ---
+  duration_ms: 0.102495
+  type: 'test'
+  ...
+# Subtest: spending total includes only orders explicitly marked successful
+ok 63 - spending total includes only orders explicitly marked successful
+  ---
+  duration_ms: 0.131058
+  type: 'test'
+  ...
+# Subtest: database history query is scoped to the authenticated user and newest first
+ok 64 - database history query is scoped to the authenticated user and newest first
+  ---
+  duration_ms: 0.115574
+  type: 'test'
+  ...
+# Subtest: Phase 20 test command is registered
+ok 65 - Phase 20 test command is registered
+  ---
+  duration_ms: 0.283167
+  type: 'test'
+  ...
+# Subtest: lookup RPC pins search_path and qualifies application tables
+ok 66 - lookup RPC pins search_path and qualifies application tables
+  ---
+  duration_ms: 0.907508
+  type: 'test'
+  ...
+# Subtest: lookup RPC preserves the expected order-status response contract
+ok 67 - lookup RPC preserves the expected order-status response contract
+  ---
+  duration_ms: 0.143917
+  type: 'test'
+  ...
+# Subtest: lookup RPC grants are explicitly constrained and restored only for intended roles
+ok 68 - lookup RPC grants are explicitly constrained and restored only for intended roles
+  ---
+  duration_ms: 0.775799
+  type: 'test'
+  ...
+# Subtest: Phase 21 migration is registered in the release test command
+ok 69 - Phase 21 migration is registered in the release test command
+  ---
+  duration_ms: 0.134433
+  type: 'test'
+  ...
+# Subtest: Supabase client prefers the current publishable key variable
+ok 70 - Supabase client prefers the current publishable key variable
+  ---
+  duration_ms: 0.700305
+  type: 'test'
+  ...
+# Subtest: legacy anon key variable remains supported for existing deployments
+ok 71 - legacy anon key variable remains supported for existing deployments
+  ---
+  duration_ms: 0.134263
+  type: 'test'
+  ...
+# Subtest: environment example documents the publishable key and never a secret key
+ok 72 - environment example documents the publishable key and never a secret key
+  ---
+  duration_ms: 0.194674
+  type: 'test'
+  ...
+# Subtest: setup warning tells the user the correct environment variable names
+ok 73 - setup warning tells the user the correct environment variable names
+  ---
+  duration_ms: 0.17859
+  type: 'test'
+  ...
+# Subtest: home catalog requests have bounded network timeouts
+ok 74 - home catalog requests have bounded network timeouts
+  ---
+  duration_ms: 0.792185
+  type: 'test'
+  ...
+# Subtest: top-up category, brand and package queries have bounded timeouts
+ok 75 - top-up category, brand and package queries have bounded timeouts
+  ---
+  duration_ms: 0.152019
+  type: 'test'
+  ...
+# Subtest: timeout failures show actionable messages and keep retry flow available
+ok 76 - timeout failures show actionable messages and keep retry flow available
+  ---
+  duration_ms: 0.101774
+  type: 'test'
+  ...
+# Subtest: network error handling does not print credentials or raw error details
+ok 77 - network error handling does not print credentials or raw error details
+  ---
+  duration_ms: 0.25905
+  type: 'test'
+  ...
+# Subtest: Phase 24 defines midnight violet and cyan palette
+ok 78 - Phase 24 defines midnight violet and cyan palette
+  ---
+  duration_ms: 1.073408
+  type: 'test'
+  ...
+# Subtest: Phase 24 includes responsive and reduced-motion rules
+ok 79 - Phase 24 includes responsive and reduced-motion rules
+  ---
+  duration_ms: 0.217658
+  type: 'test'
+  ...
+# Subtest: Phase 24 includes keyboard focus and image fit safeguards
+ok 80 - Phase 24 includes keyboard focus and image fit safeguards
+  ---
+  duration_ms: 0.170647
+  type: 'test'
+  ...
+# Subtest: Phase 25 defines a reusable loading placeholder and reduced-motion behavior
+ok 81 - Phase 25 defines a reusable loading placeholder and reduced-motion behavior
+  ---
+  duration_ms: 1.413942
+  type: 'test'
+  ...
+# Subtest: Phase 25 keeps responsive catalog density and touch-friendly controls
+ok 82 - Phase 25 keeps responsive catalog density and touch-friendly controls
+  ---
+  duration_ms: 0.218589
+  type: 'test'
+  ...
+# Subtest: Phase 25 aligns browser theme color and documents dependency restraint
+ok 83 - Phase 25 aligns browser theme color and documents dependency restraint
+  ---
+  duration_ms: 0.23239
+  type: 'test'
+  ...
+# Subtest: Phase 26 aligns legacy primary tokens to the navy-amethyst-cyan design system
+ok 84 - Phase 26 aligns legacy primary tokens to the navy-amethyst-cyan design system
+  ---
+  duration_ms: 0.818574
+  type: 'test'
+  ...
+# Subtest: Phase 26 preserves reduced-motion support and mobile performance refinements
+ok 85 - Phase 26 preserves reduced-motion support and mobile performance refinements
+  ---
+  duration_ms: 0.201023
+  type: 'test'
+  ...
+# Subtest: Phase 26 documents that no database or payment flow changes were made
+ok 86 - Phase 26 documents that no database or payment flow changes were made
+  ---
+  duration_ms: 0.192981
+  type: 'test'
+  ...
+# Subtest: Phase 27 styles selected payment methods clearly
+ok 87 - Phase 27 styles selected payment methods clearly
+  ---
+  duration_ms: 0.872445
+  type: 'test'
+  ...
+# Subtest: Phase 27 preserves accessible invalid-input and alert states
+ok 88 - Phase 27 preserves accessible invalid-input and alert states
+  ---
+  duration_ms: 0.126841
+  type: 'test'
+  ...
+# Subtest: Phase 27 respects reduced motion and mobile layouts
+ok 89 - Phase 27 respects reduced motion and mobile layouts
+  ---
+  duration_ms: 0.091518
+  type: 'test'
+  ...
+# Subtest: Phase 27 keeps price totals legible with tabular numerals
+ok 90 - Phase 27 keeps price totals legible with tabular numerals
+  ---
+  duration_ms: 0.15296
+  type: 'test'
+  ...
+# Subtest: Phase 28 adds a repeatable release audit command
+ok 91 - Phase 28 adds a repeatable release audit command
+  ---
+  duration_ms: 1.079788
+  type: 'test'
+  ...
+# Subtest: Phase 28 CI runs build checks and all regression tests
+ok 92 - Phase 28 CI runs build checks and all regression tests
+  ---
+  duration_ms: 0.241084
+  type: 'test'
+  ...
+# Subtest: Phase 28 documentation does not falsely claim production readiness
+ok 93 - Phase 28 documentation does not falsely claim production readiness
+  ---
+  duration_ms: 1.404658
+  type: 'test'
+  ...
+# Subtest: release gate documents the real production blockers
+ok 94 - release gate documents the real production blockers
+  ---
+  duration_ms: 1.858031
+  type: 'test'
+  ...
+# Subtest: production environment template contains placeholders, not credentials
+ok 95 - production environment template contains placeholders, not credentials
+  ---
+  duration_ms: 0.631191
+  type: 'test'
+  ...
+# Subtest: all Supabase migrations are present and have unique filenames
+ok 96 - all Supabase migrations are present and have unique filenames
+  ---
+  duration_ms: 0.399713
+  type: 'test'
+  ...
+# Subtest: release commands and CI stay aligned
+ok 97 - release commands and CI stay aligned
+  ---
+  duration_ms: 0.2523
+  type: 'test'
+  ...
+# Subtest: frontend configuration does not embed server-side Supabase secrets
+ok 98 - frontend configuration does not embed server-side Supabase secrets
+  ---
+  duration_ms: 0.36524
+  type: 'test'
+  ...
+# Subtest: customer order status lookup remains scoped and avoids exposing account identifiers
+ok 99 - customer order status lookup remains scoped and avoids exposing account identifiers
+  ---
+  duration_ms: 0.857773
+  type: 'test'
+  ...
+# Subtest: release artifact excludes local secrets and dependency build output
+ok 100 - release artifact excludes local secrets and dependency build output
+  ---
+  duration_ms: 0.137117
+  type: 'test'
+  ...
+# Subtest: Phase 30 production check is registered and runbook describes its limits
+ok 101 - Phase 30 production check is registered and runbook describes its limits
+  ---
+  duration_ms: 1.439259
+  type: 'test'
+  ...
+# Subtest: Phase 30 source guard scans frontend files without scanning its own test fixtures
+ok 102 - Phase 30 source guard scans frontend files without scanning its own test fixtures
+  ---
+  duration_ms: 1.279118
+  type: 'test'
+  ...
+# Subtest: deployment runbook includes Preview, environment, database and payment gates
+ok 103 - deployment runbook includes Preview, environment, database and payment gates
+  ---
+  duration_ms: 0.279832
+  type: 'test'
+  ...
+# Subtest: checkout requires an authenticated session and guards duplicate submissions
+ok 104 - checkout requires an authenticated session and guards duplicate submissions
+  ---
+  duration_ms: 3.120895
+  type: 'test'
+  ...
+# Subtest: checkout delegates authoritative price and order creation to database RPC
+ok 105 - checkout delegates authoritative price and order creation to database RPC
+  ---
+  duration_ms: 0.428155
+  type: 'test'
+  ...
+# Subtest: payment method identifiers are unique and maintenance method is blocked
+ok 106 - payment method identifiers are unique and maintenance method is blocked
+  ---
+  duration_ms: 0.560464
+  type: 'test'
+  ...
+# Subtest: official WhatsApp destination is consistent and uses wa.me
+ok 107 - official WhatsApp destination is consistent and uses wa.me
+  ---
+  duration_ms: 0.248174
+  type: 'test'
+  ...
+# Subtest: customer-facing order lookup validates the code before querying
+ok 108 - customer-facing order lookup validates the code before querying
+  ---
+  duration_ms: 0.262856
+  type: 'test'
+  ...
+# Subtest: release runbook separates manual payment review from automated gateway claims
+ok 109 - release runbook separates manual payment review from automated gateway claims
+  ---
+  duration_ms: 0.302797
+  type: 'test'
+  ...
+# Subtest: database migrations retain order creation and scoped lookup hardening
+ok 110 - database migrations retain order creation and scoped lookup hardening
+  ---
+  duration_ms: 1.500001
+  type: 'test'
+  ...
+# Subtest: latest order creation RPC enforces login and validates catalog relationships
+ok 111 - latest order creation RPC enforces login and validates catalog relationships
+  ---
+  duration_ms: 2.237844
+  type: 'test'
+  ...
+# Subtest: admin order status RPC checks admin role and blocks unsafe transitions
+ok 112 - admin order status RPC checks admin role and blocks unsafe transitions
+  ---
+  duration_ms: 0.513614
+  type: 'test'
+  ...
+# Subtest: public order lookup exposes only limited status fields and uses fixed search path
+ok 113 - public order lookup exposes only limited status fields and uses fixed search path
+  ---
+  duration_ms: 0.482146
+  type: 'test'
+  ...
+# Subtest: all migration filenames are timestamped and unique
+ok 114 - all migration filenames are timestamped and unique
+  ---
+  duration_ms: 0.259491
+  type: 'test'
+  ...
+# Subtest: frontend Supabase client never uses service-role or secret-key variables
+ok 115 - frontend Supabase client never uses service-role or secret-key variables
+  ---
+  duration_ms: 0.302836
+  type: 'test'
+  ...
+# Subtest: Vercel environment guide separates public browser keys from server secrets
+ok 116 - Vercel environment guide separates public browser keys from server secrets
+  ---
+  duration_ms: 0.292872
+  type: 'test'
+  ...
+# Subtest: release audit includes the Phase 32 checks
+ok 117 - release audit includes the Phase 32 checks
+  ---
+  duration_ms: 0.385261
+  type: 'test'
+  ...
+# Subtest: production checklist requires live customer/admin and order lifecycle verification
+ok 118 - production checklist requires live customer/admin and order lifecycle verification
+  ---
+  duration_ms: 0.175775
+  type: 'test'
+  ...
+# Subtest: idempotency migration stores request keys and enforces per-user uniqueness
+ok 119 - idempotency migration stores request keys and enforces per-user uniqueness
+  ---
+  duration_ms: 1.072938
+  type: 'test'
+  ...
+# Subtest: checkout RPC requires the request key and replaces the legacy signature
+ok 120 - checkout RPC requires the request key and replaces the legacy signature
+  ---
+  duration_ms: 0.438992
+  type: 'test'
+  ...
+# Subtest: same request key returns matching existing order and rejects mismatched payloads
+ok 121 - same request key returns matching existing order and rejects mismatched payloads
+  ---
+  duration_ms: 0.65056
+  type: 'test'
+  ...
+# Subtest: new order persists its idempotency key and authoritative total
+ok 122 - new order persists its idempotency key and authoritative total
+  ---
+  duration_ms: 0.21218
+  type: 'test'
+  ...
+# Subtest: checkout reuses one key for the same payload across network retries
+ok 123 - checkout reuses one key for the same payload across network retries
+  ---
+  duration_ms: 0.21194
+  type: 'test'
+  ...
+# Subtest: checkout never substitutes an estimated price when the server total is missing
+ok 124 - checkout never substitutes an estimated price when the server total is missing
+  ---
+  duration_ms: 0.273563
+  type: 'test'
+  ...
+# Subtest: release audit and live migration guide include Phase 33
+ok 125 - release audit and live migration guide include Phase 33
+  ---
+  duration_ms: 0.383138
+  type: 'test'
+  ...
+# Subtest: all migration filenames remain timestamped and unique
+ok 126 - all migration filenames remain timestamped and unique
+  ---
+  duration_ms: 0.474195
+  type: 'test'
+  ...
+# Subtest: Phase 34 keeps checkout RPC parameter names aligned between frontend and SQL
+ok 127 - Phase 34 keeps checkout RPC parameter names aligned between frontend and SQL
+  ---
+  duration_ms: 2.037952
+  type: 'test'
+  ...
+# Subtest: idempotency migration preserves old orders and adds only nullable request key plus partial uniqueness
+ok 128 - idempotency migration preserves old orders and adds only nullable request key plus partial uniqueness
+  ---
+  duration_ms: 0.282396
+  type: 'test'
+  ...
+# Subtest: security-definer order RPC checks authentication, pins search_path, and restricts execute grants
+ok 129 - security-definer order RPC checks authentication, pins search_path, and restricts execute grants
+  ---
+  duration_ms: 0.636539
+  type: 'test'
+  ...
+# Subtest: production guide requires migration-first rollout and manual payment verification disclosure
+ok 130 - production guide requires migration-first rollout and manual payment verification disclosure
+  ---
+  duration_ms: 0.156306
+  type: 'test'
+  ...
+# Subtest: release checks include Phase 34 without adding a runtime dependency
+ok 131 - release checks include Phase 34 without adding a runtime dependency
+  ---
+  duration_ms: 0.183517
+  type: 'test'
+  ...
+# Subtest: migration filenames are unique and timestamped
+ok 132 - migration filenames are unique and timestamped
+  ---
+  duration_ms: 0.316026
+  type: 'test'
+  ...
+# Subtest: package manifest and lockfile root dependencies are synchronized
+ok 133 - package manifest and lockfile root dependencies are synchronized
+  ---
+  duration_ms: 1.450717
+  type: 'test'
+  ...
+# Subtest: build, typecheck, lint, and combined check scripts are registered
+ok 134 - build, typecheck, lint, and combined check scripts are registered
+  ---
+  duration_ms: 0.228043
+  type: 'test'
+  ...
+# Subtest: CI uses a supported Node version and runs install, check, regression and release gates
+ok 135 - CI uses a supported Node version and runs install, check, regression and release gates
+  ---
+  duration_ms: 0.302917
+  type: 'test'
+  ...
+# Subtest: public environment example uses placeholders and does not include secret credentials
+ok 136 - public environment example uses placeholders and does not include secret credentials
+  ---
+  duration_ms: 0.393413
+  type: 'test'
+  ...
+# Subtest: environment secrets, dependency tree, and build output are excluded from source commits
+ok 137 - environment secrets, dependency tree, and build output are excluded from source commits
+  ---
+  duration_ms: 0.304088
+  type: 'test'
+  ...
+# Subtest: Vercel routes client-side paths to the SPA entry point and Vite outputs dist
+ok 138 - Vercel routes client-side paths to the SPA entry point and Vite outputs dist
+  ---
+  duration_ms: 0.228134
+  type: 'test'
+  ...
+# Subtest: release audit includes the Phase 35 readiness suite
+ok 139 - release audit includes the Phase 35 readiness suite
+  ---
+  duration_ms: 0.18588
+  type: 'test'
+  ...
+# Subtest: Phase 35 rollout guide distinguishes static tests from live checkout certification
+ok 140 - Phase 35 rollout guide distinguishes static tests from live checkout certification
+  ---
+  duration_ms: 0.170387
+  type: 'test'
+  ...
+# Subtest: Admin screen waits for auth bootstrap before rendering admin data
+ok 141 - Admin screen waits for auth bootstrap before rendering admin data
+  ---
+  duration_ms: 1.007108
+  type: 'test'
+  ...
+# Subtest: Admin access fails closed when profile is missing or role is not staff
+ok 142 - Admin access fails closed when profile is missing or role is not staff
+  ---
+  duration_ms: 1.05448
+  type: 'test'
+  ...
+# Subtest: Admin data loading is gated by valid authenticated staff profile
+ok 143 - Admin data loading is gated by valid authenticated staff profile
+  ---
+  duration_ms: 0.195925
+  type: 'test'
+  ...
+# Subtest: Admin order updates go through a guarded server RPC
+ok 144 - Admin order updates go through a guarded server RPC
+  ---
+  duration_ms: 0.111238
+  type: 'test'
+  ...
+# Subtest: Order status RPC only permits intentional transitions and protects final states
+ok 145 - Order status RPC only permits intentional transitions and protects final states
+  ---
+  duration_ms: 0.163917
+  type: 'test'
+  ...
+# Subtest: Checkout uses the database RPC and displays the server-returned total
+ok 146 - Checkout uses the database RPC and displays the server-returned total
+  ---
+  duration_ms: 0.144367
+  type: 'test'
+  ...
+# Subtest: Checkout handles invalid or unavailable payment methods before creating an order
+ok 147 - Checkout handles invalid or unavailable payment methods before creating an order
+  ---
+  duration_ms: 0.175655
+  type: 'test'
+  ...
+# Subtest: Checkout database validates category-brand-package relationships and derives price server-side
+ok 148 - Checkout database validates category-brand-package relationships and derives price server-side
+  ---
+  duration_ms: 0.125048
+  type: 'test'
+  ...
+# Subtest: Checkout code allocation avoids active duplicate payment totals
+ok 149 - Checkout code allocation avoids active duplicate payment totals
+  ---
+  duration_ms: 0.249727
+  type: 'test'
+  ...
+# Subtest: Public order status page uses the scoped lookup RPC and displays errors
+ok 150 - Public order status page uses the scoped lookup RPC and displays errors
+  ---
+  duration_ms: 0.455516
+  type: 'test'
+  ...
+# Subtest: Public order lookup does not return user id or email fields
+ok 151 - Public order lookup does not return user id or email fields
+  ---
+  duration_ms: 0.277228
+  type: 'test'
+  ...
+# Subtest: Catalog load errors are surfaced with a retry action
+ok 152 - Catalog load errors are surfaced with a retry action
+  ---
+  duration_ms: 0.137868
+  type: 'test'
+  ...
+# Subtest: Package fetching ignores stale responses and supports retry/error states
+ok 153 - Package fetching ignores stale responses and supports retry/error states
+  ---
+  duration_ms: 0.105629
+  type: 'test'
+  ...
+# Subtest: Changing brand clears stale selected package and target fields
+ok 154 - Changing brand clears stale selected package and target fields
+  ---
+  duration_ms: 0.077297
+  type: 'test'
+  ...
+# Subtest: Auth profile requests are guarded against stale account responses
+ok 155 - Auth profile requests are guarded against stale account responses
+  ---
+  duration_ms: 0.110436
+  type: 'test'
+  ...
+# Subtest: Frontend config does not contain a service-role secret
+ok 156 - Frontend config does not contain a service-role secret
+  ---
+  duration_ms: 0.405852
+  type: 'test'
+  ...
+# Subtest: Vercel SPA rewrite and build scripts are configured
+ok 157 - Vercel SPA rewrite and build scripts are configured
+  ---
+  duration_ms: 0.122805
+  type: 'test'
+  ...
+# Subtest: Critical source, lockfile and migration files exist
+ok 158 - Critical source, lockfile and migration files exist
+  ---
+  duration_ms: 0.158128
+  type: 'test'
+  ...
+# Subtest: SECURITY DEFINER RPCs pin search_path
+ok 159 - SECURITY DEFINER RPCs pin search_path
+  ---
+  duration_ms: 0.893918
+  type: 'test'
+  ...
+# Subtest: Order RPC execution is revoked from public and anon
+ok 160 - Order RPC execution is revoked from public and anon
+  ---
+  duration_ms: 0.260853
+  type: 'test'
+  ...
+# Subtest: Order creation requires an authenticated user and validates target
+ok 161 - Order creation requires an authenticated user and validates target
+  ---
+  duration_ms: 0.106941
+  type: 'test'
+  ...
+# Subtest: Order creation checks package belongs to selected brand
+ok 162 - Order creation checks package belongs to selected brand
+  ---
+  duration_ms: 0.08573
+  type: 'test'
+  ...
+# Subtest: Payment methods are allowlisted server-side
+ok 163 - Payment methods are allowlisted server-side
+  ---
+  duration_ms: 0.165539
+  type: 'test'
+  ...
+# Subtest: Order status RPC locks the target row before transition
+ok 164 - Order status RPC locks the target row before transition
+  ---
+  duration_ms: 0.126971
+  type: 'test'
+  ...
+# Subtest: Order lookup function avoids exposing account identifiers
+ok 165 - Order lookup function avoids exposing account identifiers
+  ---
+  duration_ms: 0.246551
+  type: 'test'
+  ...
+# Subtest: Client uses public environment variables and no service-role key
+ok 166 - Client uses public environment variables and no service-role key
+  ---
+  duration_ms: 0.25854
+  type: 'test'
+  ...
+# Subtest: Checkout consumes server-calculated total and always clears pending state
+ok 167 - Checkout consumes server-calculated total and always clears pending state
+  ---
+  duration_ms: 0.335275
+  type: 'test'
+  ...
+# Subtest: Admin status changes use guarded RPC rather than direct status writes
+ok 168 - Admin status changes use guarded RPC rather than direct status writes
+  ---
+  duration_ms: 0.296136
+  type: 'test'
+  ...
+# Subtest: Order status lookup displays failures accessibly
+ok 169 - Order status lookup displays failures accessibly
+  ---
+  duration_ms: 0.133431
+  type: 'test'
+  ...
+# Subtest: All regression scripts are registered in package.json
+ok 170 - All regression scripts are registered in package.json
+  ---
+  duration_ms: 0.139841
+  type: 'test'
+  ...
+1..170
+# tests 170
+# suites 0
+# pass 170
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1453.418195

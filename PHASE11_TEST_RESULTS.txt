@@ -1,0 +1,220 @@
+TAP version 13
+# Subtest: homepage includes accessible game search input
+ok 1 - homepage includes accessible game search input
+  ---
+  duration_ms: 1.455175
+  type: 'test'
+  ...
+# Subtest: game list is filtered by case-insensitive brand name
+ok 2 - game list is filtered by case-insensitive brand name
+  ---
+  duration_ms: 0.957878
+  type: 'test'
+  ...
+# Subtest: catalog failures show a retry action instead of a silent empty state
+ok 3 - catalog failures show a retry action instead of a silent empty state
+  ---
+  duration_ms: 0.108491
+  type: 'test'
+  ...
+# Subtest: empty search results have a clear recovery action
+ok 4 - empty search results have a clear recovery action
+  ---
+  duration_ms: 0.105657
+  type: 'test'
+  ...
+# Subtest: Phase 11 UI audit command is registered
+ok 5 - Phase 11 UI audit command is registered
+  ---
+  duration_ms: 0.157923
+  type: 'test'
+  ...
+# Subtest: Admin screen waits for auth bootstrap before rendering admin data
+ok 6 - Admin screen waits for auth bootstrap before rendering admin data
+  ---
+  duration_ms: 0.882146
+  type: 'test'
+  ...
+# Subtest: Admin access fails closed when profile is missing or role is not staff
+ok 7 - Admin access fails closed when profile is missing or role is not staff
+  ---
+  duration_ms: 0.288727
+  type: 'test'
+  ...
+# Subtest: Admin data loading is gated by valid authenticated staff profile
+ok 8 - Admin data loading is gated by valid authenticated staff profile
+  ---
+  duration_ms: 0.27661
+  type: 'test'
+  ...
+# Subtest: Admin order updates go through a guarded server RPC
+ok 9 - Admin order updates go through a guarded server RPC
+  ---
+  duration_ms: 0.725735
+  type: 'test'
+  ...
+# Subtest: Order status RPC only permits intentional transitions and protects final states
+ok 10 - Order status RPC only permits intentional transitions and protects final states
+  ---
+  duration_ms: 0.173927
+  type: 'test'
+  ...
+# Subtest: Checkout uses the database RPC and displays the server-returned total
+ok 11 - Checkout uses the database RPC and displays the server-returned total
+  ---
+  duration_ms: 0.136412
+  type: 'test'
+  ...
+# Subtest: Checkout handles invalid or unavailable payment methods before creating an order
+ok 12 - Checkout handles invalid or unavailable payment methods before creating an order
+  ---
+  duration_ms: 0.169981
+  type: 'test'
+  ...
+# Subtest: Checkout database validates category-brand-package relationships and derives price server-side
+ok 13 - Checkout database validates category-brand-package relationships and derives price server-side
+  ---
+  duration_ms: 0.123042
+  type: 'test'
+  ...
+# Subtest: Checkout code allocation avoids active duplicate payment totals
+ok 14 - Checkout code allocation avoids active duplicate payment totals
+  ---
+  duration_ms: 0.309979
+  type: 'test'
+  ...
+# Subtest: Public order status page uses the scoped lookup RPC and displays errors
+ok 15 - Public order status page uses the scoped lookup RPC and displays errors
+  ---
+  duration_ms: 0.308327
+  type: 'test'
+  ...
+# Subtest: Public order lookup does not return user id or email fields
+ok 16 - Public order lookup does not return user id or email fields
+  ---
+  duration_ms: 0.251783
+  type: 'test'
+  ...
+# Subtest: Catalog load errors are surfaced with a retry action
+ok 17 - Catalog load errors are surfaced with a retry action
+  ---
+  duration_ms: 0.131094
+  type: 'test'
+  ...
+# Subtest: Package fetching ignores stale responses and supports retry/error states
+ok 18 - Package fetching ignores stale responses and supports retry/error states
+  ---
+  duration_ms: 0.129401
+  type: 'test'
+  ...
+# Subtest: Changing brand clears stale selected package and target fields
+ok 19 - Changing brand clears stale selected package and target fields
+  ---
+  duration_ms: 0.075601
+  type: 'test'
+  ...
+# Subtest: Auth profile requests are guarded against stale account responses
+ok 20 - Auth profile requests are guarded against stale account responses
+  ---
+  duration_ms: 0.056404
+  type: 'test'
+  ...
+# Subtest: Frontend config does not contain a service-role secret
+ok 21 - Frontend config does not contain a service-role secret
+  ---
+  duration_ms: 0.239585
+  type: 'test'
+  ...
+# Subtest: Vercel SPA rewrite and build scripts are configured
+ok 22 - Vercel SPA rewrite and build scripts are configured
+  ---
+  duration_ms: 0.102943
+  type: 'test'
+  ...
+# Subtest: Critical source, lockfile and migration files exist
+ok 23 - Critical source, lockfile and migration files exist
+  ---
+  duration_ms: 0.18869
+  type: 'test'
+  ...
+# Subtest: SECURITY DEFINER RPCs pin search_path
+ok 24 - SECURITY DEFINER RPCs pin search_path
+  ---
+  duration_ms: 0.840004
+  type: 'test'
+  ...
+# Subtest: Order RPC execution is revoked from public and anon
+ok 25 - Order RPC execution is revoked from public and anon
+  ---
+  duration_ms: 0.217532
+  type: 'test'
+  ...
+# Subtest: Order creation requires an authenticated user and validates target
+ok 26 - Order creation requires an authenticated user and validates target
+  ---
+  duration_ms: 0.132406
+  type: 'test'
+  ...
+# Subtest: Order creation checks package belongs to selected brand
+ok 27 - Order creation checks package belongs to selected brand
+  ---
+  duration_ms: 0.081
+  type: 'test'
+  ...
+# Subtest: Payment methods are allowlisted server-side
+ok 28 - Payment methods are allowlisted server-side
+  ---
+  duration_ms: 0.162992
+  type: 'test'
+  ...
+# Subtest: Order status RPC locks the target row before transition
+ok 29 - Order status RPC locks the target row before transition
+  ---
+  duration_ms: 0.096323
+  type: 'test'
+  ...
+# Subtest: Order lookup function avoids exposing account identifiers
+ok 30 - Order lookup function avoids exposing account identifiers
+  ---
+  duration_ms: 0.332342
+  type: 'test'
+  ...
+# Subtest: Client uses public environment variables and no service-role key
+ok 31 - Client uses public environment variables and no service-role key
+  ---
+  duration_ms: 0.268157
+  type: 'test'
+  ...
+# Subtest: Checkout consumes server-calculated total and always clears pending state
+ok 32 - Checkout consumes server-calculated total and always clears pending state
+  ---
+  duration_ms: 0.334475
+  type: 'test'
+  ...
+# Subtest: Admin status changes use guarded RPC rather than direct status writes
+ok 33 - Admin status changes use guarded RPC rather than direct status writes
+  ---
+  duration_ms: 0.321897
+  type: 'test'
+  ...
+# Subtest: Order status lookup displays failures accessibly
+ok 34 - Order status lookup displays failures accessibly
+  ---
+  duration_ms: 0.190472
+  type: 'test'
+  ...
+# Subtest: All regression scripts are registered in package.json
+ok 35 - All regression scripts are registered in package.json
+  ---
+  duration_ms: 0.214417
+  type: 'test'
+  ...
+1..35
+# tests 35
+# suites 0
+# pass 35
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 161.358585

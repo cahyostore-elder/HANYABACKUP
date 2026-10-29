@@ -1,0 +1,81 @@
+
+> fityorastore-web@1.0.0 audit:release
+> node scripts/phase10-release-audit.mjs && node scripts/release-preflight.mjs && node --test scripts/phase29-production-gate.test.mjs
+
+PASS release source entry exists
+PASS lockfile exists and parses
+PASS build/typecheck/lint scripts defined
+PASS phase 5-9 audit scripts are registered
+PASS Vercel SPA fallback exists
+PASS no local dependency folder bundled
+PASS no production .env file bundled
+PASS environment template uses public Vite key only
+PASS release report included
+
+Phase 10 release audit: 9/9 passed
+PASS React entry and application exist
+PASS Supabase client module exists
+PASS Vercel SPA fallback exists
+PASS Lockfile package name matches manifest
+PASS Build, lint, and typecheck scripts exist
+PASS Public Supabase variable names are documented
+PASS Environment template has placeholders only
+PASS Environment files are ignored
+PASS CI quality workflow exists
+PASS Manual payment is disclosed in release docs
+PASS No local dependency folder is packaged
+PASS No local production environment file is packaged
+
+Release preflight: 12/12 passed
+TAP version 13
+# Subtest: release gate documents the real production blockers
+ok 1 - release gate documents the real production blockers
+  ---
+  duration_ms: 1.599719
+  type: 'test'
+  ...
+# Subtest: production environment template contains placeholders, not credentials
+ok 2 - production environment template contains placeholders, not credentials
+  ---
+  duration_ms: 0.459494
+  type: 'test'
+  ...
+# Subtest: all Supabase migrations are present and have unique filenames
+ok 3 - all Supabase migrations are present and have unique filenames
+  ---
+  duration_ms: 0.46913
+  type: 'test'
+  ...
+# Subtest: release commands and CI stay aligned
+ok 4 - release commands and CI stay aligned
+  ---
+  duration_ms: 0.300104
+  type: 'test'
+  ...
+# Subtest: frontend configuration does not embed server-side Supabase secrets
+ok 5 - frontend configuration does not embed server-side Supabase secrets
+  ---
+  duration_ms: 0.341626
+  type: 'test'
+  ...
+# Subtest: customer order status lookup remains scoped and avoids exposing account identifiers
+ok 6 - customer order status lookup remains scoped and avoids exposing account identifiers
+  ---
+  duration_ms: 0.742192
+  type: 'test'
+  ...
+# Subtest: release artifact excludes local secrets and dependency build output
+ok 7 - release artifact excludes local secrets and dependency build output
+  ---
+  duration_ms: 0.471684
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 57.39339

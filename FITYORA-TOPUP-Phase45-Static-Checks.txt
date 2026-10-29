@@ -1,0 +1,8 @@
+PASS - admin price update returns saved price
+PASS - saved price mismatch is detected
+PASS - empty input is not silently converted to zero
+PASS - nonnegative whole rupiah input
+PASS - RLS staff manage policy exists
+PASS - staff policy uses admin helper
+PASS - public catalogue read remains enabled
+PASS - migration does not alter existing prices

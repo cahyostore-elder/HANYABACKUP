@@ -1,0 +1,2 @@
+Phase 38 focused QA suite: 6 tests
+Run: node --test scripts/phase38-admin-payment-workflow.test.mjs

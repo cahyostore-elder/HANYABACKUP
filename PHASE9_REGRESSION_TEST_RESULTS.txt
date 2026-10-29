@@ -1,0 +1,190 @@
+TAP version 13
+# Subtest: Admin screen waits for auth bootstrap before rendering admin data
+ok 1 - Admin screen waits for auth bootstrap before rendering admin data
+  ---
+  duration_ms: 0.971429
+  type: 'test'
+  ...
+# Subtest: Admin access fails closed when profile is missing or role is not staff
+ok 2 - Admin access fails closed when profile is missing or role is not staff
+  ---
+  duration_ms: 0.279765
+  type: 'test'
+  ...
+# Subtest: Admin data loading is gated by valid authenticated staff profile
+ok 3 - Admin data loading is gated by valid authenticated staff profile
+  ---
+  duration_ms: 0.205384
+  type: 'test'
+  ...
+# Subtest: Admin order updates go through a guarded server RPC
+ok 4 - Admin order updates go through a guarded server RPC
+  ---
+  duration_ms: 0.10777
+  type: 'test'
+  ...
+# Subtest: Order status RPC only permits intentional transitions and protects final states
+ok 5 - Order status RPC only permits intentional transitions and protects final states
+  ---
+  duration_ms: 0.157873
+  type: 'test'
+  ...
+# Subtest: Checkout uses the database RPC and displays the server-returned total
+ok 6 - Checkout uses the database RPC and displays the server-returned total
+  ---
+  duration_ms: 0.13484
+  type: 'test'
+  ...
+# Subtest: Checkout handles invalid or unavailable payment methods before creating an order
+ok 7 - Checkout handles invalid or unavailable payment methods before creating an order
+  ---
+  duration_ms: 0.204934
+  type: 'test'
+  ...
+# Subtest: Checkout database validates category-brand-package relationships and derives price server-side
+ok 8 - Checkout database validates category-brand-package relationships and derives price server-side
+  ---
+  duration_ms: 0.092668
+  type: 'test'
+  ...
+# Subtest: Checkout code allocation avoids active duplicate payment totals
+ok 9 - Checkout code allocation avoids active duplicate payment totals
+  ---
+  duration_ms: 0.233746
+  type: 'test'
+  ...
+# Subtest: Public order status page uses the scoped lookup RPC and displays errors
+ok 10 - Public order status page uses the scoped lookup RPC and displays errors
+  ---
+  duration_ms: 0.316749
+  type: 'test'
+  ...
+# Subtest: Public order lookup does not return user id or email fields
+ok 11 - Public order lookup does not return user id or email fields
+  ---
+  duration_ms: 0.324631
+  type: 'test'
+  ...
+# Subtest: Catalog load errors are surfaced with a retry action
+ok 12 - Catalog load errors are surfaced with a retry action
+  ---
+  duration_ms: 0.130824
+  type: 'test'
+  ...
+# Subtest: Package fetching ignores stale responses and supports retry/error states
+ok 13 - Package fetching ignores stale responses and supports retry/error states
+  ---
+  duration_ms: 0.102913
+  type: 'test'
+  ...
+# Subtest: Changing brand clears stale selected package and target fields
+ok 14 - Changing brand clears stale selected package and target fields
+  ---
+  duration_ms: 0.073779
+  type: 'test'
+  ...
+# Subtest: Auth profile requests are guarded against stale account responses
+ok 15 - Auth profile requests are guarded against stale account responses
+  ---
+  duration_ms: 0.057014
+  type: 'test'
+  ...
+# Subtest: Frontend config does not contain a service-role secret
+ok 16 - Frontend config does not contain a service-role secret
+  ---
+  duration_ms: 0.381836
+  type: 'test'
+  ...
+# Subtest: Vercel SPA rewrite and build scripts are configured
+ok 17 - Vercel SPA rewrite and build scripts are configured
+  ---
+  duration_ms: 0.136722
+  type: 'test'
+  ...
+# Subtest: Critical source, lockfile and migration files exist
+ok 18 - Critical source, lockfile and migration files exist
+  ---
+  duration_ms: 0.149422
+  type: 'test'
+  ...
+# Subtest: SECURITY DEFINER RPCs pin search_path
+ok 19 - SECURITY DEFINER RPCs pin search_path
+  ---
+  duration_ms: 0.849098
+  type: 'test'
+  ...
+# Subtest: Order RPC execution is revoked from public and anon
+ok 20 - Order RPC execution is revoked from public and anon
+  ---
+  duration_ms: 0.213025
+  type: 'test'
+  ...
+# Subtest: Order creation requires an authenticated user and validates target
+ok 21 - Order creation requires an authenticated user and validates target
+  ---
+  duration_ms: 0.097665
+  type: 'test'
+  ...
+# Subtest: Order creation checks package belongs to selected brand
+ok 22 - Order creation checks package belongs to selected brand
+  ---
+  duration_ms: 0.081591
+  type: 'test'
+  ...
+# Subtest: Payment methods are allowlisted server-side
+ok 23 - Payment methods are allowlisted server-side
+  ---
+  duration_ms: 0.11523
+  type: 'test'
+  ...
+# Subtest: Order status RPC locks the target row before transition
+ok 24 - Order status RPC locks the target row before transition
+  ---
+  duration_ms: 0.881857
+  type: 'test'
+  ...
+# Subtest: Order lookup function avoids exposing account identifiers
+ok 25 - Order lookup function avoids exposing account identifiers
+  ---
+  duration_ms: 0.300746
+  type: 'test'
+  ...
+# Subtest: Client uses public environment variables and no service-role key
+ok 26 - Client uses public environment variables and no service-role key
+  ---
+  duration_ms: 0.259054
+  type: 'test'
+  ...
+# Subtest: Checkout consumes server-calculated total and always clears pending state
+ok 27 - Checkout consumes server-calculated total and always clears pending state
+  ---
+  duration_ms: 0.294476
+  type: 'test'
+  ...
+# Subtest: Admin status changes use guarded RPC rather than direct status writes
+ok 28 - Admin status changes use guarded RPC rather than direct status writes
+  ---
+  duration_ms: 0.328297
+  type: 'test'
+  ...
+# Subtest: Order status lookup displays failures accessibly
+ok 29 - Order status lookup displays failures accessibly
+  ---
+  duration_ms: 0.138155
+  type: 'test'
+  ...
+# Subtest: All regression scripts are registered in package.json
+ok 30 - All regression scripts are registered in package.json
+  ---
+  duration_ms: 0.131765
+  type: 'test'
+  ...
+1..30
+# tests 30
+# suites 0
+# pass 30
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 151.114846

@@ -1,0 +1,507 @@
+
+> fityorastore-web@1.0.0 audit:release
+> node scripts/phase10-release-audit.mjs && node scripts/release-preflight.mjs && node --test scripts/phase29-production-gate.test.mjs && npm run audit:phase30 && npm run audit:phase31 && npm run audit:phase32 && npm run audit:phase33 && npm run audit:phase34 && npm run audit:phase35 && npm run audit:phase36 && npm run audit:phase37
+
+PASS release source entry exists
+PASS lockfile exists and parses
+PASS build/typecheck/lint scripts defined
+PASS phase 5-9 audit scripts are registered
+PASS Vercel SPA fallback exists
+PASS no local dependency folder bundled
+PASS no production .env file bundled
+PASS environment template uses public Vite key only
+PASS release report included
+
+Phase 10 release audit: 9/9 passed
+PASS React entry and application exist
+PASS Supabase client module exists
+PASS Vercel SPA fallback exists
+PASS Lockfile package name matches manifest
+PASS Build, lint, and typecheck scripts exist
+PASS Public Supabase variable names are documented
+PASS Environment template has placeholders only
+PASS Environment files are ignored
+PASS CI quality workflow exists
+PASS Manual payment is disclosed in release docs
+PASS No local dependency folder is packaged
+PASS No local production environment file is packaged
+
+Release preflight: 12/12 passed
+TAP version 13
+# Subtest: release gate documents the real production blockers
+ok 1 - release gate documents the real production blockers
+  ---
+  duration_ms: 1.719993
+  type: 'test'
+  ...
+# Subtest: production environment template contains placeholders, not credentials
+ok 2 - production environment template contains placeholders, not credentials
+  ---
+  duration_ms: 0.393734
+  type: 'test'
+  ...
+# Subtest: all Supabase migrations are present and have unique filenames
+ok 3 - all Supabase migrations are present and have unique filenames
+  ---
+  duration_ms: 0.379512
+  type: 'test'
+  ...
+# Subtest: release commands and CI stay aligned
+ok 4 - release commands and CI stay aligned
+  ---
+  duration_ms: 0.317148
+  type: 'test'
+  ...
+# Subtest: frontend configuration does not embed server-side Supabase secrets
+ok 5 - frontend configuration does not embed server-side Supabase secrets
+  ---
+  duration_ms: 0.334364
+  type: 'test'
+  ...
+# Subtest: customer order status lookup remains scoped and avoids exposing account identifiers
+ok 6 - customer order status lookup remains scoped and avoids exposing account identifiers
+  ---
+  duration_ms: 0.757532
+  type: 'test'
+  ...
+# Subtest: release artifact excludes local secrets and dependency build output
+ok 7 - release artifact excludes local secrets and dependency build output
+  ---
+  duration_ms: 0.138319
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 58.952506
+
+> fityorastore-web@1.0.0 audit:phase30
+> node scripts/phase30-production-check.mjs
+
+PASS manifest and lockfile package identity match
+PASS required public Supabase variables are documented
+PASS example environment values are unmistakable placeholders
+PASS local environment files are ignored while example is tracked
+PASS Vercel SPA routing is configured
+PASS production build and typecheck commands exist
+PASS CI installs from lockfile and runs release checks
+PASS migration names are timestamped and unique
+PASS frontend source contains no obvious server secret markers
+PASS no local env file, node_modules, or dist is included
+
+Phase 30 production check: 10/10 passed
+
+> fityorastore-web@1.0.0 audit:phase31
+> node --test scripts/phase31-commerce-safety.test.mjs
+
+TAP version 13
+# Subtest: checkout requires an authenticated session and guards duplicate submissions
+ok 1 - checkout requires an authenticated session and guards duplicate submissions
+  ---
+  duration_ms: 1.972174
+  type: 'test'
+  ...
+# Subtest: checkout delegates authoritative price and order creation to database RPC
+ok 2 - checkout delegates authoritative price and order creation to database RPC
+  ---
+  duration_ms: 0.544301
+  type: 'test'
+  ...
+# Subtest: payment method identifiers are unique and maintenance method is blocked
+ok 3 - payment method identifiers are unique and maintenance method is blocked
+  ---
+  duration_ms: 0.422276
+  type: 'test'
+  ...
+# Subtest: official WhatsApp destination is consistent and uses wa.me
+ok 4 - official WhatsApp destination is consistent and uses wa.me
+  ---
+  duration_ms: 0.312592
+  type: 'test'
+  ...
+# Subtest: customer-facing order lookup validates the code before querying
+ok 5 - customer-facing order lookup validates the code before querying
+  ---
+  duration_ms: 0.173942
+  type: 'test'
+  ...
+# Subtest: release runbook separates manual payment review from automated gateway claims
+ok 6 - release runbook separates manual payment review from automated gateway claims
+  ---
+  duration_ms: 0.202025
+  type: 'test'
+  ...
+# Subtest: database migrations retain order creation and scoped lookup hardening
+ok 7 - database migrations retain order creation and scoped lookup hardening
+  ---
+  duration_ms: 1.536497
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 88.368618
+
+> fityorastore-web@1.0.0 audit:phase32
+> node --test scripts/phase32-live-verification.test.mjs
+
+TAP version 13
+# Subtest: latest order creation RPC enforces login and validates catalog relationships
+ok 1 - latest order creation RPC enforces login and validates catalog relationships
+  ---
+  duration_ms: 1.973365
+  type: 'test'
+  ...
+# Subtest: admin order status RPC checks admin role and blocks unsafe transitions
+ok 2 - admin order status RPC checks admin role and blocks unsafe transitions
+  ---
+  duration_ms: 0.41798
+  type: 'test'
+  ...
+# Subtest: public order lookup exposes only limited status fields and uses fixed search path
+ok 3 - public order lookup exposes only limited status fields and uses fixed search path
+  ---
+  duration_ms: 0.509208
+  type: 'test'
+  ...
+# Subtest: all migration filenames are timestamped and unique
+ok 4 - all migration filenames are timestamped and unique
+  ---
+  duration_ms: 0.35829
+  type: 'test'
+  ...
+# Subtest: frontend Supabase client never uses service-role or secret-key variables
+ok 5 - frontend Supabase client never uses service-role or secret-key variables
+  ---
+  duration_ms: 0.300854
+  type: 'test'
+  ...
+# Subtest: Vercel environment guide separates public browser keys from server secrets
+ok 6 - Vercel environment guide separates public browser keys from server secrets
+  ---
+  duration_ms: 0.287394
+  type: 'test'
+  ...
+# Subtest: release audit includes the Phase 32 checks
+ok 7 - release audit includes the Phase 32 checks
+  ---
+  duration_ms: 0.279922
+  type: 'test'
+  ...
+# Subtest: production checklist requires live customer/admin and order lifecycle verification
+ok 8 - production checklist requires live customer/admin and order lifecycle verification
+  ---
+  duration_ms: 0.194763
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 72.323411
+
+> fityorastore-web@1.0.0 audit:phase33
+> node --test scripts/phase33-order-idempotency.test.mjs
+
+TAP version 13
+# Subtest: idempotency migration stores request keys and enforces per-user uniqueness
+ok 1 - idempotency migration stores request keys and enforces per-user uniqueness
+  ---
+  duration_ms: 1.137635
+  type: 'test'
+  ...
+# Subtest: checkout RPC requires the request key and replaces the legacy signature
+ok 2 - checkout RPC requires the request key and replaces the legacy signature
+  ---
+  duration_ms: 0.395687
+  type: 'test'
+  ...
+# Subtest: same request key returns matching existing order and rejects mismatched payloads
+ok 3 - same request key returns matching existing order and rejects mismatched payloads
+  ---
+  duration_ms: 0.388817
+  type: 'test'
+  ...
+# Subtest: new order persists its idempotency key and authoritative total
+ok 4 - new order persists its idempotency key and authoritative total
+  ---
+  duration_ms: 0.187884
+  type: 'test'
+  ...
+# Subtest: checkout reuses one key for the same payload across network retries
+ok 5 - checkout reuses one key for the same payload across network retries
+  ---
+  duration_ms: 0.153752
+  type: 'test'
+  ...
+# Subtest: checkout never substitutes an estimated price when the server total is missing
+ok 6 - checkout never substitutes an estimated price when the server total is missing
+  ---
+  duration_ms: 0.169716
+  type: 'test'
+  ...
+# Subtest: release audit and live migration guide include Phase 33
+ok 7 - release audit and live migration guide include Phase 33
+  ---
+  duration_ms: 0.360133
+  type: 'test'
+  ...
+# Subtest: all migration filenames remain timestamped and unique
+ok 8 - all migration filenames remain timestamped and unique
+  ---
+  duration_ms: 0.541396
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 61.912499
+
+> fityorastore-web@1.0.0 audit:phase34
+> node --test scripts/phase34-integration-readiness.test.mjs
+
+TAP version 13
+# Subtest: Phase 34 keeps checkout RPC parameter names aligned between frontend and SQL
+ok 1 - Phase 34 keeps checkout RPC parameter names aligned between frontend and SQL
+  ---
+  duration_ms: 1.843519
+  type: 'test'
+  ...
+# Subtest: idempotency migration preserves old orders and adds only nullable request key plus partial uniqueness
+ok 2 - idempotency migration preserves old orders and adds only nullable request key plus partial uniqueness
+  ---
+  duration_ms: 0.343098
+  type: 'test'
+  ...
+# Subtest: security-definer order RPC checks authentication, pins search_path, and restricts execute grants
+ok 3 - security-definer order RPC checks authentication, pins search_path, and restricts execute grants
+  ---
+  duration_ms: 0.478732
+  type: 'test'
+  ...
+# Subtest: production guide requires migration-first rollout and manual payment verification disclosure
+ok 4 - production guide requires migration-first rollout and manual payment verification disclosure
+  ---
+  duration_ms: 0.147322
+  type: 'test'
+  ...
+# Subtest: release checks include Phase 34 without adding a runtime dependency
+ok 5 - release checks include Phase 34 without adding a runtime dependency
+  ---
+  duration_ms: 0.217448
+  type: 'test'
+  ...
+# Subtest: migration filenames are unique and timestamped
+ok 6 - migration filenames are unique and timestamped
+  ---
+  duration_ms: 0.305841
+  type: 'test'
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 6
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 59.816538
+
+> fityorastore-web@1.0.0 audit:phase35
+> node --test scripts/phase35-build-readiness.test.mjs
+
+TAP version 13
+# Subtest: package manifest and lockfile root dependencies are synchronized
+ok 1 - package manifest and lockfile root dependencies are synchronized
+  ---
+  duration_ms: 1.479551
+  type: 'test'
+  ...
+# Subtest: build, typecheck, lint, and combined check scripts are registered
+ok 2 - build, typecheck, lint, and combined check scripts are registered
+  ---
+  duration_ms: 0.231118
+  type: 'test'
+  ...
+# Subtest: CI uses a supported Node version and runs install, check, regression and release gates
+ok 3 - CI uses a supported Node version and runs install, check, regression and release gates
+  ---
+  duration_ms: 0.524841
+  type: 'test'
+  ...
+# Subtest: public environment example uses placeholders and does not include secret credentials
+ok 4 - public environment example uses placeholders and does not include secret credentials
+  ---
+  duration_ms: 0.361585
+  type: 'test'
+  ...
+# Subtest: environment secrets, dependency tree, and build output are excluded from source commits
+ok 5 - environment secrets, dependency tree, and build output are excluded from source commits
+  ---
+  duration_ms: 0.950733
+  type: 'test'
+  ...
+# Subtest: Vercel routes client-side paths to the SPA entry point and Vite outputs dist
+ok 6 - Vercel routes client-side paths to the SPA entry point and Vite outputs dist
+  ---
+  duration_ms: 0.501917
+  type: 'test'
+  ...
+# Subtest: release audit includes the Phase 35 readiness suite
+ok 7 - release audit includes the Phase 35 readiness suite
+  ---
+  duration_ms: 0.165399
+  type: 'test'
+  ...
+# Subtest: Phase 35 rollout guide distinguishes static tests from live checkout certification
+ok 8 - Phase 35 rollout guide distinguishes static tests from live checkout certification
+  ---
+  duration_ms: 0.171969
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 78.163066
+
+> fityorastore-web@1.0.0 audit:phase36
+> node --test scripts/phase36-supabase-verification.test.mjs
+
+TAP version 13
+# Subtest: Phase 36 diagnostic SQL is read-only and uses catalog inspection only
+ok 1 - Phase 36 diagnostic SQL is read-only and uses catalog inspection only
+  ---
+  duration_ms: 1.002912
+  type: 'test'
+  ...
+# Subtest: idempotency migration adds a nullable request key and partial unique index without rewriting old orders
+ok 2 - idempotency migration adds a nullable request key and partial unique index without rewriting old orders
+  ---
+  duration_ms: 0.233682
+  type: 'test'
+  ...
+# Subtest: frontend RPC arguments exactly include the required idempotency key
+ok 3 - frontend RPC arguments exactly include the required idempotency key
+  ---
+  duration_ms: 0.419763
+  type: 'test'
+  ...
+# Subtest: order RPC pins search_path and restricts execution to authenticated users
+ok 4 - order RPC pins search_path and restricts execution to authenticated users
+  ---
+  duration_ms: 0.470099
+  type: 'test'
+  ...
+# Subtest: order RPC checks ownership from auth.uid and validates client request reuse payload
+ok 5 - order RPC checks ownership from auth.uid and validates client request reuse payload
+  ---
+  duration_ms: 0.200282
+  type: 'test'
+  ...
+# Subtest: migration verifies catalog and package relationship and derives price from database
+ok 6 - migration verifies catalog and package relationship and derives price from database
+  ---
+  duration_ms: 0.242856
+  type: 'test'
+  ...
+# Subtest: diagnostic SQL checks function grants, request column, and unique index presence
+ok 7 - diagnostic SQL checks function grants, request column, and unique index presence
+  ---
+  duration_ms: 0.197578
+  type: 'test'
+  ...
+# Subtest: release audit includes Phase 36 without adding a runtime dependency
+ok 8 - release audit includes Phase 36 without adding a runtime dependency
+  ---
+  duration_ms: 0.347063
+  type: 'test'
+  ...
+1..8
+# tests 8
+# suites 0
+# pass 8
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 63.407803
+
+> fityorastore-web@1.0.0 audit:phase37
+> node --test scripts/phase37-manual-payment.test.mjs
+
+TAP version 13
+# Subtest: manual payment proof upload validates image type and size in the browser
+ok 1 - manual payment proof upload validates image type and size in the browser
+  ---
+  duration_ms: 2.138835
+  type: 'test'
+  ...
+# Subtest: proof files are uploaded into a private bucket using a user/order scoped path
+ok 2 - proof files are uploaded into a private bucket using a user/order scoped path
+  ---
+  duration_ms: 0.187643
+  type: 'test'
+  ...
+# Subtest: storage insert policy requires ownership of a pending order
+ok 3 - storage insert policy requires ownership of a pending order
+  ---
+  duration_ms: 0.785474
+  type: 'test'
+  ...
+# Subtest: proof submission RPC validates authenticated ownership, status, and matching order code
+ok 4 - proof submission RPC validates authenticated ownership, status, and matching order code
+  ---
+  duration_ms: 0.532092
+  type: 'test'
+  ...
+# Subtest: payment proof submission does not mark order as paid or successful
+ok 5 - payment proof submission does not mark order as paid or successful
+  ---
+  duration_ms: 0.26554
+  type: 'test'
+  ...
+# Subtest: admin can open a short-lived signed URL for a submitted proof
+ok 6 - admin can open a short-lived signed URL for a submitted proof
+  ---
+  duration_ms: 0.125409
+  type: 'test'
+  ...
+# Subtest: release audit includes Phase 37 without a payment gateway dependency
+ok 7 - release audit includes Phase 37 without a payment gateway dependency
+  ---
+  duration_ms: 0.121223
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 61.660158

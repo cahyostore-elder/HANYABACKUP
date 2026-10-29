@@ -1,0 +1,4 @@
+TypeScript transpile syntax scan
+Files checked: 24
+Diagnostics: 0
+No syntax diagnostics.

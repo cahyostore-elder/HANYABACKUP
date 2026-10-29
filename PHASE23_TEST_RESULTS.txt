@@ -1,0 +1,6 @@
+Phase 23 full static regression suite
+- Total tests: 107
+- Passed: 107
+- Failed: 0
+- Scope: source/static regression tests only.
+- Build/lint/typecheck/live database/browser tests: NOT RUN / NOT VERIFIED.

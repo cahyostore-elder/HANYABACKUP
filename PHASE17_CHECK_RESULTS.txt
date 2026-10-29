@@ -1,0 +1,141 @@
+FITYORASTORE PHASE 17 — CHECK RESULTS
+
+All test files:
+# tests 75
+# suites 0
+# pass 75
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 488.745915
+
+Phase 17 focused tests:
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 103.334624
+
+Phase 5 static audit:
+FITYORASTORE PHASE 5 — STATIC AUDIT
+PASS Required file: package.json
+PASS Required file: package-lock.json
+PASS Required file: index.html
+PASS Required file: vite.config.ts
+PASS Required file: vercel.json
+PASS Required file: src/main.tsx
+PASS Required file: src/App.tsx
+PASS Required file: src/lib/supabase.ts
+PASS Required file: supabase/migrations/20261026030000_manual_order_workflow_hardening.sql
+PASS package.json and package-lock.json parse as JSON
+PASS Package name matches lockfile
+PASS Package version matches lockfile
+PASS Build/typecheck/lint scripts are defined
+PASS Local import resolution scan — 66 imports scanned
+PASS Vercel SPA rewrite is configured
+PASS Supabase client reads public environment variables
+PASS No recognizable service-role/secret key literal in Supabase client
+PASS Order status RPC checks authenticated staff
+PASS Order workflow blocks pending-to-success shortcut
+PASS Order workflow treats final statuses as terminal
+
+Result: 0 failure(s), 20 check(s) passed.
+
+Phase 6 source preflight:
+FITYORASTORE PHASE 6 — SOURCE PREFLIGHT (STATIC; NOT A BUILD)
+PASS Required file: package.json
+PASS Required file: package-lock.json
+PASS Required file: src/context/AuthContext.tsx
+PASS Required file: src/pages/TopupPage.tsx
+PASS Required file: src/pages/AdminPage.tsx
+PASS Required file: src/lib/supabase.ts
+PASS Required file: supabase/migrations/20261026030000_manual_order_workflow_hardening.sql
+PASS Required file: vercel.json
+PASS Required file: .env.example
+PASS Package name matches package lock
+PASS Package version matches package lock
+PASS Build/typecheck/lint scripts exist
+PASS Phase 6 preflight script is registered
+PASS Lockfile range matches @supabase/supabase-js
+PASS Lockfile range matches lucide-react
+PASS Lockfile range matches react
+PASS Lockfile range matches react-dom
+PASS Lockfile range matches @eslint/js
+PASS Lockfile range matches @types/react
+PASS Lockfile range matches @types/react-dom
+PASS Lockfile range matches @vitejs/plugin-react
+PASS Lockfile range matches autoprefixer
+PASS Lockfile range matches eslint
+PASS Lockfile range matches eslint-plugin-react-hooks
+PASS Lockfile range matches eslint-plugin-react-refresh
+PASS Lockfile range matches globals
+PASS Lockfile range matches postcss
+PASS Lockfile range matches tailwindcss
+PASS Lockfile range matches typescript
+PASS Lockfile range matches typescript-eslint
+PASS Lockfile range matches vite
+PASS Auth listener subscribes before stored-session fallback
+PASS Auth bootstrap tracks whether a newer auth event arrived
+PASS Late getSession success/error cannot override auth event
+PASS Stale profile responses are ignored
+PASS Sign-out failure provides user feedback
+PASS Checkout uses server-side order RPC
+PASS Checkout reads order total returned by server
+PASS Checkout clears pending state in finally
+PASS Admin uses guarded status RPC
+PASS Admin reports status-update failures
+PASS Order status update requires authenticated admin/author
+PASS Order cannot jump directly from pending to success
+PASS Terminal order statuses cannot be changed
+PASS Payment verification timestamp is recorded on processing
+PASS Fulfillment timestamp is recorded on success
+PASS Supabase keys come from public Vite env variables
+PASS Supabase client contains no obvious service-role key
+PASS Environment template names required variables
+PASS Environment template does not request a service-role key
+PASS Vercel SPA rewrite points to index.html
+
+Result: 0 failure(s), 51 check(s) passed.
+
+Phase 9 readiness audit:
+PASS required file: index.html
+PASS required file: package.json
+PASS required file: vercel.json
+PASS required file: .env.example
+PASS required file: src/lib/supabase.ts
+PASS Vite build script exists
+PASS typecheck script exists
+PASS lint script exists
+PASS Phase 9 audit command registered
+PASS Vercel SPA fallback rewrites to index.html
+PASS Supabase URL variable documented
+PASS Supabase public key variable documented
+PASS Example key is clearly a placeholder
+PASS Supabase client detects the example key placeholder
+PASS Supabase config does not use service-role key name
+PASS Placeholder guard has a safe missing-project fallback
+PASS No dependency folder bundled
+
+Phase 9 production-readiness checks: 17/17 passed
+
+Phase 10 release audit:
+PASS release source entry exists
+PASS lockfile exists and parses
+PASS build/typecheck/lint scripts defined
+PASS phase 5-9 audit scripts are registered
+PASS Vercel SPA fallback exists
+PASS no local dependency folder bundled
+PASS no production .env file bundled
+PASS environment template uses public Vite key only
+PASS release report included
+
+Phase 10 release audit: 9/9 passed
+
+TS/TSX transpile syntax scan: 24 files, 0 syntax diagnostics (global TypeScript transpileModule).
+TS/TSX syntax transpile: 24 files, 0 error(s)
+
+Full npm run check: NOT PASSED. It stops at typecheck because React, react/jsx-runtime and lucide-react dependencies/types are missing from the local environment; therefore lint and Vite build were not reached. Browser/E2E, Supabase live and Vercel deployment were not run.

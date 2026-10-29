@@ -1,0 +1,18 @@
+FITYORA TOPUP — Phase 36 results
+Date: 2026-10-27
+
+PASS
+- Focused Phase 36 Supabase contract tests: 8/8
+- Full source regression suite: 178/178
+- npm run audit:release: exit code 0
+- node --check scripts/phase36-supabase-verification.test.mjs
+- package.json and package-lock root identity/dependency sets match
+- No runtime dependencies added
+- Added read-only SQL diagnostics for schema/index/function/grant checks
+
+NOT VERIFIED / STILL BLOCKED
+- npm ci and npm run check (TypeScript, ESLint, Vite production build): previously blocked by npm registry DNS/network failure EAI_AGAIN; not rerun successfully in this phase
+- SQL diagnostic not executed against a live Supabase project
+- No live Vercel Preview, real payment verification, or top-up fulfillment test
+
+Decision: NOT CERTIFIED PRODUCTION-READY. Phase 36 improves safe verification tooling and static contracts, but does not replace a successful build and live integration test.

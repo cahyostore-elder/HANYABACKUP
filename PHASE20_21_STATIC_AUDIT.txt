@@ -1,0 +1,23 @@
+FITYORASTORE PHASE 5 — STATIC AUDIT
+PASS Required file: package.json
+PASS Required file: package-lock.json
+PASS Required file: index.html
+PASS Required file: vite.config.ts
+PASS Required file: vercel.json
+PASS Required file: src/main.tsx
+PASS Required file: src/App.tsx
+PASS Required file: src/lib/supabase.ts
+PASS Required file: supabase/migrations/20261026030000_manual_order_workflow_hardening.sql
+PASS package.json and package-lock.json parse as JSON
+PASS Package name matches lockfile
+PASS Package version matches lockfile
+PASS Build/typecheck/lint scripts are defined
+PASS Local import resolution scan — 66 imports scanned
+PASS Vercel SPA rewrite is configured
+PASS Supabase client reads public environment variables
+PASS No recognizable service-role/secret key literal in Supabase client
+PASS Order status RPC checks authenticated staff
+PASS Order workflow blocks pending-to-success shortcut
+PASS Order workflow treats final statuses as terminal
+
+Result: 0 failure(s), 20 check(s) passed.

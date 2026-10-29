@@ -1,0 +1,98 @@
+
+> fityorastore-web@1.0.0 audit:phase17
+> node --test scripts/phase17-catalog.test.mjs scripts/phase17-package-catalog.test.mjs
+
+TAP version 13
+# Subtest: package count updates with the search and remains announced accessibly
+ok 1 - package count updates with the search and remains announced accessibly
+  ---
+  duration_ms: 0.657713
+  type: 'test'
+  ...
+# Subtest: search reset returns the catalog after a no-results state
+ok 2 - search reset returns the catalog after a no-results state
+  ---
+  duration_ms: 0.12141
+  type: 'test'
+  ...
+# Subtest: switching brand and category resets package search and sort state
+ok 3 - switching brand and category resets package search and sort state
+  ---
+  duration_ms: 0.169832
+  type: 'test'
+  ...
+# Subtest: nominal cards use catalog prices and accessible button labels
+ok 4 - nominal cards use catalog prices and accessible button labels
+  ---
+  duration_ms: 0.159606
+  type: 'test'
+  ...
+# Subtest: Phase 17 catalog enhancements preserve mobile and reduced-motion styles
+ok 5 - Phase 17 catalog enhancements preserve mobile and reduced-motion styles
+  ---
+  duration_ms: 0.179175
+  type: 'test'
+  ...
+# Subtest: Phase 17 audit command includes both catalog test suites without adding dependencies
+ok 6 - Phase 17 audit command includes both catalog test suites without adding dependencies
+  ---
+  duration_ms: 0.135361
+  type: 'test'
+  ...
+# Subtest: package search matches name and description with Indonesian locale handling
+ok 7 - package search matches name and description with Indonesian locale handling
+  ---
+  duration_ms: 0.667699
+  type: 'test'
+  ...
+# Subtest: package sort supports catalog order and ascending or descending price
+ok 8 - package sort supports catalog order and ascending or descending price
+  ---
+  duration_ms: 0.120208
+  type: 'test'
+  ...
+# Subtest: changing brand resets package filters and stale checkout choices
+ok 9 - changing brand resets package filters and stale checkout choices
+  ---
+  duration_ms: 0.14878
+  type: 'test'
+  ...
+# Subtest: package cards expose accessible selection state and a readable label
+ok 10 - package cards expose accessible selection state and a readable label
+  ---
+  duration_ms: 0.107409
+  type: 'test'
+  ...
+# Subtest: prices remain derived from the package catalog and use IDR formatting
+ok 11 - prices remain derived from the package catalog and use IDR formatting
+  ---
+  duration_ms: 0.193115
+  type: 'test'
+  ...
+# Subtest: empty search has a recovery action to restore all packages
+ok 12 - empty search has a recovery action to restore all packages
+  ---
+  duration_ms: 0.185505
+  type: 'test'
+  ...
+# Subtest: package selection styling is responsive and respects reduced motion
+ok 13 - package selection styling is responsive and respects reduced motion
+  ---
+  duration_ms: 0.184153
+  type: 'test'
+  ...
+# Subtest: Phase 17 audit is registered without adding runtime dependencies
+ok 14 - Phase 17 audit is registered without adding runtime dependencies
+  ---
+  duration_ms: 0.111415
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 98.846569

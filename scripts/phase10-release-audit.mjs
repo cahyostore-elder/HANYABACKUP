@@ -1,0 +1,22 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const checks = [];
+const check = (name, ok) => checks.push({ name, ok: Boolean(ok) });
+const exists = (p) => fs.existsSync(path.join(root, p));
+const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
+const pkg = JSON.parse(read('package.json'));
+check('release source entry exists', exists('src/main.tsx') && exists('src/App.tsx'));
+check('lockfile exists and parses', (() => { try { JSON.parse(read('package-lock.json')); return true; } catch { return false; } })());
+check('build/typecheck/lint scripts defined', Boolean(pkg.scripts?.build && pkg.scripts?.typecheck && pkg.scripts?.lint));
+check('phase 5-9 audit scripts are registered', ['audit:static','audit:phase6','audit:phase7','audit:phase8','audit:phase9'].every(k => typeof pkg.scripts?.[k] === 'string'));
+check('Vercel SPA fallback exists', /"destination"\s*:\s*"\/index\.html"/.test(read('vercel.json')));
+check('no local dependency folder bundled', !exists('node_modules'));
+check('no production .env file bundled', !exists('.env'));
+check('environment template uses public Vite key only', /VITE_SUPABASE_ANON_KEY=/.test(read('.env.example')) && !/SERVICE_ROLE|SECRET_KEY/i.test(read('.env.example')));
+check('release report included', exists('PHASE10_RELEASE_CANDIDATE.md'));
+let failed = 0;
+for (const c of checks) { console.log(`${c.ok ? 'PASS' : 'FAIL'} ${c.name}`); if (!c.ok) failed++; }
+console.log(`\nPhase 10 release audit: ${checks.length-failed}/${checks.length} passed`);
+if (failed) process.exitCode = 1;

@@ -1,0 +1,15 @@
+import { readFileSync, existsSync } from 'node:fs';
+import assert from 'node:assert/strict';
+const main = readFileSync('src/main.tsx', 'utf8');
+const admin = readFileSync('src/pages/AdminPage.tsx', 'utf8');
+const home = readFileSync('src/pages/HomePage.tsx', 'utf8');
+assert.ok(main.includes('AppErrorBoundary'), 'React error boundary exists');
+assert.ok(main.includes('Muat Ulang Halaman'), 'recovery action exists');
+assert.ok(admin.includes('createPortal'), 'admin modal uses portal');
+assert.ok(admin.includes("event.key === 'Escape'"), 'modal supports Escape');
+assert.ok(admin.includes('previouslyFocused?.focus'), 'modal restores focus');
+assert.ok(admin.includes('aria-modal="true"'), 'modal is accessible');
+assert.ok(existsSync('supabase/migrations'), 'Supabase migrations retained');
+assert.ok(existsSync('package.json') && existsSync('index.html'), 'Vite project root retained');
+assert.ok(!/\b(?:VIP|PREMIUM)\b/i.test(home), 'storefront source has no VIP/Premium text');
+console.log('Phase 50 final-core checks: 9/9 passed');

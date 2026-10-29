@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: history hooks execute before the unauthenticated early return
+ok 1 - history hooks execute before the unauthenticated early return
+  ---
+  duration_ms: 0.741148
+  type: 'test'
+  ...
+# Subtest: order history filters by code, target, brand, package and status
+ok 2 - order history filters by code, target, brand, package and status
+  ---
+  duration_ms: 0.119376
+  type: 'test'
+  ...
+# Subtest: order history paginates long lists and exposes paging state
+ok 3 - order history paginates long lists and exposes paging state
+  ---
+  duration_ms: 0.168169
+  type: 'test'
+  ...
+# Subtest: filters reset page to avoid landing on an empty later page
+ok 4 - filters reset page to avoid landing on an empty later page
+  ---
+  duration_ms: 0.094149
+  type: 'test'
+  ...
+# Subtest: orders expose copy-code affordance and honest clipboard fallback
+ok 5 - orders expose copy-code affordance and honest clipboard fallback
+  ---
+  duration_ms: 0.247927
+  type: 'test'
+  ...
+# Subtest: order detail disclosure is accessible and provides date/payment/status explanations
+ok 6 - order detail disclosure is accessible and provides date/payment/status explanations
+  ---
+  duration_ms: 0.123513
+  type: 'test'
+  ...
+# Subtest: spending total includes only orders explicitly marked successful
+ok 7 - spending total includes only orders explicitly marked successful
+  ---
+  duration_ms: 0.181178
+  type: 'test'
+  ...
+# Subtest: database history query is scoped to the authenticated user and newest first
+ok 8 - database history query is scoped to the authenticated user and newest first
+  ---
+  duration_ms: 0.086969
+  type: 'test'
+  ...
+# Subtest: Phase 20 test command is registered
+ok 9 - Phase 20 test command is registered
+  ---
+  duration_ms: 0.282389
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 56.894152

@@ -1,0 +1,8 @@
+PASS: index exists
+PASS: SVG favicon exists
+PASS: manifest exists
+PASS: PWA 192 icon exists
+PASS: PWA 512 icon exists
+PASS: HTML references manifest
+PASS: HTML references SVG favicon
+PASS: root source entry exists
