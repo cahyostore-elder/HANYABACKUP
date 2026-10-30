@@ -51,6 +51,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const invalidateProfileRequest = useCallback(() => {
+    profileRequestId.current += 1;
+  }, []);
+
   const refreshProfile = useCallback(async () => {
     const userId = session?.user?.id;
     if (!userId) return;
@@ -120,11 +124,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       mounted = false;
-      ++profileRequestId.current;
+      invalidateProfileRequest();
       if (authTimer !== undefined) window.clearTimeout(authTimer);
       sub.subscription.unsubscribe();
     };
-  }, [loadProfile]);
+  }, [loadProfile, invalidateProfileRequest]);
 
   const signOut = async () => {
     try {
