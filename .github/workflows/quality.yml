@@ -24,6 +24,8 @@ jobs:
         with:
           node-version: 22
           cache: npm
+      - name: Align TypeScript ESLint tooling with current ESLint 9
+        run: npm update --package-lock-only --ignore-scripts typescript-eslint
       - name: Remediate fixable dependency advisories in lockfile
         run: npm audit fix --package-lock-only --ignore-scripts
       - name: Install locked dependencies
