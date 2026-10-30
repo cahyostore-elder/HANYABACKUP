@@ -14,9 +14,10 @@ import { useEffect, useState } from 'react';
 import { Wrench } from 'lucide-react';
 import { supabase, supabaseConfigured } from '@/lib/supabase';
 
-function Routes({ orderMaintenanceEnabled, orderMaintenanceMessage }: {
+function Routes({ orderMaintenanceEnabled, orderMaintenanceMessage, loginOnly }: {
   orderMaintenanceEnabled: boolean;
   orderMaintenanceMessage: string;
+  loginOnly: boolean;
 }) {
   const { path } = useRoute();
   const route = parseRoute(path);
@@ -33,7 +34,7 @@ function Routes({ orderMaintenanceEnabled, orderMaintenanceMessage }: {
         />
       );
     case 'login':
-      return <LoginPage />;
+      return <LoginPage maintenanceAccessOnly={loginOnly} />;
     case 'signup':
       return <SignupPage />;
     case 'dashboard':
@@ -143,6 +144,7 @@ function Shell() {
         <Routes
           orderMaintenanceEnabled={maintenance.orderEnabled && !isAuthor}
           orderMaintenanceMessage={maintenance.orderMessage}
+          loginOnly={maintenance.globalEnabled && !isAuthor}
         />
       </main>
       <Footer />
