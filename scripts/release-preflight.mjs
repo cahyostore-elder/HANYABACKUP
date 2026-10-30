@@ -39,7 +39,7 @@ add('Environment template has placeholders only', /YOUR_PROJECT_REF|PASTE_YOUR_S
 add('Environment files are ignored', /\.env\.\*/.test(read('.gitignore')) && /!\.env\.example/.test(read('.gitignore')));
 add('CI quality workflow exists', exists('.github/workflows/quality.yml'));
 add('Manual payment is disclosed in release docs', /manual/i.test(read('README.md')) && /manual/i.test(read('PHASE28_RELEASE_READINESS.md')));
-add('node_modules is ignored and no dependency files are committed', /^node_modules\\/?$/m.test(read('.gitignore')) && !hasTrackedNodeModules());
+add('node_modules is ignored and no dependency files are committed', /^node_modules$/m.test(read('.gitignore')) && !hasTrackedNodeModules());
 const localEnv = exists('.env.local') ? read('.env.local') : '';
 const localEnvIsPublicOnly = !exists('.env.local') || (
   /^VITE_SUPABASE_URL=https:\/\/[^\s]+$/m.test(localEnv) &&
