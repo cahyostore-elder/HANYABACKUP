@@ -26,6 +26,10 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      - name: Inspect dependency advisories
+        run: |
+          npm audit --json > "$RUNNER_TEMP/npm-audit.json" || true
+          node --input-type=commonjs -e "const fs=require('node:fs'); const a=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/npm-audit.json','utf8')); const rows=Object.values(a.vulnerabilities || {}).map(v=>({name:v.name,severity:v.severity,isDirect:v.isDirect,range:v.range,fixAvailable:v.fixAvailable,via:(v.via||[]).map(x=>typeof x==='string'?x:{name:x.name,title:x.title,url:x.url,range:x.range})})); console.log(JSON.stringify({metadata:a.metadata?.vulnerabilities,advisories:rows},null,2));"
       - name: Typecheck, lint, and production build
         run: npm run check
       - name: Run all regression tests
