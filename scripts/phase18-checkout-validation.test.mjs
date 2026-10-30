@@ -32,7 +32,7 @@ test('order creation uses a synchronous lock to prevent rapid duplicate submissi
   assert.match(topup, /if \(placingLock\.current \|\| !validateTarget\(\)/);
   assert.match(topup, /placingLock\.current = true/);
   assert.match(topup, /placingLock\.current = false/);
-  assert.match(topup, /disabled=\{placing\}/);
+  assert.match(topup, /disabled=\{placing \|\| \(orderMaintenanceEnabled && !isAuthor\)\}/);
 });
 
 test('Phase 18 checkout validation audit is registered', () => {
