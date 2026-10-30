@@ -847,7 +847,7 @@ function PackagesManager({
         window.alert(`Harga modal gagal disimpan: ${error?.message ?? 'Hasil database tidak cocok dengan input.'}`);
         return;
       }
-      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost) } : current);
+      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost), supplier_cost_status: 'verified' } : current);
       await onChange();
       window.alert('Harga modal supplier berhasil disimpan. Harga jual paket tetap.');
     } catch (error) {
@@ -883,7 +883,7 @@ function PackagesManager({
         window.alert(`Modal/harga jual gagal diverifikasi: ${error?.message ?? 'Nilai database tidak cocok dengan pratinjau.'}`);
         return;
       }
-      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost), price: String(saved.new_price) } : current);
+      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost), price: String(saved.new_price), supplier_cost_status: 'verified' } : current);
       await onChange();
       window.alert(`Berhasil. Harga jual diperbarui menjadi ${money(estimatedPrice)} dengan markup 7% atas modal dan tercatat di audit harga.`);
     } catch (error) {
