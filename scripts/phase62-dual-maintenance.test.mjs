@@ -21,7 +21,7 @@ test('Phase 62 has two independent persistent maintenance switches', () => {
 test('database blocks customer order inserts and updates while maintenance is active', () => {
   assert.match(migration, /CREATE OR REPLACE FUNCTION private\.enforce_order_maintenance\(\)/);
   assert.match(migration, /SECURITY DEFINER[\s\S]*?SET search_path = ''/);
-  assert.match(migration, /p\.role[\s\S]*?IN \('admin', 'author'\)/);
+  assert.match(migration, /COALESCE\(v_role, ''\) IN \('admin', 'author'\)/);
   assert.match(migration, /BEFORE INSERT OR UPDATE ON public\.orders/);
   assert.match(migration, /IF TG_OP = 'UPDATE' THEN[\s\S]*?IF COALESCE\(v_global_enabled, false\) THEN/);
   assert.match(migration, /IF COALESCE\(v_order_enabled, false\) THEN/);
@@ -40,7 +40,8 @@ test('global maintenance grants staff bypass and leaves only a login route for c
   assert.match(app, /loginOnly=\{maintenance\.globalEnabled && !isAuthor\}/);
   assert.match(login, /maintenanceAccessOnly/);
   assert.match(login, /Login hanya tersedia untuk Author\/Admin/);
-  assert.doesNotMatch(login, /maintenanceAccessOnly \? [\s\S]*?navigate\('\/signup'\)/);
+  assert.match(login, /maintenanceAccessOnly \? \([\s\S]*?Login hanya tersedia untuk Author\/Admin/);
+  assert.match(login, /: \([\s\S]*?navigate\('\/signup'\)/);
 });
 
 test('order-only maintenance keeps catalog visible while preventing customer checkout', () => {
