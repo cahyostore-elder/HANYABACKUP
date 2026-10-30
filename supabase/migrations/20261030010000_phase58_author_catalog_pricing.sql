@@ -23,7 +23,7 @@ BEGIN
   UPDATE public.packages AS p SET price = p_price WHERE p.id = p_package_id;
   IF v_cost IS NOT NULL AND v_old_price IS DISTINCT FROM p_price THEN
     INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by)
-    VALUES (p_package_id, v_package_name, v_cost, v_old_price, p_price, CASE WHEN v_cost = 0 THEN 0.00 ELSE round(((p_price - v_cost) / v_cost) * 100, 2) END, auth.uid());
+    VALUES (p_package_id, v_package_name, v_cost, v_old_price, p_price, CASE WHEN p_price = 0 THEN 0.00 ELSE round(((p_price - v_cost) / p_price) * 100, 2) END, auth.uid());
   END IF;
   RETURN QUERY SELECT p_package_id, p_price, v_cost;
 END;
@@ -48,9 +48,9 @@ BEGIN
   ON CONFLICT (package_id) DO UPDATE SET supplier_cost = EXCLUDED.supplier_cost, updated_at = now(), updated_by = auth.uid();
   UPDATE public.packages AS p SET price = v_new_price WHERE p.id = p_package_id;
   IF v_old_price IS DISTINCT FROM v_new_price THEN
-    INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by) VALUES (p_package_id, v_package_name, p_supplier_cost, v_old_price, v_new_price, 7.00, auth.uid());
+    INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by) VALUES (p_package_id, v_package_name, p_supplier_cost, v_old_price, v_new_price, CASE WHEN v_new_price = 0 THEN 0.00 ELSE round(((v_new_price - p_supplier_cost) / v_new_price) * 100, 2) END, auth.uid());
   END IF;
-  RETURN QUERY SELECT p_package_id, v_old_price, v_new_price, p_supplier_cost, 7.00::numeric;
+  RETURN QUERY SELECT p_package_id, v_old_price, v_new_price, p_supplier_cost, CASE WHEN v_new_price = 0 THEN 0.00 ELSE round(((v_new_price - p_supplier_cost) / v_new_price) * 100, 2) END;
 END;
 $function$;
 
@@ -121,7 +121,7 @@ BEGIN
   IF v_supplier_cost IS NOT NULL AND v_old_price IS DISTINCT FROM p_price THEN
     INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by)
     VALUES (v_package_id, v_package_name, v_supplier_cost, v_old_price, p_price,
-      CASE WHEN v_supplier_cost = 0 THEN 0.00 ELSE round(((p_price - v_supplier_cost) / v_supplier_cost) * 100, 2) END, auth.uid());
+      CASE WHEN p_price = 0 THEN 0.00 ELSE round(((p_price - v_supplier_cost) / p_price) * 100, 2) END, auth.uid());
   END IF;
   RETURN QUERY SELECT v_package_id, p_price, v_supplier_cost;
 END;

@@ -83,7 +83,7 @@ BEGIN
     IF v_current_cost IS NOT NULL AND v_old_price IS DISTINCT FROM v_price THEN
       INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by)
       VALUES (v_package_id, v_package_name, v_current_cost, v_old_price, v_price,
-        CASE WHEN v_current_cost = 0 THEN 0.00 ELSE round(((v_price - v_current_cost) / v_current_cost) * 100, 2) END,
+        CASE WHEN v_price = 0 THEN 0.00 ELSE round(((v_price - v_current_cost) / v_price) * 100, 2) END,
         auth.uid());
     END IF;
 

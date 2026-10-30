@@ -590,7 +590,7 @@ function PackagesManager({
           ? Math.round(newSupplierCost * 1.07)
           : parseRupiah(rawPrice);
         if (price === null || price > 99_999_999) {
-          errors.push({ row: line, id, message: 'Isi harga jual, atau isi harga modal supplier agar harga jual dihitung otomatis dengan margin 7%.' });
+          errors.push({ row: line, id, message: 'Isi harga jual, atau isi harga modal supplier agar harga jual dihitung otomatis dengan markup 7%.' });
           return;
         }
         preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: supplierCosts[existing.id] ?? null, ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
@@ -720,7 +720,7 @@ function PackagesManager({
       }
       setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost), price: String(saved.new_price) } : current);
       await onChange();
-      window.alert(`Berhasil. Harga jual diperbarui menjadi ${money(estimatedPrice)} dengan margin 7% dan tercatat di audit harga.`);
+      window.alert(`Berhasil. Harga jual diperbarui menjadi ${money(estimatedPrice)} dengan markup 7% atas modal dan tercatat di audit harga.`);
     } catch (error) {
       window.alert(`Koneksi gagal saat memperbarui modal dan harga jual: ${error instanceof Error ? error.message : 'Kesalahan tidak diketahui.'}`);
     } finally { setSaving(false); }

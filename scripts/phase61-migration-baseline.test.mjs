@@ -26,7 +26,7 @@ test('baseline guide uses schema dump and migration list before repairing histor
   assert.match(guide, /migration repair/);
   assert.match(guide, /Do not run `supabase db reset --linked`/);
   assert.match(guide, /Do not run `supabase db push`/);
-  assert.match(guide, /phase57-repair/);
+  assert.match(guide, /Merge commit: `230b5b2b5c63cadcdff2c0604855d0f7fb389437`/);
 });
 
 test('Phase 61 audit is in the release chain', () => {
