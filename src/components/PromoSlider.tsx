@@ -62,7 +62,6 @@ export default function PromoSlider() {
     setCtaFeedback('');
     setIndex((i) => (i + delta + banners.length) % banners.length);
   };
-  const current = banners[index];
 
   const handleCta = (link: string) => {
     const destination = parsePromoDestination(link);
