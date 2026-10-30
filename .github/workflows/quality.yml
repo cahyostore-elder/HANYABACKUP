@@ -32,3 +32,15 @@ jobs:
         run: node --test scripts/*.test.mjs
       - name: Run release preflight
         run: npm run audit:release
+      - name: Package verified source archive
+        run: |
+          git archive --format=zip --prefix=FITYORATOPUP/ HEAD -- . ':!FIX.zip' ':!PHASE37_BUILD_CHECK_ATTEMPT.txt' > FITYORATOPUP-Phase57-Ready.zip
+          test -s FITYORATOPUP-Phase57-Ready.zip
+          sha256sum FITYORATOPUP-Phase57-Ready.zip
+      - name: Upload verified source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: FITYORATOPUP-Phase57-Ready
+          path: FITYORATOPUP-Phase57-Ready.zip
+          if-no-files-found: error
+          retention-days: 14
