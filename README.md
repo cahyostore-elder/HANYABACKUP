@@ -42,6 +42,10 @@ Aturan penting tetap harus diperiksa di database Supabase, bukan hanya di tampil
 
 Keamanan database menggunakan **Row Level Security (RLS)** dan RPC dengan pemeriksaan peran di sisi server. Jangan mengandalkan pembatasan tombol atau halaman admin di frontend sebagai kontrol keamanan. `vite.config.ts` juga memeriksa konfigurasi Supabase dan menghentikan build jika key berhak tinggi (service-role/secret) ditemukan pada konfigurasi `VITE_*`.
 
+## Phase 57 — keamanan harga modal supplier
+
+Baca [`PHASE57_SUPPLIER_COST_RPC.md`](./PHASE57_SUPPLIER_COST_RPC.md) sebelum menerapkan perubahan database. Migration Phase 57 harus diterapkan pada project Supabase yang benar **sebelum** frontend yang memanggil RPC baru digunakan pada production. Harga modal kosong tetap kosong; tombol simpan modal saja tidak mengubah harga jual.
+
 ## Deploy ke Vercel
 
 Gunakan root repository ini sebagai Root Directory.
