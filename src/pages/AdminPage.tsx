@@ -691,6 +691,7 @@ function PackagesManager({
       window.alert('Harga modal supplier harus berupa angka bulat Rp0–Rp99.999.999, atau kosong bila belum dicatat.');
       return;
     }
+    const expectedSavedSupplierCost = supplierCost ?? (editing.id ? supplierCosts[editing.id] ?? null : null);
     const sortOrder = readSortOrder(editing.sort_order);
     if (sortOrder === null) {
       window.alert('Urutan paket harus berupa bilangan bulat non-negatif.');
@@ -716,7 +717,7 @@ function PackagesManager({
         window.alert(`Paket dan harga gagal disimpan: ${error?.message ?? 'Database tidak mengembalikan hasil. Tidak ada perubahan yang dianggap berhasil.'}`);
         return;
       }
-      if (Number(saved.saved_price) !== price || (saved.saved_supplier_cost == null ? null : Number(saved.saved_supplier_cost)) !== supplierCost) {
+      if (Number(saved.saved_price) !== price || (saved.saved_supplier_cost == null ? null : Number(saved.saved_supplier_cost)) !== expectedSavedSupplierCost) {
         setEditing(null);
         await onChange();
         window.alert('Permintaan tersimpan, tetapi nilai yang dikembalikan tidak cocok dengan input. Katalog sudah dimuat ulang; periksa harga yang tampil dan Supabase sebelum mencoba menyimpan lagi.');
@@ -848,7 +849,7 @@ function PackagesManager({
           <div className="grid grid-cols-2 gap-3">
             <Field label="Harga modal supplier (Rp)">
               <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.supplier_cost ?? '')} onChange={(e) => setEditing({ ...editing, supplier_cost: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga modal supplier dalam rupiah" placeholder="Kosong jika belum ada data" />
-              <p className="mt-1 text-[11px] leading-relaxed text-slate-500">Kosong berarti belum dicatat. Masukkan 0 hanya jika harga modal dari supplier memang Rp0.</p>
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-500">Paket baru: kosong berarti belum dicatat. Paket lama: kosong mempertahankan modal tersimpan. Masukkan 0 hanya jika harga supplier memang Rp0.</p>
             </Field>
             <Field label="Harga jual (Rp)">
               <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.price ?? '')} onChange={(e) => setEditing({ ...editing, price: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga paket dalam rupiah" placeholder="Contoh: 15000" />
