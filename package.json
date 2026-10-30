@@ -30,7 +30,7 @@
     "audit:phase24": "node --test scripts/phase24-ui-refresh.test.mjs",
     "audit:phase25": "node --test scripts/phase25-commerce-experience.test.mjs",
     "audit:phase27": "node --test scripts/phase27-checkout-ui.test.mjs",
-    "audit:release": "node scripts/phase10-release-audit.mjs && node scripts/release-preflight.mjs && node --test scripts/phase29-production-gate.test.mjs && npm run audit:phase30 && npm run audit:phase31 && npm run audit:phase32 && npm run audit:phase33 && npm run audit:phase34 && npm run audit:phase35 && npm run audit:phase36 && npm run audit:phase37 && npm run audit:phase38 && npm run audit:phase39 && npm run audit:phase40 && npm run audit:phase41 && npm run audit:phase42 && npm run audit:phase44 && npm run audit:phase51 && npm run audit:phase52 && npm run audit:phase53 && npm run audit:phase54 && npm run audit:phase55 && npm run audit:phase56 && npm run audit:phase57 && npm run audit:phase58 && npm run audit:phase59 && npm run audit:phase60 && npm run audit:phase61 && npm run audit:phase62 && npm run audit:phase63 && npm run audit:phase56-final",
+    "audit:release": "node scripts/phase10-release-audit.mjs && node scripts/release-preflight.mjs && node --test scripts/phase29-production-gate.test.mjs && npm run audit:phase30 && npm run audit:phase31 && npm run audit:phase32 && npm run audit:phase33 && npm run audit:phase34 && npm run audit:phase35 && npm run audit:phase36 && npm run audit:phase37 && npm run audit:phase38 && npm run audit:phase39 && npm run audit:phase40 && npm run audit:phase41 && npm run audit:phase42 && npm run audit:phase44 && npm run audit:phase51 && npm run audit:phase52 && npm run audit:phase53 && npm run audit:phase54 && npm run audit:phase55 && npm run audit:phase56 && npm run audit:phase57 && npm run audit:phase58 && npm run audit:phase59 && npm run audit:phase60 && npm run audit:phase61 && npm run audit:phase62 && npm run audit:phase63 && npm run audit:phase64 && npm run audit:phase56-final",
     "audit:phase29": "node --test scripts/phase29-production-gate.test.mjs",
     "audit:phase30": "node scripts/phase30-production-check.mjs",
     "audit:phase31": "node --test scripts/phase31-commerce-safety.test.mjs",
@@ -60,7 +60,8 @@
     "audit:phase60": "node --test scripts/phase60-atomic-bulk-pricing.test.mjs",
     "audit:phase61": "node --test scripts/phase61-migration-baseline.test.mjs",
     "audit:phase62": "node --test scripts/phase62-dual-maintenance.test.mjs",
-    "audit:phase63": "node --test scripts/phase63-supplier-cost-samples.test.mjs"
+    "audit:phase63": "node --test scripts/phase63-supplier-cost-samples.test.mjs",
+    "audit:phase64": "node --test scripts/phase64-production-reconciliation.test.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
