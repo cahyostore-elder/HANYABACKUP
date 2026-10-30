@@ -34,7 +34,7 @@ test('batch locks rows, updates supplier cost and sale price together, and write
 test('Author preview and confirmation occur before batch submission', () => {
   assert.ok(admin.includes('Seluruh baris valid akan disimpan dalam satu transaksi'));
   assert.ok(admin.includes('window.confirm('));
-  assert.ok(admin.includes('new Map(savedRows.map((row: any) => [row.package_id, row]))'));
+  assert.ok(admin.includes('new Map<string, SavedBulkRow>(savedRows.map((row) => [row.package_id, row]))'));
   assert.ok(admin.includes('status: \'Perlu diperiksa\''));
 });
 
