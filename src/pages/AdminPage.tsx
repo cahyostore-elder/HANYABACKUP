@@ -297,6 +297,7 @@ export default function AdminPage() {
               onOrderMessageChange={setOrderMaintenanceMessage}
               onToggleGlobal={(enabled) => saveMaintenance(enabled, orderMaintenanceEnabled)}
               onToggleOrders={(enabled) => saveMaintenance(maintenanceEnabled, enabled)}
+              onSave={() => saveMaintenance(maintenanceEnabled, orderMaintenanceEnabled)}
             />
           )}
         </>
@@ -486,7 +487,7 @@ function OrdersTab({ orders, onStatusChange, onDelete }: { orders: Order[]; onSt
 /* ============ SITE MAINTENANCE ============ */
 function MaintenanceTab({
   globalEnabled, globalMessage, orderEnabled, orderMessage, saving, available,
-  onGlobalMessageChange, onOrderMessageChange, onToggleGlobal, onToggleOrders,
+  onGlobalMessageChange, onOrderMessageChange, onToggleGlobal, onToggleOrders, onSave,
 }: {
   globalEnabled: boolean;
   globalMessage: string;
@@ -498,6 +499,7 @@ function MaintenanceTab({
   onOrderMessageChange: (value: string) => void;
   onToggleGlobal: (enabled: boolean) => Promise<void>;
   onToggleOrders: (enabled: boolean) => Promise<void>;
+  onSave: () => Promise<void>;
 }) {
   return (
     <section className="glass rounded-2xl p-6 sm:p-8 max-w-3xl space-y-7">
@@ -542,6 +544,10 @@ function MaintenanceTab({
           <button type="button" disabled={!available || saving || !orderEnabled} onClick={() => { if (window.confirm('Aktifkan kembali pembuatan pesanan pelanggan?')) void onToggleOrders(false); }} className="btn-ghost px-4 py-2.5 rounded-xl disabled:opacity-50">Buka Pemesanan</button>
         </div>
       </div>
+
+      <button type="button" disabled={!available || saving} onClick={() => void onSave()} className="btn-ghost w-full px-4 py-2.5 rounded-xl disabled:opacity-50">
+        {saving ? 'Menyimpan…' : 'Simpan Pesan Maintenance'}
+      </button>
 
       {!available && (
         <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100" role="alert">
