@@ -18,6 +18,14 @@ test('input is accessible and disables repeated lookup while loading', () => {
   assert.match(source, /aria-describedby="order-code-help"/);
   assert.match(source, /result\.kind === 'loading' \|\| !code\.trim\(\)/);
 });
+test('refresh failure preserves the previously loaded order and prevents concurrent lookups', () => {
+  assert.match(source, /const checkingLock = useRef\(false\)/);
+  assert.match(source, /if \(keepShowingFoundOrder\) setLookupError\(message\)/);
+  assert.match(source, /checkingLock\.current = false/);
+  assert.match(source, /disabled=\{isChecking\}/);
+  assert.match(source, /Data status terakhir tetap ditampilkan/);
+});
+
 test('status details include explicit messaging for each known state', () => {
   for (const status of ['pending', 'processing', 'success']) assert.ok(source.includes(`result.order.o_status === '${status}'`));
   assert.match(source, /Pesanan ditandai gagal/);
