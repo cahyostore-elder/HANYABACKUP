@@ -96,11 +96,11 @@ function Shell() {
         orderEnabled: Boolean(data.order_maintenance_enabled),
         orderMessage: String(data.order_maintenance_message || 'Pemesanan sedang dihentikan sementara. Silakan coba kembali nanti.'),
       });
-      if (!channel) {
-        channel = supabase.channel('site-maintenance-status').on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => { void loadMaintenance(); }).subscribe();
-        refreshTimer = window.setInterval(() => { void loadMaintenance(); }, 30000);
-      }
     };
+    // Keep retrying even after a read failure, so an Author can recover the app
+    // by repairing settings or reopening the site without a manual page reload.
+    channel = supabase.channel('site-maintenance-status').on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => { void loadMaintenance(); }).subscribe();
+    refreshTimer = window.setInterval(() => { void loadMaintenance(); }, 30000);
     void loadMaintenance();
     return () => { active = false; if (refreshTimer !== undefined) window.clearInterval(refreshTimer); if (channel) void supabase.removeChannel(channel); };
   }, []);
