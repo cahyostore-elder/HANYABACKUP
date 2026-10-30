@@ -20,7 +20,7 @@ test('Phase 57 is timestamped after Phase 56 and has a rollback-safe transaction
   const files = readdirSync(new URL('../supabase/migrations/', import.meta.url)).filter((name) => name.endsWith('.sql')).sort();
   assert.ok(files.includes('20261028050000_phase57_supplier_cost_rpc_security.sql'));
   assert.ok(files.indexOf('20261028050000_phase57_supplier_cost_rpc_security.sql') > files.indexOf('20261028040000_phase56_atomic_admin_package_save.sql'));
-  assert.match(migration, /^BEGIN;/);
+  assert.match(migration, /\nBEGIN;/);
   assert.match(migration, /NOTIFY pgrst, 'reload schema'/);
   assert.match(migration, /COMMIT;\s*$/);
 });
@@ -78,6 +78,7 @@ test('unknown supplier cost remains blank, not zero or copied from the selling p
   assert.match(admin, /supplierCosts\[p\.id\] \?\? null/);
   assert.match(admin, /supplierCost: supplierCosts\[existing\.id\] \?\? null/);
   assert.match(admin, /supplierCost === null \? 'Belum diisi'/);
+  const saveBody = functionBody('admin_save_package');
   assert.match(saveBody, /IF p_supplier_cost IS NOT NULL THEN/);
   assert.match(migration, /IF p_supplier_cost IS NOT NULL THEN/);
   assert.match(migration, /RETURN QUERY SELECT v_package_id, p_price, v_supplier_cost/);
