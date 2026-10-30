@@ -19,6 +19,15 @@ export default function Navbar() {
 
   useEffect(() => setMobileOpen(false), [path]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [mobileOpen]);
+
   const isActive = (p: string) => (p === '/' ? path === '/' : path.startsWith(p));
 
   const navItems = [
@@ -49,12 +58,14 @@ export default function Navbar() {
           </button>
 
           {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-1">
+          <nav aria-label="Navigasi utama" className="hidden lg:flex items-center gap-1">
             {navItems.map((item) => {
               const Icon = item.icon;
               return (
                 <button
                   key={item.to}
+                  type="button"
+                  aria-current={isActive(item.to) ? "page" : undefined}
                   onClick={() => go(item.to)}
                   className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${
                     isActive(item.to)
@@ -150,7 +161,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div id="fityora-mobile-navigation" className="lg:hidden glass border-t border-white/5 animate-fade-in">
+        <nav id="fityora-mobile-navigation" aria-label="Navigasi mobile" className="lg:hidden glass border-t border-white/5 animate-fade-in">
           <div className="px-4 py-4 space-y-1">
             <button
               onClick={() => go('/')}
@@ -235,7 +246,7 @@ export default function Navbar() {
               </>
             )}
           </div>
-        </div>
+        </nav>
       )}
     </header>
   );

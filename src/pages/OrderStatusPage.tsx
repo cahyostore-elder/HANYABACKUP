@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { ArrowLeft, Search, Hash, Loader2, Package as PackageIcon, Wallet, Calendar, MessageCircle, RefreshCw } from 'lucide-react';
 import { supabase, type OrderLookup } from '@/lib/supabase';
 import { useRoute } from '@/lib/router';
@@ -24,34 +24,51 @@ export default function OrderStatusPage() {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<Result>({ kind: 'idle' });
   const [lastChecked, setLastChecked] = useState<string | null>(null);
+  const [isChecking, setIsChecking] = useState(false);
+  const [lookupError, setLookupError] = useState('');
+  const checkingLock = useRef(false);
 
   const lookup = async (requestedCode = code) => {
     const trimmed = requestedCode.trim().toUpperCase();
-    if (!trimmed || result.kind === 'loading') return;
+    if (!trimmed || checkingLock.current) return;
     if (trimmed.length < 4 || !/^[A-Z0-9-]+$/.test(trimmed)) {
       setResult({ kind: 'error', message: 'Format kode order tidak valid. Gunakan kode order dari halaman checkout.' });
       return;
     }
-    setResult({ kind: 'loading' });
+    const keepShowingFoundOrder = result.kind === 'found';
+    if (!keepShowingFoundOrder) setResult({ kind: 'loading' });
+    setLookupError('');
+    checkingLock.current = true;
+    setIsChecking(true);
     try {
       const { data, error } = await supabase.rpc('lookup_order', { code: trimmed });
       if (error) {
-        setResult({ kind: 'error', message: 'Status order belum dapat diperiksa. Coba lagi beberapa saat.' });
+        const message = 'Status order belum dapat diperiksa. Coba lagi beberapa saat.';
+        if (keepShowingFoundOrder) setLookupError(message);
+        else setResult({ kind: 'error', message });
         return;
       }
       if (!data || (Array.isArray(data) && data.length === 0)) {
+        setLookupError('');
         setResult({ kind: 'notfound' });
         return;
       }
       const order = Array.isArray(data) ? data[0] : data;
       if (!order?.o_code) {
+        setLookupError('');
         setResult({ kind: 'notfound' });
         return;
       }
+      setLookupError('');
       setResult({ kind: 'found', order });
       setLastChecked(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
     } catch {
-      setResult({ kind: 'error', message: 'Koneksi bermasalah. Periksa internet lalu coba lagi.' });
+      const message = 'Koneksi bermasalah. Periksa internet lalu coba lagi.';
+      if (keepShowingFoundOrder) setLookupError(message);
+      else setResult({ kind: 'error', message });
+    } finally {
+      checkingLock.current = false;
+      setIsChecking(false);
     }
   };
 
@@ -82,7 +99,8 @@ export default function OrderStatusPage() {
             <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
             <input
               value={code}
-              onChange={(e) => { setCode(e.target.value.toUpperCase()); if (result.kind !== 'idle') setResult({ kind: 'idle' }); }}
+              disabled={isChecking}
+              onChange={(e) => { setCode(e.target.value.toUpperCase()); setLookupError(''); if (result.kind !== 'idle') setResult({ kind: 'idle' }); }}
               onKeyDown={(e) => e.key === 'Enter' && lookup()}
               aria-label="Kode order"
               aria-describedby="order-code-help"
@@ -93,11 +111,11 @@ export default function OrderStatusPage() {
             <p id="order-code-help" className="sr-only">Masukkan kode order dengan huruf, angka, atau tanda hubung.</p>
           </div>
           <button
-            onClick={lookup}
-            disabled={result.kind === 'loading' || !code.trim()}
+            onClick={() => void lookup()}
+            disabled={isChecking || result.kind === 'loading' || !code.trim()}
             className="btn-primary px-5 py-3 rounded-xl text-sm flex items-center gap-2 justify-center disabled:opacity-50"
           >
-            {result.kind === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+            {isChecking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
             Cek
           </button>
         </div>
@@ -128,10 +146,11 @@ export default function OrderStatusPage() {
               </div>
             </div>
 
+            {lookupError && <p role="status" className="mt-3 rounded-lg border border-amber-400/25 bg-amber-500/10 px-3 py-2 text-xs text-amber-100">{lookupError} Data status terakhir tetap ditampilkan; periksa ulang koneksi sebelum mengambil keputusan.</p>}
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
               <span role="status">{lastChecked ? `Diperiksa pukul ${lastChecked}` : 'Status berhasil dimuat'}</span>
-              <button type="button" onClick={() => lookup(result.order.o_code)} disabled={result.kind === 'loading'} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 hover:border-amber-400/40 hover:text-amber-200 disabled:opacity-50">
-                <RefreshCw className={`w-3.5 h-3.5 ${result.kind === 'loading' ? 'animate-spin' : ''}`} /> Perbarui status
+              <button type="button" onClick={() => void lookup(result.order.o_code)} disabled={isChecking} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 hover:border-amber-400/40 hover:text-amber-200 disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${isChecking ? 'animate-spin' : ''}`} /> Perbarui status
               </button>
             </div>
             <p className="mt-3 text-sm text-slate-300">{result.order.o_status === 'pending' ? 'Pesanan menunggu konfirmasi pembayaran. Status ini belum berarti transaksi berhasil.' : result.order.o_status === 'processing' ? 'Pesanan sedang diproses. Tunggu pembaruan status sebelum menganggap transaksi selesai.' : result.order.o_status === 'success' ? 'Pesanan telah ditandai berhasil. Jika produk belum diterima, hubungi admin.' : 'Pesanan ditandai gagal. Hubungi admin untuk pemeriksaan lebih lanjut.'}</p>

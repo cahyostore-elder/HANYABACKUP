@@ -32,7 +32,7 @@ test('package metadata and both prices use one atomic RPC, not sequential writes
   assert.match(admin, /supabase\.rpc\('admin_save_package'/);
   assert.match(admin, /saved\.saved_package_id/);
   assert.match(admin, /Number\(saved\.saved_price\) !== price/);
-  assert.match(admin, /Number\(saved\.saved_supplier_cost\) !== supplierCost/);
+  assert.match(admin, /saved\.saved_supplier_cost == null \? null : Number\(saved\.saved_supplier_cost\)/);
   const packageSave = admin.slice(admin.indexOf('function PackagesManager'), admin.indexOf('function BrandsManager'));
   assert.doesNotMatch(packageSave, /supabase\.from\('packages'\)\.(?:insert|update)/);
 });

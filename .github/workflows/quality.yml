@@ -6,10 +6,10 @@ on:
     branches: [main, master]
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: quality-${{ github.ref }}
+  group: quality-${{ github.ref }}-${{ github.sha }}
   cancel-in-progress: true
 
 jobs:
@@ -19,16 +19,51 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
+      - name: Align TypeScript ESLint tooling with current ESLint 9
+        run: npm update --package-lock-only --ignore-scripts typescript-eslint
+      - name: Remediate fixable dependency advisories in lockfile
+        run: npm audit fix --package-lock-only --ignore-scripts
       - name: Install locked dependencies
         run: npm ci
+      - name: Inspect dependency advisories
+        run: |
+          npm audit --json > "$RUNNER_TEMP/npm-audit.json" || true
+          node --input-type=commonjs -e "const fs=require('node:fs'); const a=JSON.parse(fs.readFileSync(process.env.RUNNER_TEMP + '/npm-audit.json','utf8')); const rows=Object.values(a.vulnerabilities || {}).map(v=>({name:v.name,severity:v.severity,isDirect:v.isDirect,range:v.range,fixAvailable:v.fixAvailable,via:(v.via||[]).map(x=>typeof x==='string'?x:{name:x.name,title:x.title,url:x.url,range:x.range})})); console.log(JSON.stringify({metadata:a.metadata?.vulnerabilities,advisories:rows},null,2));"
+          npm audit --audit-level=low
       - name: Typecheck, lint, and production build
         run: npm run check
       - name: Run all regression tests
         run: node --test scripts/*.test.mjs
       - name: Run release preflight
         run: npm run audit:release
+      - name: Commit patched lockfile to the PR branch
+        if: success() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        run: |
+          if ! git diff --quiet -- package-lock.json; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add package-lock.json
+            git commit -m "Fix npm dependency advisories in lockfile"
+            git push origin "HEAD:$GITHUB_HEAD_REF"
+          else
+            echo "package-lock.json is already up to date"
+          fi
+      - name: Package verified source archive
+        run: |
+          git archive --format=zip --prefix=FITYORATOPUP/ HEAD -- . ':!FIX.zip' ':!PHASE37_BUILD_CHECK_ATTEMPT.txt' > FITYORATOPUP-Phase57-Ready.zip
+          test -s FITYORATOPUP-Phase57-Ready.zip
+          sha256sum FITYORATOPUP-Phase57-Ready.zip
+      - name: Upload verified source archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: FITYORATOPUP-Phase57-Ready
+          path: FITYORATOPUP-Phase57-Ready.zip
+          if-no-files-found: error
+          retention-days: 14

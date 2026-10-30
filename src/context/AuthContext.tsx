@@ -19,7 +19,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   // Ignore stale profile responses when the account changes or signs out mid-request.
   const profileRequestId = useRef(0);
 
-  const loadProfile = useCallback(async (userId: string, requestId: number) => {
+  const loadProfile = useCallback(async (userId: string, requestId: number, initialDisplayName = '') => {
     try {
       const { data, error } = await supabase
         .from('profiles')
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Create a basic profile only when the lookup succeeded and no row exists.
       const { data: created, error: createError } = await supabase
         .from('profiles')
-        .insert({ id: userId, display_name: '' })
+        .insert({ id: userId, display_name: initialDisplayName.trim().slice(0, 40) })
         .select('*')
         .maybeSingle();
 
@@ -51,11 +51,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const invalidateProfileRequest = useCallback(() => {
+    profileRequestId.current += 1;
+  }, []);
+
   const refreshProfile = useCallback(async () => {
     const userId = session?.user?.id;
     if (!userId) return;
     const requestId = ++profileRequestId.current;
-    await loadProfile(userId, requestId);
+    await loadProfile(userId, requestId, String(session?.user?.user_metadata?.display_name ?? ''));
   }, [loadProfile, session]);
 
   useEffect(() => {
@@ -77,7 +81,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       const run = () => {
         if (!mounted || requestId !== profileRequestId.current) return;
-        void loadProfile(userId, requestId).finally(() => {
+        const initialDisplayName = String(nextSession?.user?.user_metadata?.display_name ?? '');
+        void loadProfile(userId, requestId, initialDisplayName).finally(() => {
           if (mounted && requestId === profileRequestId.current) setLoading(false);
         });
       };
@@ -120,11 +125,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     return () => {
       mounted = false;
-      ++profileRequestId.current;
+      invalidateProfileRequest();
       if (authTimer !== undefined) window.clearTimeout(authTimer);
       sub.subscription.unsubscribe();
     };
-  }, [loadProfile]);
+  }, [loadProfile, invalidateProfileRequest]);
 
   const signOut = async () => {
     try {

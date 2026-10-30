@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Mail, Lock, LogIn, Sparkles, ArrowRight } from 'lucide-react';
+import { Mail, Lock, LogIn, Sparkles, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useRoute } from '@/lib/router';
@@ -9,22 +9,43 @@ export default function LoginPage() {
   const { refreshProfile } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    setError('');
-    setLoading(true);
-    const { error: err } = await supabase.auth.signInWithPassword({ email, password });
-    if (err) {
-      setError(err.message);
-      setLoading(false);
+    if (loading) return;
+    const cleanEmail = email.trim().toLowerCase();
+    if (!cleanEmail || !password) {
+      setError('Email dan password wajib diisi.');
       return;
     }
-    await refreshProfile();
-    setLoading(false);
-    navigate('/dashboard');
+    setError('');
+    setLoading(true);
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({
+        email: cleanEmail,
+        password,
+      });
+      if (authError) {
+        const message = authError.message.toLowerCase();
+        setError(message.includes('invalid login credentials')
+          ? 'Email atau password tidak cocok.'
+          : message.includes('email not confirmed')
+            ? 'Email belum diverifikasi. Periksa kotak masuk email terlebih dahulu.'
+            : message.includes('too many requests')
+              ? 'Terlalu banyak percobaan masuk. Coba lagi beberapa saat.'
+              : 'Login belum berhasil. Periksa data akun dan coba lagi.');
+        return;
+      }
+      await refreshProfile();
+      navigate('/dashboard');
+    } catch {
+      setError('Koneksi ke layanan akun bermasalah. Periksa internet lalu coba lagi.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,12 +63,17 @@ export default function LoginPage() {
 
         <form onSubmit={submit} className="glass rounded-2xl p-6 space-y-4 animate-fade-up delay-100">
           <div>
-            <label className="text-xs text-slate-400 mb-1.5 block">Email</label>
+            <label htmlFor="login-email" className="text-xs text-slate-400 mb-1.5 block">Email</label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
+                id="login-email"
                 type="email"
                 required
+                maxLength={254}
+                autoComplete="email"
+                autoCapitalize="none"
+                disabled={loading}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="kamu@email.com"
@@ -56,21 +82,27 @@ export default function LoginPage() {
             </div>
           </div>
           <div>
-            <label className="text-xs text-slate-400 mb-1.5 block">Password</label>
+            <label htmlFor="login-password" className="text-xs text-slate-400 mb-1.5 block">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input
-                type="password"
+                id="login-password"
+                type={showPassword ? "text" : "password"}
                 required
+                autoComplete="current-password"
+                disabled={loading}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 rounded-xl glass-soft text-sm focus:outline-none focus:border-amber-400/40"
+                className="w-full pl-10 pr-12 py-3 rounded-xl glass-soft text-sm focus:outline-none focus:border-amber-400/40 disabled:opacity-60"
               />
+              <button type="button" onClick={() => setShowPassword((visible) => !visible)} disabled={loading} aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"} aria-pressed={showPassword} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-amber-300 disabled:opacity-40">
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 
-          {error && <p className="text-rose-400 text-xs">{error}</p>}
+          {error && <p role="alert" aria-live="polite" className="text-rose-300 text-xs">{error}</p>}
 
           <button
             type="submit"

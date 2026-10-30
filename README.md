@@ -40,6 +40,12 @@ Harga modal supplier berbeda dari harga jual. Mengubah modal tidak boleh diam-di
 
 Aturan penting tetap harus diperiksa di database Supabase, bukan hanya di tampilan website. File migrasi SQL di repository belum berarti migrasi itu sudah dijalankan di database live.
 
+Keamanan database menggunakan **Row Level Security (RLS)** dan RPC dengan pemeriksaan peran di sisi server. Jangan mengandalkan pembatasan tombol atau halaman admin di frontend sebagai kontrol keamanan. `vite.config.ts` juga memeriksa konfigurasi Supabase dan menghentikan build jika key berhak tinggi (service-role/secret) ditemukan pada konfigurasi `VITE_*`.
+
+## Phase 57 — keamanan harga modal supplier
+
+Baca [`PHASE57_SUPPLIER_COST_RPC.md`](./PHASE57_SUPPLIER_COST_RPC.md) sebelum menerapkan perubahan database. Terapkan Phase 57A, deploy dan verifikasi frontend RPC, baru kemudian terapkan Phase 57B untuk mencabut akses tabel langsung. Jangan jalankan Phase 57B lebih awal karena frontend production lama mungkin masih membaca tabel secara langsung. Harga modal kosong tetap kosong; tombol simpan modal saja tidak mengubah harga jual.
+
 ## Deploy ke Vercel
 
 Gunakan root repository ini sebagai Root Directory.

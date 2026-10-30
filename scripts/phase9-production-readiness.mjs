@@ -1,11 +1,25 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checks = [];
 const check = (name, ok, detail = '') => checks.push({ name, ok: Boolean(ok), detail });
 const read = (file) => fs.readFileSync(path.join(root, file), 'utf8');
+const dependencyFolderIsSafe = (() => {
+  if (!/^node_modules$/m.test(read('.gitignore'))) return false;
+  try {
+    const tracked = execFileSync('git', ['ls-files', '--', 'node_modules'], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return tracked.trim().length === 0;
+  } catch {
+    return !fs.existsSync(path.join(root, 'node_modules'));
+  }
+})();
 
 for (const file of ['index.html', 'package.json', 'vercel.json', '.env.example', 'src/lib/supabase.ts']) {
   check(`required file: ${file}`, fs.existsSync(path.join(root, file)));
@@ -26,7 +40,7 @@ const client = read('src/lib/supabase.ts');
 check('Supabase client detects the example key placeholder', /PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE/.test(client) && /PASTE_YOUR_SUPABASE_ANON_KEY_HERE/.test(client));
 check('Supabase config does not use service-role key name', !/SUPABASE_SERVICE_ROLE_KEY/.test(client));
 check('Placeholder guard has a safe missing-project fallback', /missing-project\.supabase\.co/.test(client) && /missing-public-supabase-key/.test(client));
-check('No dependency folder bundled', !fs.existsSync(path.join(root, 'node_modules')));
+check('node_modules is ignored and no dependency files are committed', dependencyFolderIsSafe);
 
 let failed = 0;
 for (const c of checks) {
