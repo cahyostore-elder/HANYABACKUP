@@ -84,7 +84,10 @@ export default function AdminPage() {
       if (!b.error) setBrands((b.data as Brand[]) ?? []);
       if (!c.error) setCategories((c.data as TopupCategory[]) ?? []);
       if (!p.error) setPackages((p.data as Package[]) ?? []);
-      if (!costs.error) setSupplierCosts(Object.fromEntries((costs.data ?? []).map((row) => [String(row.package_id), Number(row.supplier_cost)])));
+      if (!costs.error) {
+        const supplierCostRows = (costs.data ?? []) as Array<{ package_id: string; supplier_cost: number | string }>;
+        setSupplierCosts(Object.fromEntries(supplierCostRows.map((row) => [String(row.package_id), Number(row.supplier_cost)])));
+      }
       if (!pr.error) setPromos((pr.data as PromoBanner[]) ?? []);
       if (!t.error) setTestimonials((t.data as Testimonial[]) ?? []);
       if (!f.error) setFaqs((f.data as Faq[]) ?? []);
@@ -657,8 +660,8 @@ function PackagesManager({
         window.alert(`Harga modal gagal disimpan: ${error?.message ?? 'Hasil database tidak cocok dengan input.'}`);
         return;
       }
-      setSupplierCosts((current) => ({ ...current, [packageId]: Number(saved.supplier_cost) }));
       setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost) } : current);
+      await onChange();
       window.alert('Harga modal supplier berhasil disimpan. Harga jual paket tetap.');
     } catch (error) {
       window.alert(`Koneksi gagal saat menyimpan harga modal: ${error instanceof Error ? error.message : 'Kesalahan tidak diketahui.'}`);
