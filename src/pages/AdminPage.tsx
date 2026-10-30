@@ -69,7 +69,7 @@ export default function AdminPage() {
         supabase.from('testimonials').select('*').order('sort_order'),
         supabase.from('faqs').select('*').order('sort_order'),
         supabase.from('site_settings').select('maintenance_enabled, maintenance_message').eq('id', true).maybeSingle(),
-        supabase.from('package_supplier_costs').select('package_id, supplier_cost'),
+        supabase.rpc('admin_list_package_supplier_costs'),
       ]);
       // Maintenance settings are an optional Phase 44 database feature. Do not let a missing
       // site_settings table block the rest of the admin dashboard from loading.
@@ -78,13 +78,13 @@ export default function AdminPage() {
       const costsError = costs.error;
       if (firstError || costsError) {
         const detail = firstError?.message ?? costsError?.message ?? 'Kesalahan tidak diketahui.';
-        window.alert(`Sebagian data admin gagal dimuat: ${detail}${costsError ? '\n\nPastikan migrasi Phase 52 untuk harga modal supplier sudah diterapkan.' : ''}`);
+        window.alert(`Sebagian data admin gagal dimuat: ${detail}${costsError ? '\n\nPastikan migrasi Phase 52 dan Phase 57 untuk RPC harga modal sudah diterapkan.' : ''}`);
       }
       if (!o.error) setOrders((o.data as Order[]) ?? []);
       if (!b.error) setBrands((b.data as Brand[]) ?? []);
       if (!c.error) setCategories((c.data as TopupCategory[]) ?? []);
       if (!p.error) setPackages((p.data as Package[]) ?? []);
-      if (!costs.error) setSupplierCosts(Object.fromEntries((costs.data ?? []).map((row) => [String(row.package_id), Number(row.supplier_cost ?? 0)])));
+      if (!costs.error) setSupplierCosts(Object.fromEntries((costs.data ?? []).map((row) => [String(row.package_id), Number(row.supplier_cost)])));
       if (!pr.error) setPromos((pr.data as PromoBanner[]) ?? []);
       if (!t.error) setTestimonials((t.data as Testimonial[]) ?? []);
       if (!f.error) setFaqs((f.data as Faq[]) ?? []);
@@ -527,7 +527,7 @@ function PackagesManager({
   const [filterBrand, setFilterBrand] = useState<string>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [adjustment, setAdjustment] = useState('10');
-  const [bulkPreview, setBulkPreview] = useState<Array<{ id: string; name: string; oldPrice: number; newPrice: number; supplierCost: number; newSupplierCost?: number; source: 'adjust' | 'import' }>>([]);
+  const [bulkPreview, setBulkPreview] = useState<Array<{ id: string; name: string; oldPrice: number; newPrice: number; supplierCost: number | null; newSupplierCost?: number; source: 'adjust' | 'import' }>>([]);
   const [bulkErrors, setBulkErrors] = useState<Array<{ row: number; id: string; message: string }>>([]);
   const [bulkMode, setBulkMode] = useState<'adjust' | 'import' | null>(null);
   const [bulkBusy, setBulkBusy] = useState(false);
@@ -549,7 +549,7 @@ function PackagesManager({
     const amount = parseRupiah(adjustment);
     if (selectedPackages.length === 0) { window.alert('Pilih minimal satu produk terlebih dahulu.'); return; }
     if (amount === null || amount > 99_999_999) { window.alert('Nominal perubahan harus angka rupiah bulat antara Rp0 dan Rp99.999.999.'); return; }
-    const preview = selectedPackages.map((p) => ({ id: p.id, name: `${brandName(p.brand_id)} — ${p.name}`, oldPrice: Number(p.price), newPrice: Number(p.price) + amount, supplierCost: Number(supplierCosts[p.id] ?? 0), source: 'adjust' as const }));
+    const preview = selectedPackages.map((p) => ({ id: p.id, name: `${brandName(p.brand_id)} — ${p.name}`, oldPrice: Number(p.price), newPrice: Number(p.price) + amount, supplierCost: supplierCosts[p.id] ?? null, source: 'adjust' as const }));
     if (preview.some((x) => !Number.isSafeInteger(x.oldPrice) || x.oldPrice < 0 || x.newPrice > 99_999_999)) { window.alert('Ada harga yang tidak valid atau melewati batas maksimum.'); return; }
     setBulkErrors([]); setBulkReport([]); setBulkMode('adjust'); setBulkPreview(preview);
   };
@@ -579,7 +579,7 @@ function PackagesManager({
           if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) { errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' }); return; }
           newSupplierCost = parsedSupplierCost;
         }
-        preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: Number(supplierCosts[existing.id] ?? 0), ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
+        preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: supplierCosts[existing.id] ?? null, ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
       });
       setBulkErrors(errors); setBulkReport([]); setBulkMode('import'); setBulkPreview(preview);
       if (!preview.length) window.alert(`Tidak ada baris valid untuk dipratinjau. ${errors.length} baris bermasalah.`);
@@ -637,6 +637,36 @@ function PackagesManager({
 
   const exportReport = () => downloadCsv(bulkReport.map((r) => ({ id: r.id, package_name: r.name, status: r.status, message: r.message })), 'fityorastore-laporan-harga-massal.csv', ['id', 'package_name', 'status', 'message']);
 
+  const saveSupplierCostOnly = async () => {
+    if (saving || !editing?.id) return;
+    const packageId = editing.id;
+    const supplierCost = parseRupiah(String(editing.supplier_cost ?? '').trim());
+    if (supplierCost === null || supplierCost > 99_999_999) {
+      window.alert('Masukkan harga modal supplier aktual berupa angka bulat Rp0–Rp99.999.999.');
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.rpc('admin_upsert_package_supplier_cost', {
+        p_package_id: packageId,
+        p_supplier_cost: supplierCost,
+      });
+      const saved = Array.isArray(data) ? data[0] : data;
+      if (error || !saved || saved.package_id !== packageId || Number(saved.supplier_cost) !== supplierCost) {
+        window.alert(`Harga modal gagal disimpan: ${error?.message ?? 'Hasil database tidak cocok dengan input.'}`);
+        return;
+      }
+      setSupplierCosts((current) => ({ ...current, [packageId]: Number(saved.supplier_cost) }));
+      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost) } : current);
+      window.alert('Harga modal supplier berhasil disimpan. Harga jual paket tetap.');
+    } catch (error) {
+      window.alert(`Koneksi gagal saat menyimpan harga modal: ${error instanceof Error ? error.message : 'Kesalahan tidak diketahui.'}`);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   const save = async () => {
     if (saving) return;
     if (!editing || !editing.brand_id || !editing.name?.trim()) {
@@ -652,9 +682,10 @@ function PackagesManager({
       window.alert('Harga paket harus berupa angka bulat Rp0–Rp99.999.999.');
       return;
     }
-    const supplierCost = parseRupiah(String(editing.supplier_cost ?? '0').trim());
-    if (supplierCost === null) {
-      window.alert('Harga modal supplier harus berupa angka bulat Rp0–Rp99.999.999.');
+    const supplierCostInput = String(editing.supplier_cost ?? '').trim();
+    const supplierCost = supplierCostInput === '' ? null : parseRupiah(supplierCostInput);
+    if (supplierCostInput !== '' && (supplierCost === null || supplierCost > 99_999_999)) {
+      window.alert('Harga modal supplier harus berupa angka bulat Rp0–Rp99.999.999, atau kosong bila belum dicatat.');
       return;
     }
     const sortOrder = readSortOrder(editing.sort_order);
@@ -665,8 +696,8 @@ function PackagesManager({
 
     setSaving(true);
     try {
-      // Phase 56 uses one SECURITY DEFINER RPC so metadata, selling price and supplier cost
-      // either commit together or fail together; a package is never left at Rp0 after partial save.
+      // Phase 57 keeps package metadata and selling price atomic. A blank supplier cost
+      // remains unrecorded; it is never converted to Rp0 or copied from the selling price.
       const { data, error } = await supabase.rpc('admin_save_package', {
         p_package_id: editing.id ?? null,
         p_brand_id: editing.brand_id,
@@ -682,7 +713,7 @@ function PackagesManager({
         window.alert(`Paket dan harga gagal disimpan: ${error?.message ?? 'Database tidak mengembalikan hasil. Tidak ada perubahan yang dianggap berhasil.'}`);
         return;
       }
-      if (Number(saved.saved_price) !== price || Number(saved.saved_supplier_cost) !== supplierCost) {
+      if (Number(saved.saved_price) !== price || (saved.saved_supplier_cost == null ? null : Number(saved.saved_supplier_cost)) !== supplierCost) {
         setEditing(null);
         await onChange();
         window.alert('Permintaan tersimpan, tetapi nilai yang dikembalikan tidak cocok dengan input. Katalog sudah dimuat ulang; periksa harga yang tampil dan Supabase sebelum mencoba menyimpan lagi.');
@@ -741,7 +772,7 @@ function PackagesManager({
           <span className="text-sm text-slate-400">{filtered.length} paket</span>
         </div>
         <button
-          onClick={() => setEditing({ name: '', price: 0, supplier_cost: 0, sort_order: 0, featured: false, brand_id: brands[0]?.id })}
+          onClick={() => setEditing({ name: '', price: 0, supplier_cost: '', sort_order: 0, featured: false, brand_id: brands[0]?.id })}
           className="btn-primary px-4 py-2 rounded-lg text-sm flex items-center gap-1.5 justify-center"
         >
           <Plus className="w-4 h-4" /> Tambah Paket
@@ -775,7 +806,7 @@ function PackagesManager({
             </div>
             <div className="text-right shrink-0"><div className="text-sm font-semibold text-amber-300">{formatPrice(p.price)}</div><div className="text-[10px] text-slate-500">Modal {formatPrice(Number(supplierCosts[p.id] ?? 0))} · Margin {supplierCosts[p.id] == null ? 'belum diisi' : formatPrice(Number(p.price) - Number(supplierCosts[p.id]))}</div></div>
             <div className="flex gap-1 shrink-0">
-              <button aria-label={`Edit paket ${p.name}`} onClick={() => setEditing({ ...p, supplier_cost: supplierCosts[p.id] ?? 0 })} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-amber-300 transition"><Pencil className="w-4 h-4" /></button>
+              <button aria-label={`Edit paket ${p.name}`} onClick={() => setEditing({ ...p, supplier_cost: supplierCosts[p.id] ?? '' })} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-amber-300 transition"><Pencil className="w-4 h-4" /></button>
               <button aria-label={`Hapus paket ${p.name}`} onClick={() => remove(p.id)} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-rose-300 transition"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
@@ -787,7 +818,7 @@ function PackagesManager({
         <Modal title={bulkMode === 'adjust' ? 'Pratinjau Perubahan Harga' : 'Pratinjau Impor Harga CSV'} onClose={() => { if (!bulkBusy) { setBulkMode(null); setBulkPreview([]); } }}>
           <div className="text-sm text-slate-300 space-y-1"><p><strong>{bulkPreview.length}</strong> produk valid untuk diproses.</p><p><strong>{bulkErrors.length}</strong> baris bermasalah akan dilewati dan masuk laporan.</p><p className="text-amber-200">Belum ada harga yang berubah. Perubahan hanya diterapkan setelah tombol konfirmasi.</p></div>
           {bulkErrors.length > 0 && <div className="max-h-32 overflow-auto rounded-lg border border-rose-400/20 p-3 text-xs text-rose-200 space-y-1">{bulkErrors.slice(0, 30).map((e, i) => <p key={`${e.row}-${i}`}>Baris {e.row} ({e.id || 'tanpa ID'}): {e.message}</p>)}{bulkErrors.length > 30 && <p>Dan {bulkErrors.length - 30} baris lain.</p>}</div>}
-          <div className="max-h-64 overflow-auto rounded-lg border border-white/10"><table className="w-full text-xs"><thead className="sticky top-0 bg-slate-900"><tr><th className="p-2 text-left">Produk</th><th className="p-2 text-right">Harga lama</th><th className="p-2 text-right">Harga baru</th><th className="p-2 text-right">Modal</th></tr></thead><tbody>{bulkPreview.map((r) => <tr key={r.id} className="border-t border-white/5"><td className="p-2">{r.name}</td><td className="p-2 text-right">{money(r.oldPrice)}</td><td className="p-2 text-right text-amber-200">{money(r.newPrice)}</td><td className="p-2 text-right">{money(r.newSupplierCost ?? r.supplierCost)}</td></tr>)}</tbody></table></div>
+          <div className="max-h-64 overflow-auto rounded-lg border border-white/10"><table className="w-full text-xs"><thead className="sticky top-0 bg-slate-900"><tr><th className="p-2 text-left">Produk</th><th className="p-2 text-right">Harga lama</th><th className="p-2 text-right">Harga baru</th><th className="p-2 text-right">Modal</th></tr></thead><tbody>{bulkPreview.map((r) => <tr key={r.id} className="border-t border-white/5"><td className="p-2">{r.name}</td><td className="p-2 text-right">{money(r.oldPrice)}</td><td className="p-2 text-right text-amber-200">{money(r.newPrice)}</td><td className="p-2 text-right">{r.newSupplierCost !== undefined ? money(r.newSupplierCost) : r.supplierCost === null ? 'Belum diisi' : money(r.supplierCost)}</td></tr>)}</tbody></table></div>
           {!bulkBusy && bulkReport.length === 0 && <div className="flex gap-2"><button onClick={() => { setBulkMode(null); setBulkPreview([]); }} className="btn-ghost px-4 py-2 rounded-lg flex-1">Batal</button><button onClick={() => void applyBulk()} disabled={!bulkPreview.length} className="btn-primary px-4 py-2 rounded-lg flex-1 disabled:opacity-50">Konfirmasi & Simpan</button></div>}
           {bulkBusy && <p className="text-sm text-amber-200">Menyimpan perubahan dan memeriksa hasil…</p>}
           {bulkReport.length > 0 && <div className="space-y-2"><p className="font-semibold">Laporan hasil: {bulkReport.filter((r) => r.status === 'Berhasil').length} berhasil, {bulkReport.filter((r) => r.status === 'Gagal').length} gagal.</p><div className="max-h-36 overflow-auto text-xs space-y-1">{bulkReport.map((r, i) => <p key={`${r.id}-${i}`} className={r.status === 'Berhasil' ? 'text-emerald-300' : 'text-rose-300'}>{r.status} — {r.name}: {r.message}</p>)}</div><button onClick={exportReport} className="btn-ghost px-3 py-2 rounded-lg text-sm flex items-center gap-2"><Download className="w-4 h-4"/> Unduh laporan CSV</button><button onClick={() => { setBulkMode(null); setBulkPreview([]); setBulkErrors([]); setBulkReport([]); }} className="btn-primary px-4 py-2 rounded-lg w-full">Selesai</button></div>}
@@ -813,7 +844,8 @@ function PackagesManager({
           </Field>
           <div className="grid grid-cols-2 gap-3">
             <Field label="Harga modal supplier (Rp)">
-              <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.supplier_cost ?? 0)} onChange={(e) => setEditing({ ...editing, supplier_cost: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga modal supplier dalam rupiah" placeholder="Contoh: 10000" />
+              <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.supplier_cost ?? '')} onChange={(e) => setEditing({ ...editing, supplier_cost: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga modal supplier dalam rupiah" placeholder="Kosong jika belum ada data" />
+              <p className="mt-1 text-[11px] leading-relaxed text-slate-500">Kosong berarti belum dicatat. Masukkan 0 hanya jika harga modal dari supplier memang Rp0.</p>
             </Field>
             <Field label="Harga jual (Rp)">
               <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.price ?? '')} onChange={(e) => setEditing({ ...editing, price: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga paket dalam rupiah" placeholder="Contoh: 15000" />
@@ -826,6 +858,17 @@ function PackagesManager({
             <input type="checkbox" checked={editing.featured ?? false} onChange={(e) => setEditing({ ...editing, featured: e.target.checked })} className="accent-amber-400" />
             Tandai sebagai populer
           </label>
+          {editing.id && (
+            <div className="rounded-xl border border-cyan-400/20 bg-cyan-500/5 p-3 space-y-2">
+              <div>
+                <p className="text-sm font-semibold text-cyan-100">Simpan harga modal saja</p>
+                <p className="text-xs text-slate-400 mt-1">Aksi ini hanya mengubah harga modal supplier. Harga jual paket tidak dikirim dan tidak diubah.</p>
+              </div>
+              <button type="button" disabled={saving} onClick={() => void saveSupplierCostOnly()} className="w-full rounded-xl border border-cyan-300/30 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-50">
+                {saving ? 'Menyimpan…' : 'Simpan Modal Saja — Harga Jual Tetap'}
+              </button>
+            </div>
+          )}
           <SaveBar saving={saving} onSave={save} onCancel={() => setEditing(null)} />
         </Modal>
       )}
