@@ -11,8 +11,11 @@ const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
 const ignoredLines = read('.gitignore').split('\n').map((line) => line.trim());
 
 const isExcludedFromGit = (relative) => {
-  if (!ignoredLines.includes(relative)) return false;
   try {
+    execFileSync('git', ['check-ignore', '-q', relative], {
+      cwd: root,
+      stdio: 'ignore',
+    });
     const tracked = execFileSync('git', ['ls-files', '--', relative], {
       cwd: root,
       encoding: 'utf8',
@@ -21,7 +24,7 @@ const isExcludedFromGit = (relative) => {
     return tracked.trim().length === 0;
   } catch {
     // In an extracted release archive there is no Git index to inspect.
-    return !exists(relative);
+    return ignoredLines.includes(relative) && !exists(relative);
   }
 };
 
@@ -65,7 +68,9 @@ const localEnvIsPublicOnly = !exists('.env.local') || (
   !localEnv.includes('VITE_SUPABASE_SERVICE_ROLE_KEY') &&
   !localEnv.includes('VITE_SUPABASE_SECRET_KEY')
 );
-add('local config is public-only and node_modules/dist are excluded', !exists('.env') && localEnvIsPublicOnly && isExcludedFromGit('node_modules') && isExcludedFromGit('dist'));
+const nodeModulesExcluded = isExcludedFromGit('node_modules');
+const distExcluded = isExcludedFromGit('dist');
+add('local config is public-only and node_modules/dist are excluded', !exists('.env') && localEnvIsPublicOnly && nodeModulesExcluded && distExcluded, 'env=' + (!exists('.env') && localEnvIsPublicOnly) + ', node_modules=' + nodeModulesExcluded + ', dist=' + distExcluded);
 
 let failed = 0;
 for (const check of checks) {
