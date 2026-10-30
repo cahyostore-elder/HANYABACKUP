@@ -105,7 +105,7 @@ BEGIN
   SELECT p.price INTO v_price
     FROM public.packages p
     WHERE p.id = p_package_id AND p.brand_id = p_brand_id;
-  IF NOT FOUND OR v_price IS NULL OR v_price < 0 THEN
+  IF NOT FOUND OR v_price IS NULL OR v_price <= 0 THEN
     RAISE EXCEPTION 'Paket tidak valid.';
   END IF;
 

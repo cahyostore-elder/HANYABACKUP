@@ -25,6 +25,10 @@ test('Phase 54 allocates the complete inclusive Rp200-Rp999 range at most once p
   assert.doesNotMatch(sql, /floor\(random\(\)\s*\*\s*301\)/);
 });
 
+test('zero selling-price packages are blocked until an Author sets a sale price', () => {
+  assert.match(sql, /IF NOT FOUND OR v_price IS NULL OR v_price <= 0 THEN/);
+});
+
 test('order creation remains authenticated and idempotent', () => {
   assert.match(sql, /IF v_user_id IS NULL THEN/);
   assert.match(sql, /p_request_id uuid/);
