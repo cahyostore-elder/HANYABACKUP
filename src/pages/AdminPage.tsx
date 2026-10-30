@@ -73,7 +73,7 @@ export default function AdminPage() {
         supabase.from('site_settings').select('maintenance_enabled, maintenance_message, order_maintenance_enabled, order_maintenance_message').eq('id', true).maybeSingle(),
         supabase.rpc('admin_list_package_supplier_costs'),
       ]);
-      // Maintenance settings are an optional Phase 44 database feature. Do not let a missing
+      // Maintenance settings require the Phase 62 dual-maintenance migration. Do not let a missing
       // site_settings table block the rest of the admin dashboard from loading.
       setMaintenanceSettingsAvailable(!settings.error);
       const firstError = [o, b, c, p, pr, t, f].find((result) => result.error)?.error;
@@ -552,7 +552,7 @@ function MaintenanceTab({
       {!available && (
         <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100" role="alert">
           <p className="font-semibold">Pengaturan maintenance belum tersedia</p>
-          <p className="mt-1 text-xs leading-relaxed">Terapkan migrasi <code>supabase/migrations/20261030040000_phase61_dual_maintenance_controls.sql</code>, lalu muat ulang dashboard.</p>
+          <p className="mt-1 text-xs leading-relaxed">Terapkan migrasi <code>supabase/migrations/20261030040000_phase62_dual_maintenance_controls.sql</code>, lalu muat ulang dashboard.</p>
         </div>
       )}
     </section>
