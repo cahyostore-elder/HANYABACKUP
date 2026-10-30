@@ -12,7 +12,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_user_client_request_id
 
 -- Replace the six-argument client RPC with a seven-argument, required-key form.
 -- Existing UI should be deployed alongside this migration because the RPC signature changes.
-CREATE FUNCTION public.create_topup_order(
+CREATE OR REPLACE FUNCTION public.create_topup_order(
   p_category_id uuid,
   p_brand_id uuid,
   p_package_id uuid,
@@ -45,6 +45,8 @@ DECLARE
   v_order_id uuid;
   v_code text;
   v_attempt integer := 0;
+  v_start_offset integer := 0;
+  v_code_found boolean := false;
   v_existing public.orders%ROWTYPE;
   v_target text := trim(coalesce(p_target, ''));
   v_server text := nullif(trim(coalesce(p_server, '')), '');
@@ -121,20 +123,24 @@ BEGIN
     RAISE EXCEPTION 'Biaya admin metode pembayaran tidak valid.';
   END IF;
 
-  -- Serialize allocation and avoid duplicate final transfer amounts among active orders.
+  -- Serialize allocation and scan every Rp200-Rp999 candidate at most once.
+  -- This avoids random-retry false failures when only a few codes remain available.
   PERFORM pg_advisory_xact_lock(hashtext('fityorastore-order-unique-code'));
-  LOOP
-    v_attempt := v_attempt + 1;
-    v_unique_code := floor(random() * 301)::integer + 200; -- inclusive Rp200-Rp500
-    EXIT WHEN NOT EXISTS (
+  v_start_offset := floor(random() * 800)::integer;
+  FOR v_attempt IN 0..799 LOOP
+    v_unique_code := 200 + ((v_start_offset + v_attempt) % 800);
+    IF NOT EXISTS (
       SELECT 1 FROM public.orders o
       WHERE o.total_amount = v_price + v_payment_fee + v_unique_code
         AND o.status IN ('pending', 'processing')
-    );
-    IF v_attempt >= 899 THEN
-      RAISE EXCEPTION 'Tidak dapat membuat kode pembayaran unik saat ini. Coba lagi nanti.';
+    ) THEN
+      v_code_found := true;
+      EXIT;
     END IF;
   END LOOP;
+  IF NOT v_code_found THEN
+    RAISE EXCEPTION 'Tidak dapat membuat kode pembayaran unik saat ini. Coba lagi nanti.';
+  END IF;
 
   v_code := 'FS' || to_char(now(), 'YYMMDD')
     || upper(substr(replace(gen_random_uuid()::text, '-', ''), 1, 12));
