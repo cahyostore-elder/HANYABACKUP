@@ -29,6 +29,14 @@ test('single-product Author action updates supplier cost and sale price atomical
   assert.ok(migration58.includes('GRANT EXECUTE ON FUNCTION public.admin_update_supplier_cost_and_price(uuid, numeric) TO authenticated'));
 });
 
+test('normal Author package save writes audit when sale price changes and a supplier cost exists', () => {
+  assert.ok(migration58.includes('CREATE OR REPLACE FUNCTION public.admin_save_package('));
+  assert.ok(migration58.includes('v_old_price IS DISTINCT FROM p_price'));
+  assert.ok(migration58.includes('INSERT INTO public.package_pricing_audit (package_id, package_name, supplier_cost, old_price, new_price, margin_percent, applied_by)'));
+  assert.ok(migration58.includes('updated_by = auth.uid()'));
+  assert.ok(migration58.includes('GRANT EXECUTE ON FUNCTION public.admin_save_package(uuid, uuid, text, text, numeric, integer, boolean, numeric) TO authenticated'));
+});
+
 test('supplier-only CSV template supports late bulk entry', () => {
   assert.ok(admin.includes('exportSupplierCsv'));
   assert.ok(admin.includes('fityorastore-template-modal-supplier.csv'));
