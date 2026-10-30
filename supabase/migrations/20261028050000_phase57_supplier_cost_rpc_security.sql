@@ -25,10 +25,6 @@ GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
 ALTER TABLE public.package_supplier_costs
   ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES auth.users(id) ON DELETE SET NULL;
 
-ALTER TABLE public.package_supplier_costs ENABLE ROW LEVEL SECURITY;
-REVOKE ALL ON TABLE public.package_supplier_costs FROM PUBLIC, anon, authenticated;
-GRANT ALL ON TABLE public.package_supplier_costs TO service_role;
-DROP POLICY IF EXISTS staff_manage_package_supplier_costs ON public.package_supplier_costs;
 
 -- Read supplier cost only through this admin-gated RPC; no direct browser SELECT.
 CREATE OR REPLACE FUNCTION public.admin_list_package_supplier_costs()
