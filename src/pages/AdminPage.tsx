@@ -521,7 +521,7 @@ function PackagesManager({
 }) {
   // Keep the price as text while typing. Converting each keystroke to Number can
   // make mobile numeric inputs jump/reset and prevents reliable multi-digit entry.
-  type PackageEditor = Partial<Package> & { price?: number | string; supplier_cost?: number | string };
+  type PackageEditor = Omit<Partial<Package>, 'price'> & { price?: number | string; supplier_cost?: number | string };
   const [editing, setEditing] = useState<PackageEditor | null>(null);
   const [saving, setSaving] = useState(false);
   const [filterBrand, setFilterBrand] = useState<string>('all');
@@ -575,8 +575,9 @@ function PackagesManager({
         if (price === null || price > 99_999_999) { errors.push({ row: line, id, message: 'Harga jual wajib berupa angka bulat Rp0–Rp99.999.999.' }); return; }
         let newSupplierCost: number | undefined;
         if ((row.supplier_cost ?? '') !== '') {
-          newSupplierCost = parseRupiah(row.supplier_cost);
-          if (newSupplierCost === null || newSupplierCost > 99_999_999) { errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' }); return; }
+          const parsedSupplierCost = parseRupiah(row.supplier_cost);
+          if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) { errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' }); return; }
+          newSupplierCost = parsedSupplierCost;
         }
         preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: Number(supplierCosts[existing.id] ?? 0), ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
       });
