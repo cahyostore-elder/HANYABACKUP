@@ -807,7 +807,7 @@ function PackagesManager({
               </div>
               <div className="text-xs text-slate-500 mt-0.5">{brandName(p.brand_id)} • #{p.sort_order}</div>
             </div>
-            <div className="text-right shrink-0"><div className="text-sm font-semibold text-amber-300">{formatPrice(p.price)}</div><div className="text-[10px] text-slate-500">Modal {formatPrice(Number(supplierCosts[p.id] ?? 0))} · Margin {supplierCosts[p.id] == null ? 'belum diisi' : formatPrice(Number(p.price) - Number(supplierCosts[p.id]))}</div></div>
+            <div className="text-right shrink-0"><div className="text-sm font-semibold text-amber-300">{formatPrice(p.price)}</div><div className="text-[10px] text-slate-500">{supplierCosts[p.id] == null ? 'Modal belum diisi' : `Modal ${formatPrice(Number(supplierCosts[p.id]))} · Margin ${formatPrice(Number(p.price) - Number(supplierCosts[p.id]))}`}</div></div>
             <div className="flex gap-1 shrink-0">
               <button aria-label={`Edit paket ${p.name}`} onClick={() => setEditing({ ...p, supplier_cost: supplierCosts[p.id] ?? '' })} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-amber-300 transition"><Pencil className="w-4 h-4" /></button>
               <button aria-label={`Hapus paket ${p.name}`} onClick={() => remove(p.id)} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-rose-300 transition"><Trash2 className="w-4 h-4" /></button>
