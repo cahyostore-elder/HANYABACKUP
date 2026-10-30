@@ -8,8 +8,8 @@ const read = (f) => readFileSync(path.join(root, f), 'utf8');
 const sql = read('supabase/migrations/20261028030000_phase54_core_security_and_payment_code_range.sql');
 const audit = read('supabase/PHASE54_READONLY_SECURITY_AUDIT.sql');
 
-test('Phase 54 uses inclusive random unique-code range Rp200-Rp500', () => {
-  assert.match(sql, /floor\(random\(\) \* 301\)::integer \+ 200/);
+test('Phase 54 replaces Phase 53 safely and exhaustively allocates Rp200-Rp999 codes', () => {
+  assert.match(sql, /CREATE OR REPLACE FUNCTION public\.create_topup_order\(/);\n  assert.match(sql, /FOR v_attempt IN 0\.\.799 LOOP/);\n  assert.match(sql, /v_unique_code := 200 \+ \(\(v_start_offset \+ v_attempt\) % 800\)/);\n  assert.match(sql, /IF NOT v_code_found THEN/);
   assert.match(sql, /v_price \+ v_payment_fee \+ v_unique_code/);
 });
 
@@ -32,4 +32,12 @@ test('security audit is read-only and covers RLS, policies, definer functions, a
   assert.match(audit, /p\.prosecdef/);
   assert.match(audit, /information_schema\.routine_privileges/);
   assert.doesNotMatch(audit, /\b(INSERT|UPDATE|DELETE|ALTER|DROP|CREATE)\s+(TABLE|FUNCTION|POLICY|INDEX|TRIGGER|INTO)\b/i);
+});
+
+test('Phase 54 safely replaces the Phase 53 seven-argument RPC instead of creating a duplicate', () => {
+  const phase53 = read('supabase/migrations/20261028020000_phase53_payment_fees_and_unique_codes.sql');
+  assert.match(phase53, /CREATE FUNCTION public\\.create_topup_order\\([\\s\\S]*?p_request_id uuid/);
+  assert.match(sql, /CREATE OR REPLACE FUNCTION public\\.create_topup_order\\([\\s\\S]*?p_request_id uuid/);
+  assert.doesNotMatch(sql, /CREATE FUNCTION public\\.create_topup_order\\(/);
+  assert.doesNotMatch(sql, /DROP FUNCTION public\\.create_topup_order/);
 });
