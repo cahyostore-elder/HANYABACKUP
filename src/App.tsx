@@ -134,7 +134,7 @@ function Shell() {
   return (
     <div className="relative min-h-screen flex flex-col">
       <AnimatedBackground />
-      <Navbar />
+      {(!maintenance.globalEnabled || isAuthor) && <Navbar />}
       {!supabaseConfigured && (
         <div role="alert" className="mx-4 mt-3 mb-1 max-w-2xl self-center rounded-xl border border-amber-400/40 bg-slate-950/95 px-4 py-3 text-xs sm:text-sm text-amber-100 shadow-xl backdrop-blur">
           Konfigurasi Supabase belum valid atau belum diatur. Isi <code>VITE_SUPABASE_URL</code> dan <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> (nama lama <code>VITE_SUPABASE_ANON_KEY</code> tetap didukung). Gunakan hanya publishable/anon key; secret atau service-role key tidak boleh dipakai di frontend.
@@ -147,7 +147,7 @@ function Shell() {
           loginOnly={maintenance.globalEnabled && !isAuthor}
         />
       </main>
-      <Footer />
+      {(!maintenance.globalEnabled || isAuthor) && <Footer />}
     </div>
   );
 }
