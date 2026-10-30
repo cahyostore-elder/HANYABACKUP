@@ -11,7 +11,7 @@ import {
 } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useRoute } from '@/lib/router';
-import { formatPrice, timeAgo, initials, avatarGradient, statusLabel } from '@/lib/format';
+import { formatPrice, initials, avatarGradient, statusLabel } from '@/lib/format';
 import { methodById } from '@/lib/payment';
 import BrandLogo from '@/components/BrandLogo';
 import { parseCsv, parseRupiah, toCsv } from '@/lib/bulkPricing.mjs';
