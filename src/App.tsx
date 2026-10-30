@@ -63,8 +63,6 @@ function Shell() {
 
   useEffect(() => {
     let active = true;
-    let channel: ReturnType<typeof supabase.channel> | undefined;
-    let refreshTimer: number | undefined;
     let unavailableLogged = false;
     const loadMaintenance = async () => {
       const { data, error } = await supabase
@@ -99,10 +97,10 @@ function Shell() {
     };
     // Keep retrying even after a read failure, so an Author can recover the app
     // by repairing settings or reopening the site without a manual page reload.
-    channel = supabase.channel('site-maintenance-status').on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => { void loadMaintenance(); }).subscribe();
-    refreshTimer = window.setInterval(() => { void loadMaintenance(); }, 30000);
+    const channel = supabase.channel('site-maintenance-status').on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => { void loadMaintenance(); }).subscribe();
+    const refreshTimer = window.setInterval(() => { void loadMaintenance(); }, 30000);
     void loadMaintenance();
-    return () => { active = false; if (refreshTimer !== undefined) window.clearInterval(refreshTimer); if (channel) void supabase.removeChannel(channel); };
+    return () => { active = false; window.clearInterval(refreshTimer); void supabase.removeChannel(channel); };
   }, []);
 
   if (!maintenance) {
