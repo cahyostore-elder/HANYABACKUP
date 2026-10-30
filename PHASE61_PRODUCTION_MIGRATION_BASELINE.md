@@ -83,8 +83,18 @@ After the backup, schema comparison and migration-history reconciliation are com
 - Cost-only save changes only supplier cost and audit metadata; it never changes sale price.
 - Cost + sale price changes only after explicit Author confirmation.
 - 7% is markup on modal: `sale_price = round(cost * 1.07)`.
-- Do not bulk-seed supplier costs and do not silently alter the 309 existing catalogue prices.
+- Phase 63 adds illustrative supplier-cost rows only with `supplier_cost_status = 'sample'`; they are never treated as real supplier quotes, never trigger sale-price recalculation, and never enter the verified-cost audit path.
+- For the 120 packages with positive sale prices, the Phase 63 sample is an illustrative reverse estimate from the current 7% markup rule. For the 189 Rp0 packages, Rp0 is only a placeholder, not an asserted supplier price.
+- Author-entered costs must be explicitly saved as `verified`; sale-price recalculation remains an explicit, separately confirmed action.
+- Sample seeding must not change any of the 309 existing selling prices.
 - Checkout must continue rejecting sale price `<= 0`, even though the database permits a zero price for draft/catalogue configuration.
+
+## Related reconciliation and maintenance patches
+
+- `PHASE64_PRODUCTION_MIGRATION_RECONCILIATION.md` records the read-only mapping of all 19 migrations that predate Phase 52.
+- `supabase/audits/20261030_phase64_old_migration_reconciliation_readonly.sql` captures the live tables, policies, grants, functions, indexes, catalog and Storage state using SELECT statements only.
+- Phase 62 adds separate global-closure and order-only maintenance modes. Phase 63 adds sample/verified supplier-cost statuses and status-aware Author pricing RPCs. Both migration files are pending; neither has been executed in production.
+- Phase 63 provides the current status-aware replacements for package-save, supplier-cost+price, and batch-pricing RPCs. Do not apply the older Phase 56/58/60 function definitions after Phase 63, because they do not preserve the sample/verified status model.
 
 ## Prohibited production commands/actions
 

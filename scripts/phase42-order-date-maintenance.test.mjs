@@ -17,7 +17,7 @@ test('Order status page displays full localized order date', () => {
 test('Maintenance copy clearly closes all public pages and leaves only admin accessible', () => {
   const app = read('src/App.tsx');
   const admin = read('src/pages/AdminPage.tsx');
-  assert.match(app, /maintenance\?\.enabled && route\.name !== 'admin'/);
-  assert.match(admin, /seluruh website untuk pengunjung ditutup/);
-  assert.match(admin, /hanya dashboard admin yang tetap bisa dibuka/i);
+  assert.match(app, /maintenance\.globalEnabled && !isAuthor && route\.name !== 'login'/);
+  assert.match(admin, /Pengunjung tidak dapat membuka beranda, katalog, dashboard pelanggan, checkout, atau cek status/);
+  assert.match(admin, /Hanya Author\/Admin yang dapat masuk dan memakai dashboard/i);
 });

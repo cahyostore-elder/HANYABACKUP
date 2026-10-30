@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/context/AuthContext';
 import { useRoute } from '@/lib/router';
 
-export default function LoginPage() {
+export default function LoginPage({ maintenanceAccessOnly = false }: { maintenanceAccessOnly?: boolean }) {
   const { navigate } = useRoute();
   const { refreshProfile } = useAuth();
   const [email, setEmail] = useState('');
@@ -112,12 +112,16 @@ export default function LoginPage() {
             <LogIn className="w-4 h-4" /> {loading ? 'Memproses…' : 'Masuk'}
           </button>
 
-          <p className="text-center text-sm text-slate-400">
-            Belum punya akun?{' '}
-            <button type="button" onClick={() => navigate('/signup')} className="text-amber-300 hover:text-amber-200 font-medium inline-flex items-center gap-1">
-              Daftar <ArrowRight className="w-3.5 h-3.5" />
-            </button>
-          </p>
+          {maintenanceAccessOnly ? (
+            <p className="text-center text-xs text-amber-200/80">Website sedang ditutup. Login hanya tersedia untuk Author/Admin.</p>
+          ) : (
+            <p className="text-center text-sm text-slate-400">
+              Belum punya akun?{' '}
+              <button type="button" onClick={() => navigate('/signup')} className="text-amber-300 hover:text-amber-200 font-medium inline-flex items-center gap-1">
+                Daftar <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </p>
+          )}
         </form>
       </div>
     </div>

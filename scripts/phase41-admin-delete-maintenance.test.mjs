@@ -18,14 +18,14 @@ test('Admin UI calls guarded RPCs and asks confirmation before deleting orders',
   const admin = read('src/pages/AdminPage.tsx');
   assert.match(admin, /admin_delete_order/);
   assert.match(admin, /Hapus pesanan .* secara permanen/);
-  assert.match(admin, /admin_set_site_maintenance/);
-  assert.match(admin, /Aktifkan Maintenance/);
-  assert.match(admin, /Buka Kembali Website/);
+  assert.match(admin, /admin_set_maintenance_modes/);
+  assert.match(admin, /Tutup Website/);
+  assert.match(admin, /Buka Website/);
 });
 test('Whole-site maintenance gate exempts admin dashboard and polls Supabase setting', () => {
   const app = read('src/App.tsx');
-  assert.match(app, /maintenance\?\.enabled && route\.name !== 'admin'/);
+  assert.match(app, /maintenance\.globalEnabled && !isAuthor && route\.name !== 'login'/);
   assert.match(app, /site_settings/);
-  assert.match(app, /if \(!channel\)/);
+  assert.match(app, /channel = supabase\.channel\('site-maintenance-status'\)/);
   assert.match(app, /setInterval\(\(\) => \{ void loadMaintenance\(\); \}, 30000\)/);
 });

@@ -96,8 +96,10 @@ test('Phase 57 audit runs in both focused and full release commands', () => {
   assert.match(pkg.scripts['audit:release'], /audit:phase57/);
 });
 
-test('catalog displays an unknown supplier cost as not recorded, never Rp0', () => {
-  assert.ok(admin.includes("{supplierCosts[p.id] == null ? 'Modal belum diisi' : `Modal ${formatPrice(Number(supplierCosts[p.id]))}"));
+test('catalog distinguishes sample supplier costs from verified costs', () => {
+  assert.ok(admin.includes('Modal supplier belum diisi'));
+  assert.ok(admin.includes('CONTOH'));
+  assert.ok(admin.includes("supplierCostStatuses[p.id] === 'sample'"));
   assert.ok(!admin.includes('Number(supplierCosts[p.id] ?? 0)'));
 });
 
@@ -118,5 +120,6 @@ test('shared admin role helper pins search_path and schema-qualifies the profile
 test('blank modal input preserves an existing package cost without a false mismatch alert', () => {
   assert.ok(admin.includes('const expectedSavedSupplierCost = supplierCost ?? (editing.id ? supplierCosts[editing.id] ?? null : null);'));
   assert.ok(admin.includes('(saved.saved_supplier_cost == null ? null : Number(saved.saved_supplier_cost)) !== expectedSavedSupplierCost'));
-  assert.ok(admin.includes('Paket lama: kosong mempertahankan modal tersimpan.'));
+  assert.ok(admin.includes("editing.supplier_cost_status === 'sample'"));
+  assert.ok(admin.includes('Kosong berarti tidak mengubah modal tersimpan.'));
 });
