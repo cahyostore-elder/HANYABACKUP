@@ -54,6 +54,20 @@ BEGIN
     RETURN NEW;
   END IF;
 
+  -- Full-site closure also stops customer-side updates to existing orders,
+  -- such as payment-proof submission. Order-only maintenance leaves them open.
+  IF TG_OP = 'UPDATE' THEN
+    IF COALESCE(v_global_enabled, false) THEN
+      RAISE EXCEPTION '%',
+        COALESCE(
+          NULLIF(BTRIM(v_global_message), ''),
+          'Website sedang ditutup sementara untuk pemeliharaan.'
+        )
+        USING ERRCODE = '55000';
+    END IF;
+    RETURN NEW;
+  END IF;
+
   IF COALESCE(v_global_enabled, false) THEN
     RAISE EXCEPTION '%',
       COALESCE(
@@ -81,9 +95,67 @@ REVOKE ALL ON FUNCTION private.enforce_order_maintenance()
 
 DROP TRIGGER IF EXISTS orders_maintenance_guard ON public.orders;
 CREATE TRIGGER orders_maintenance_guard
-  BEFORE INSERT ON public.orders
+  BEFORE INSERT OR UPDATE ON public.orders
   FOR EACH ROW
   EXECUTE FUNCTION private.enforce_order_maintenance();
+
+-- Hide public order-status lookups during full-site closure. Order-only
+-- maintenance intentionally keeps existing-order tracking available.
+CREATE OR REPLACE FUNCTION public.lookup_order(code text)
+RETURNS TABLE (
+  o_code text,
+  o_status text,
+  o_total_amount numeric,
+  o_payment_method text,
+  o_brand_name text,
+  o_package_name text,
+  o_target text,
+  o_created_at timestamptz
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = ''
+AS $function$
+DECLARE
+  v_global_enabled boolean;
+  v_role text;
+BEGIN
+  SELECT s.maintenance_enabled
+    INTO v_global_enabled
+  FROM public.site_settings AS s
+  WHERE s.id = true;
+
+  IF NOT FOUND OR COALESCE(v_global_enabled, false) THEN
+    SELECT p.role
+      INTO v_role
+    FROM public.profiles AS p
+    WHERE p.id = (SELECT auth.uid());
+
+    IF COALESCE(v_role, '') NOT IN ('admin', 'author') THEN
+      RETURN;
+    END IF;
+  END IF;
+
+  RETURN QUERY
+  SELECT
+    o.code,
+    o.status,
+    o.total_amount,
+    o.payment_method,
+    b.name,
+    p.name,
+    o.target,
+    o.created_at
+  FROM public.orders AS o
+  LEFT JOIN public.brands AS b ON b.id = o.brand_id
+  LEFT JOIN public.packages AS p ON p.id = o.package_id
+  WHERE o.code = lookup_order.code
+  LIMIT 1;
+END;
+$function$;
+
+REVOKE ALL ON FUNCTION public.lookup_order(text) FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.lookup_order(text) TO anon, authenticated;
 
 -- One Author/Admin-only RPC saves both switches and both customer-facing messages.
 CREATE OR REPLACE FUNCTION public.admin_set_maintenance_modes(
