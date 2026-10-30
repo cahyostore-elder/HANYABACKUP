@@ -91,12 +91,18 @@ Observed in production:
 
 ## Safe baseline strategy — not yet executed
 
-1. Obtain and verify a restorable backup of database schema/data, Auth users/settings, Storage bucket configuration, and Storage object files. The SQL archives `roles.sql`, `schema.sql`, and `data.sql` alone are not a full backup.
-2. Export and retain a linked production schema dump, then run the companion read-only audit: `supabase/audits/20261030_phase64_old_migration_reconciliation_readonly.sql`.
-3. Preserve the original 19 migration files as historical artifacts; do not delete them or change their timestamps during reconciliation.
-4. Build a verified baseline snapshot representing the actual live schema, including current functions, grants, policies, triggers, extensions/dependencies, and relevant storage metadata.
-5. Only after reviewing the full dump and backup, choose a controlled migration-history adoption strategy. Do not mark all 19 old timestamps applied until every important effect is either present or explicitly superseded by the baseline snapshot.
-6. Apply missing functional patches in a new, forward-only sequence (order-code allocator, Phase 56/57 RPC security, Phase 58/60 pricing, Phase 59 policies/indexes, Phase 62 maintenance, Phase 63 supplier samples). Verify each function, policy, grant, constraint and UI integration between steps.
+The current active migration folder contains historical timestamps that predate the production schema's actual current state. A new baseline must not be added *after* those files while they remain in the active folder, or they would still be pending to the CLI.
+
+1. Obtain and verify a restorable backup of database roles/schema/data, Auth users/settings, Storage bucket configuration/policies, and Storage object files. The three SQL files `roles.sql`, `schema.sql`, and `data.sql` are useful logical exports but are not, by themselves, a full project restore point. Supabase's backup guide separates role, schema, and data dumps and calls out Auth/Storage customizations for separate handling.
+2. Keep an immutable Git tag/branch or archive copy of **all 28 current migration files**, including Phase 52–63. After the backup is confirmed, move the archived copies outside the active `supabase/migrations/` directory (for example `supabase/archive/migrations-pre-baseline-20261030/`). Do not discard or rewrite the originals.
+3. Run the companion read-only audit: `supabase/audits/20261030_phase64_old_migration_reconciliation_readonly.sql`, and export the actual live schema and grants for review.
+4. With the active migration directory containing no old pending timestamps, use the Supabase existing-project workflow: `supabase db pull --linked`. This creates a baseline migration from the live schema and records that baseline as applied in the remote migration history; it is a migration-history adoption step, not a request to replay the old catalog/data migrations. Review the generated SQL carefully before committing it. Supabase warns the generated diff can contain unexpected statements (for example extension drops) that must be removed or explained.
+5. If the project has custom Auth or Storage schema changes, pull/review those schemas separately with `supabase db pull --linked --schema auth` and `supabase db pull --linked --schema storage`. Storage object files and Auth users/settings still require their own backup/restore handling; a schema pull is not a data backup.
+6. Verify that the baseline can recreate the intended schema in a **local** development database using `supabase db reset` only against the local stack. Compare tables, functions, grants, RLS, policies, indexes, triggers, extensions, and Storage policies against the retained production snapshot.
+7. After the baseline is committed and its remote history entry is verified, recreate only the required forward patches with `supabase migration new <descriptive_name>` so their timestamps are newer than the baseline. Reintroduce the reviewed Phase 62/63 SQL content into those new forward migrations; do not reuse their pre-baseline timestamps.
+8. Apply small forward patches only after reviewing the exact diff and confirming the backup. Verify each function, policy, grant, constraint and UI integration before moving to the next patch.
+
+The Supabase CLI docs describe `db pull` as the existing-project path for creating a remote-schema baseline and recording it as applied. The old 19 migration timestamps should therefore be preserved as an archive, not blindly repaired as applied.
 
 ## Prohibited until baseline is reconciled
 
