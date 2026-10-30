@@ -44,7 +44,7 @@ Keamanan database menggunakan **Row Level Security (RLS)** dan RPC dengan pemeri
 
 ## Phase 57 — keamanan harga modal supplier
 
-Baca [`PHASE57_SUPPLIER_COST_RPC.md`](./PHASE57_SUPPLIER_COST_RPC.md) sebelum menerapkan perubahan database. Migration Phase 57 harus diterapkan pada project Supabase yang benar **sebelum** frontend yang memanggil RPC baru digunakan pada production. Harga modal kosong tetap kosong; tombol simpan modal saja tidak mengubah harga jual.
+Baca [`PHASE57_SUPPLIER_COST_RPC.md`](./PHASE57_SUPPLIER_COST_RPC.md) sebelum menerapkan perubahan database. Terapkan Phase 57A, deploy dan verifikasi frontend RPC, baru kemudian terapkan Phase 57B untuk mencabut akses tabel langsung. Jangan jalankan Phase 57B lebih awal karena frontend production lama mungkin masih membaca tabel secara langsung. Harga modal kosong tetap kosong; tombol simpan modal saja tidak mengubah harga jual.
 
 ## Deploy ke Vercel
 
