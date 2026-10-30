@@ -92,5 +92,5 @@ test('Phase 57 audit runs in both focused and full release commands', () => {
 
 test('catalog displays an unknown supplier cost as not recorded, never Rp0', () => {
   assert.ok(admin.includes("{supplierCosts[p.id] == null ? 'Modal belum diisi' : `Modal ${formatPrice(Number(supplierCosts[p.id]))}"));
-  assert.doesNotMatch(admin, /Modal \\{formatPrice\\(Number\\(supplierCosts\\[p\\.id\\] \\?\\? 0\\)\\)\\}/);
+  assert.ok(!admin.includes('Number(supplierCosts[p.id] ?? 0)'));
 });
