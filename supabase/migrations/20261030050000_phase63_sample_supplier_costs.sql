@@ -530,5 +530,14 @@ $function$;
 REVOKE ALL ON FUNCTION public.admin_apply_package_pricing_batch(jsonb) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.admin_apply_package_pricing_batch(jsonb) TO authenticated;
 
+-- Disable legacy pricing RPCs that cannot distinguish sample and verified costs.
+-- Phase 63's status-aware RPCs above replace these entry points.
+REVOKE ALL ON FUNCTION public.admin_preview_package_pricing()
+  FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.admin_set_package_supplier_cost(uuid, numeric)
+  FROM PUBLIC, anon, authenticated;
+REVOKE ALL ON FUNCTION public.admin_apply_package_pricing(uuid[])
+  FROM PUBLIC, anon, authenticated;
+
 NOTIFY pgrst, 'reload schema';
 COMMIT;
