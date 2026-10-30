@@ -88,6 +88,7 @@ Observed in production:
 - `generate_order_code()` has no pinned search_path.
 - The order unique-code constraint allows 100–999, while the current RPC allocator generates Rp200–Rp400. Target Phase 54 range Rp200–Rp999 is not installed.
 - Phase 56 `admin_save_package`, Phase 57 private helper, Phase 58 automatic pricing RPC, and Phase 60 batch pricing RPC are absent. The supplier-cost list/upsert RPCs are older versions.
+- Three legacy pricing SECURITY DEFINER RPCs are still callable by authenticated staff: `admin_preview_package_pricing()`, `admin_set_package_supplier_cost(uuid,numeric)`, and `admin_apply_package_pricing(uuid[])`. The legacy batch RPC recalculates sale prices from every supplier-cost row without any sample/verified distinction. Phase 63 therefore explicitly revokes these three old entry points after installing status-aware replacements. Do not seed sample rows before these revocations are applied together.
 
 ## Safe baseline strategy — not yet executed
 
