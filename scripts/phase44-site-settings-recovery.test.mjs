@@ -26,11 +26,13 @@ test('migration does not overwrite order deletion workflow', () => {
 test('missing optional settings no longer blocks the rest of admin data', () => {
   assert.match(admin, /const firstError = \[o, b, c, p, pr, t, f\]/);
   assert.match(admin, /maintenanceSettingsAvailable/);
-  assert.match(admin, /Terapkan migration Phase 44 terlebih dahulu/i);
+  assert.match(admin, /Terapkan migrasi Phase 61 terlebih dahulu/i);
 });
 
-test('app stops repeated maintenance polling if settings table is unavailable', () => {
-  assert.match(app, /if \(!channel\)/);
-  assert.match(app, /if \(error\)[\s\S]*setMaintenance\(\{ enabled: false, message: '' \}\);\s*return;/);
+test('app fails closed and keeps retrying maintenance state if settings are unavailable', () => {
+  assert.match(app, /if \(error \|\| !data\)/);
+  assert.match(app, /globalEnabled: true/);
+  assert.match(app, /orderEnabled: true/);
+  assert.match(app, /channel = supabase\.channel\('site-maintenance-status'\)/);
   assert.match(app, /refreshTimer = window\.setInterval\(\(\) => \{ void loadMaintenance\(\); \}, 30000\)/);
 });
