@@ -1,4 +1,4 @@
--- Phase 54: core security follow-up; server-authoritative payment codes Rp200-Rp500.
+-- Phase 54: core security follow-up; server-authoritative payment codes Rp200-Rp999.
 -- Apply after Phase 33. Existing orders and their totals are preserved.
 -- Review and back up the target database before applying this migration. Apply after Phase 53.
 -- Existing orders are preserved; the key is nullable for historical rows.
