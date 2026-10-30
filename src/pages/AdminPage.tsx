@@ -139,7 +139,7 @@ export default function AdminPage() {
 
   const saveMaintenance = useCallback(async (globalEnabled: boolean, orderEnabled: boolean) => {
     if (!maintenanceSettingsAvailable) {
-      window.alert('Pengaturan dua mode maintenance belum tersedia. Terapkan migrasi Phase 61 terlebih dahulu, lalu muat ulang dashboard.');
+      window.alert('Pengaturan dua mode maintenance belum tersedia. Terapkan migrasi Phase 62 terlebih dahulu, lalu muat ulang dashboard.');
       return;
     }
     setMaintenanceSaving(true);
@@ -151,7 +151,7 @@ export default function AdminPage() {
         p_order_message: orderMaintenanceMessage,
       });
       if (error) {
-        window.alert(`Pengaturan maintenance gagal disimpan: ${error.message}. Pastikan migrasi Phase 61 sudah diterapkan.`);
+        window.alert(`Pengaturan maintenance gagal disimpan: ${error.message}. Pastikan migrasi Phase 62 sudah diterapkan.`);
         return;
       }
       setMaintenanceEnabled(Boolean(data?.maintenance_enabled ?? globalEnabled));
