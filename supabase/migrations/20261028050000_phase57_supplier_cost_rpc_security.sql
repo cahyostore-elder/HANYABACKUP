@@ -3,13 +3,17 @@
 -- Blank supplier cost stays absent; it is never inferred from the selling price.
 BEGIN;
 
--- Harden the shared role helper used by admin RLS policies and RPCs.
--- Schema-qualify the profile table so a temporary relation cannot shadow it.
-CREATE OR REPLACE FUNCTION public.is_admin()
+-- The profile role lookup must bypass profiles RLS to avoid policy recursion.
+-- Keep the privileged helper in a non-exposed schema; the public wrapper is invoker-only.
+CREATE SCHEMA IF NOT EXISTS private;
+REVOKE ALL ON SCHEMA private FROM PUBLIC, anon;
+GRANT USAGE ON SCHEMA private TO authenticated, service_role;
+
+CREATE OR REPLACE FUNCTION private.is_admin()
 RETURNS boolean
 LANGUAGE sql
 STABLE
-SECURITY INVOKER
+SECURITY DEFINER
 SET search_path = pg_catalog
 AS $function$
   SELECT EXISTS (
@@ -19,11 +23,30 @@ AS $function$
       AND p.role IN ('admin', 'author')
   );
 $function$;
+REVOKE ALL ON FUNCTION private.is_admin() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION private.is_admin() TO authenticated, service_role;
+
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY INVOKER
+SET search_path = pg_catalog
+AS $function$
+  SELECT private.is_admin();
+$function$;
 REVOKE EXECUTE ON FUNCTION public.is_admin() FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
 
 ALTER TABLE public.package_supplier_costs
   ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES auth.users(id) ON DELETE SET NULL;
+
+-- Rp0 is a valid supplier cost; an absent row still means not configured.
+ALTER TABLE public.package_supplier_costs
+  DROP CONSTRAINT IF EXISTS package_supplier_costs_supplier_cost_check;
+ALTER TABLE public.package_supplier_costs
+  ADD CONSTRAINT package_supplier_costs_supplier_cost_check
+  CHECK (supplier_cost >= 0);
 
 
 -- Read supplier cost only through this admin-gated RPC; no direct browser SELECT.

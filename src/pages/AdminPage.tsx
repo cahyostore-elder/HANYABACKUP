@@ -547,6 +547,11 @@ function PackagesManager({
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   const exportCsv = () => downloadCsv(packages.map((p) => ({ id: p.id, brand: brandName(p.brand_id), package_name: p.name, supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]), price: p.price })), 'fityorastore-harga-produk.csv');
+  const exportSupplierCsv = () => downloadCsv(
+    packages.map((p) => ({ id: p.id, brand: brandName(p.brand_id), package_name: p.name, supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]) })),
+    'fityorastore-template-modal-supplier.csv',
+    ['id', 'brand', 'package_name', 'supplier_cost'],
+  );
 
   const prepareAdjustment = () => {
     const amount = parseRupiah(adjustment);
@@ -574,13 +579,19 @@ function PackagesManager({
         seen.add(id);
         const existing = known.get(id);
         if (!existing) { errors.push({ row: line, id, message: 'ID tidak ditemukan pada katalog saat ini.' }); return; }
-        const price = parseRupiah(row.price ?? '');
-        if (price === null || price > 99_999_999) { errors.push({ row: line, id, message: 'Harga jual wajib berupa angka bulat Rp0–Rp99.999.999.' }); return; }
         let newSupplierCost: number | undefined;
-        if ((row.supplier_cost ?? '') !== '') {
+        if (String(row.supplier_cost ?? '').trim() !== '') {
           const parsedSupplierCost = parseRupiah(row.supplier_cost);
           if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) { errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' }); return; }
           newSupplierCost = parsedSupplierCost;
+        }
+        const rawPrice = String(row.price ?? '').trim();
+        const price = rawPrice === '' && newSupplierCost !== undefined
+          ? Math.round(newSupplierCost * 1.07)
+          : parseRupiah(rawPrice);
+        if (price === null || price > 99_999_999) {
+          errors.push({ row: line, id, message: 'Isi harga jual, atau isi harga modal supplier agar harga jual dihitung otomatis dengan margin 7%.' });
+          return;
         }
         preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: supplierCosts[existing.id] ?? null, ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
       });
@@ -668,6 +679,40 @@ function PackagesManager({
     } finally {
       setSaving(false);
     }
+  };
+
+  const saveSupplierAndUpdatePrice = async () => {
+    if (saving || !editing?.id) return;
+    const packageId = editing.id;
+    const supplierCost = parseRupiah(String(editing.supplier_cost ?? '').trim());
+    if (supplierCost === null || supplierCost > 99_999_999) {
+      window.alert('Masukkan harga modal supplier aktual berupa angka bulat Rp0–Rp99.999.999.');
+      return;
+    }
+    const estimatedPrice = Math.round(supplierCost * 1.07);
+    if (!Number.isSafeInteger(estimatedPrice) || estimatedPrice > 99_999_999) {
+      window.alert('Hasil perhitungan harga jual melewati batas maksimum.');
+      return;
+    }
+    const currentPrice = Number(editing.price ?? 0);
+    if (!window.confirm(
+      `Perbarui harga supplier dan harga jual produk ini?\n\nModal supplier: ${money(supplierCost)}\nHarga jual lama: ${money(currentPrice)}\nHarga jual baru (modal + 7%): ${money(estimatedPrice)}\n\nHarga jual hanya berubah setelah Anda menyetujuinya.`
+    )) return;
+
+    setSaving(true);
+    try {
+      const { data, error } = await supabase.rpc('admin_update_supplier_cost_and_price', { p_package_id: packageId, p_supplier_cost: supplierCost });
+      const saved = Array.isArray(data) ? data[0] : data;
+      if (error || !saved || saved.package_id !== packageId || Number(saved.supplier_cost) !== supplierCost || Number(saved.new_price) !== estimatedPrice) {
+        window.alert(`Modal/harga jual gagal diverifikasi: ${error?.message ?? 'Nilai database tidak cocok dengan pratinjau.'}`);
+        return;
+      }
+      setEditing((current) => current ? { ...current, supplier_cost: String(saved.supplier_cost), price: String(saved.new_price) } : current);
+      await onChange();
+      window.alert(`Berhasil. Harga jual diperbarui menjadi ${money(estimatedPrice)} dengan margin 7% dan tercatat di audit harga.`);
+    } catch (error) {
+      window.alert(`Koneksi gagal saat memperbarui modal dan harga jual: ${error instanceof Error ? error.message : 'Kesalahan tidak diketahui.'}`);
+    } finally { setSaving(false); }
   };
 
   const save = async () => {
@@ -787,6 +832,7 @@ function PackagesManager({
           <div><h3 className="font-semibold">Manajemen Harga Massal</h3><p className="text-xs text-slate-400 mt-1">Harga modal supplier dipisahkan dari harga jual. Semua perubahan ditinjau sebelum disimpan.</p></div>
           <div className="flex flex-wrap gap-2">
             <button onClick={exportCsv} className="btn-ghost px-3 py-2 rounded-lg text-xs flex items-center gap-1.5"><Download className="w-4 h-4"/> Ekspor CSV / Excel</button>
+            <button onClick={exportSupplierCsv} className="btn-ghost px-3 py-2 rounded-lg text-xs flex items-center gap-1.5"><Download className="w-4 h-4"/> Template Modal Supplier</button>
             <label className="btn-ghost px-3 py-2 rounded-lg text-xs flex items-center gap-1.5 cursor-pointer"><Upload className="w-4 h-4"/> Impor CSV<input type="file" accept=".csv,text/csv" className="hidden" onChange={(e) => { void importCsv(e.target.files?.[0]); e.currentTarget.value = ''; }}/></label>
           </div>
         </div>
@@ -870,6 +916,9 @@ function PackagesManager({
               </div>
               <button type="button" disabled={saving} onClick={() => void saveSupplierCostOnly()} className="w-full rounded-xl border border-cyan-300/30 bg-cyan-400/10 px-4 py-2.5 text-sm font-semibold text-cyan-100 hover:bg-cyan-400/15 disabled:opacity-50">
                 {saving ? 'Menyimpan…' : 'Simpan Modal Saja — Harga Jual Tetap'}
+              </button>
+              <button type="button" disabled={saving} onClick={() => void saveSupplierAndUpdatePrice()} className="w-full rounded-xl border border-amber-300/30 bg-amber-400/10 px-4 py-2.5 text-sm font-semibold text-amber-100 hover:bg-amber-400/15 disabled:opacity-50">
+                {saving ? 'Menyimpan…' : 'Simpan Modal + Perbarui Harga Jual (7%)'}
               </button>
             </div>
           )}

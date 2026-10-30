@@ -10,7 +10,7 @@ Phase 57 memindahkan pembacaan dan penyimpanan harga modal supplier ke RPC admin
 - Dashboard admin membaca harga modal melalui admin_list_package_supplier_costs().
 - Tombol **Simpan Modal Saja — Harga Jual Tetap** memakai admin_upsert_package_supplier_cost(uuid, numeric). RPC ini hanya mengubah harga modal dan audit timestamp/user; tidak menyentuh public.packages.price.
 - RPC bulk pricing dan penyimpanan paket tetap memvalidasi role admin serta mencatat updated_by saat modal ikut disimpan.
-- Harga modal yang belum diketahui tetap kosong. Nilai kosong tidak dianggap Rp0 dan tidak disalin dari harga jual. Angka 0 hanya boleh dimasukkan bila memang harga modal supplier adalah Rp0.
+- Harga modal yang belum diketahui tetap kosong. Nilai kosong tidak dianggap Rp0 dan tidak disalin dari harga jual. Angka 0 adalah nilai valid bila memang harga modal supplier Rp0; batas database adalah `supplier_cost >= 0`.
 - Helper public.is_admin() tetap SECURITY INVOKER, membatasi search_path, dan membaca public.profiles secara eksplisit.
 
 ## Perubahan Phase 57B — Table lockdown

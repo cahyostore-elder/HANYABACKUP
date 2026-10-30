@@ -103,13 +103,16 @@ test('catalog displays an unknown supplier cost as not recorded, never Rp0', () 
 
 test('shared admin role helper pins search_path and schema-qualifies the profile table', () => {
   const body = functionBody('is_admin');
-  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION public.is_admin()'));
+  assert.ok(migration.includes('CREATE SCHEMA IF NOT EXISTS private'));
+  assert.ok(migration.includes('CREATE OR REPLACE FUNCTION private.is_admin()'));
+  assert.ok(migration.includes('SECURITY DEFINER\nSET search_path = pg_catalog'));
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION private.is_admin() FROM PUBLIC, anon'));
+  assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION private.is_admin() TO authenticated, service_role'));
   assert.ok(migration.includes('SECURITY INVOKER\nSET search_path = pg_catalog'));
-  assert.ok(body.includes('FROM public.profiles AS p'));
-  assert.ok(body.includes("p.role IN ('admin', 'author')"));
-  assert.ok(!body.toLowerCase().includes('from profiles'));
+  assert.ok(body.includes('SELECT private.is_admin()'));
   assert.ok(migration.includes('REVOKE EXECUTE ON FUNCTION public.is_admin() FROM PUBLIC, anon'));
   assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated'));
+  assert.match(migration, /CHECK \(supplier_cost >= 0\)/);
 });
 
 test('blank modal input preserves an existing package cost without a false mismatch alert', () => {
