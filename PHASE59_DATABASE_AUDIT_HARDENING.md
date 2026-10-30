@@ -6,7 +6,7 @@ This migration removes confirmed duplicate public-read policies, separates staff
 - Public catalog read policies remain available to anon and authenticated users.
 - Author/Admin keep catalog CRUD permissions through `public.is_admin()`.
 - Members can read only their own profile and orders; Author/Admin can read all profiles/orders.
-- Supplier cost and pricing audit tables remain inaccessible directly from browser roles and are accessed only through guarded RPCs.
+- Supplier cost and pricing audit tables remain inaccessible directly from browser roles and are accessed only through guarded RPCs. Restrictive deny-all policies add defense in depth if a permissive policy is accidentally introduced later.
 - No products, sale prices, supplier costs, orders, profiles, or settings are updated by this migration.
 
 ## Remaining manual/security review

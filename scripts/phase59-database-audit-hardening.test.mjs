@@ -24,6 +24,15 @@ test('reduces profile/order read policies without granting member access to othe
   assert.ok(sql.includes('(SELECT auth.uid()) = user_id OR (SELECT public.is_admin())'));
 });
 
+test('adds restrictive deny-all policies to private pricing tables as defense in depth', () => {
+  assert.ok(sql.includes('package_supplier_costs_browser_deny'));
+  assert.ok(sql.includes('package_pricing_audit_browser_deny'));
+  assert.ok(sql.includes('AS RESTRICTIVE'));
+  assert.ok(sql.includes('FOR ALL TO anon, authenticated'));
+  assert.ok(sql.includes('USING (false)'));
+  assert.ok(sql.includes('WITH CHECK (false)'));
+});
+
 test('adds indexes for every foreign key reported by the live performance advisor', () => {
   for (const idx of ['idx_orders_brand_id','idx_orders_category_id','idx_orders_package_id','idx_orders_payment_verified_by','idx_orders_fulfillment_completed_by','idx_site_settings_updated_by']) assert.ok(sql.includes('CREATE INDEX IF NOT EXISTS ' + idx));
   for (const duplicate of ['idx_brands_category','orders_pending_amount_idx','packages_brand_idx']) assert.ok(sql.includes('DROP INDEX IF EXISTS public.' + duplicate));

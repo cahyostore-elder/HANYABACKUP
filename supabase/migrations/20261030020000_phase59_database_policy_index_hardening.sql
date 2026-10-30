@@ -81,6 +81,22 @@ DROP POLICY IF EXISTS orders_read_own_or_admin ON public.orders;
 CREATE POLICY orders_read_own_or_admin ON public.orders FOR SELECT TO authenticated
   USING ((SELECT auth.uid()) = user_id OR (SELECT public.is_admin()));
 
+-- Private pricing tables intentionally have no browser read/write path.
+-- Restrictive policies remain a deny-all backstop even if a permissive policy is added later.
+DROP POLICY IF EXISTS package_supplier_costs_browser_deny ON public.package_supplier_costs;
+CREATE POLICY package_supplier_costs_browser_deny
+  ON public.package_supplier_costs AS RESTRICTIVE
+  FOR ALL TO anon, authenticated
+  USING (false)
+  WITH CHECK (false);
+
+DROP POLICY IF EXISTS package_pricing_audit_browser_deny ON public.package_pricing_audit;
+CREATE POLICY package_pricing_audit_browser_deny
+  ON public.package_pricing_audit AS RESTRICTIVE
+  FOR ALL TO anon, authenticated
+  USING (false)
+  WITH CHECK (false);
+
 -- Drop confirmed duplicate/unused indexes and keep one covering index for each relation.
 DROP INDEX IF EXISTS public.idx_brands_category;
 DROP INDEX IF EXISTS public.orders_pending_amount_idx;
