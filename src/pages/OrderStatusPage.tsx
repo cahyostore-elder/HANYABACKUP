@@ -24,15 +24,18 @@ export default function OrderStatusPage() {
   const [code, setCode] = useState('');
   const [result, setResult] = useState<Result>({ kind: 'idle' });
   const [lastChecked, setLastChecked] = useState<string | null>(null);
+  const [isChecking, setIsChecking] = useState(false);
 
   const lookup = async (requestedCode = code) => {
     const trimmed = requestedCode.trim().toUpperCase();
-    if (!trimmed || result.kind === 'loading') return;
+    if (!trimmed || isChecking) return;
     if (trimmed.length < 4 || !/^[A-Z0-9-]+$/.test(trimmed)) {
       setResult({ kind: 'error', message: 'Format kode order tidak valid. Gunakan kode order dari halaman checkout.' });
       return;
     }
-    setResult({ kind: 'loading' });
+    const keepShowingFoundOrder = result.kind === 'found';
+    if (!keepShowingFoundOrder) setResult({ kind: 'loading' });
+    setIsChecking(true);
     try {
       const { data, error } = await supabase.rpc('lookup_order', { code: trimmed });
       if (error) {
@@ -52,6 +55,8 @@ export default function OrderStatusPage() {
       setLastChecked(new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }));
     } catch {
       setResult({ kind: 'error', message: 'Koneksi bermasalah. Periksa internet lalu coba lagi.' });
+    } finally {
+      setIsChecking(false);
     }
   };
 
@@ -93,11 +98,11 @@ export default function OrderStatusPage() {
             <p id="order-code-help" className="sr-only">Masukkan kode order dengan huruf, angka, atau tanda hubung.</p>
           </div>
           <button
-            onClick={lookup}
-            disabled={result.kind === 'loading' || !code.trim()}
+            onClick={() => void lookup()}
+            disabled={isChecking || !code.trim()}
             className="btn-primary px-5 py-3 rounded-xl text-sm flex items-center gap-2 justify-center disabled:opacity-50"
           >
-            {result.kind === 'loading' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+            {isChecking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
             Cek
           </button>
         </div>
@@ -130,8 +135,8 @@ export default function OrderStatusPage() {
 
             <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
               <span role="status">{lastChecked ? `Diperiksa pukul ${lastChecked}` : 'Status berhasil dimuat'}</span>
-              <button type="button" onClick={() => lookup(result.order.o_code)} disabled={result.kind === 'loading'} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 hover:border-amber-400/40 hover:text-amber-200 disabled:opacity-50">
-                <RefreshCw className={`w-3.5 h-3.5 ${result.kind === 'loading' ? 'animate-spin' : ''}`} /> Perbarui status
+              <button type="button" onClick={() => void lookup(result.order.o_code)} disabled={isChecking} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-2 hover:border-amber-400/40 hover:text-amber-200 disabled:opacity-50">
+                <RefreshCw className={`w-3.5 h-3.5 ${isChecking ? 'animate-spin' : ''}`} /> Perbarui status
               </button>
             </div>
             <p className="mt-3 text-sm text-slate-300">{result.order.o_status === 'pending' ? 'Pesanan menunggu konfirmasi pembayaran. Status ini belum berarti transaksi berhasil.' : result.order.o_status === 'processing' ? 'Pesanan sedang diproses. Tunggu pembaruan status sebelum menganggap transaksi selesai.' : result.order.o_status === 'success' ? 'Pesanan telah ditandai berhasil. Jika produk belum diterima, hubungi admin.' : 'Pesanan ditandai gagal. Hubungi admin untuk pemeriksaan lebih lanjut.'}</p>
