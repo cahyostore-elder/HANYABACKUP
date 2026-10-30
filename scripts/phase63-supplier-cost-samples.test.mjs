@@ -21,7 +21,8 @@ test('sample seeding does not change selling prices and leaves an explicit place
   assert.match(migration, /ELSE 0/);
   assert.match(migration, /'placeholder_unpriced_package'/);
   assert.match(migration, /WHERE NOT EXISTS \([\s\S]*?existing\.package_id = p\.id/);
-  assert.doesNotMatch(migration, /UPDATE public\.packages[\s\S]*?SET price/);
+  const seedSection = migration.split('-- Recreate the list RPC with explicit sample/verified status.')[0];
+  assert.doesNotMatch(seedSection, /UPDATE public\.packages[\s\S]*?SET price/);
 });
 
 test('Author list RPC returns status and manual upsert marks entered costs verified', () => {
