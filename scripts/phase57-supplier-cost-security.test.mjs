@@ -105,3 +105,9 @@ test('shared admin role helper pins search_path and schema-qualifies the profile
   assert.ok(migration.includes('REVOKE EXECUTE ON FUNCTION public.is_admin() FROM PUBLIC, anon'));
   assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated'));
 });
+
+test('blank modal input preserves an existing package cost without a false mismatch alert', () => {
+  assert.ok(admin.includes('const expectedSavedSupplierCost = supplierCost ?? (editing.id ? supplierCosts[editing.id] ?? null : null);'));
+  assert.ok(admin.includes('(saved.saved_supplier_cost == null ? null : Number(saved.saved_supplier_cost)) !== expectedSavedSupplierCost'));
+  assert.ok(admin.includes('Paket lama: kosong mempertahankan modal tersimpan.'));
+});
