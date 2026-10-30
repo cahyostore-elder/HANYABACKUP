@@ -1,5 +1,10 @@
 # Phase 61 — Production Migration Baseline and Rollout
 
+## Working source
+
+- Branch: `phase57-repair`.
+- Latest source changes remain isolated from `main` until the PR is approved and merged.
+
 ## Current known facts
 - The remote database currently has no `supabase_migrations.schema_migrations` table, so its migration history is not authoritative.
 - Live database schema is mixed: supplier-cost list/upsert RPCs and supplier-cost table lockdown are already present, but `private.is_admin()` and `admin_save_package(...)` were absent during the latest inspection.

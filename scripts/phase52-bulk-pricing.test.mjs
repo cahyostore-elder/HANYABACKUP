@@ -28,7 +28,7 @@ test('CSV export quotes values safely, is Excel-compatible, and neutralizes form
 });
 
 test('bulk pricing includes preview, explicit confirmation, failure report and CSV import/export', () => {
-  for (const text of ['Pratinjau Perubahan Harga', 'Konfirmasi & Simpan', 'setBulkReport', 'Unduh laporan CSV', 'Ekspor CSV / Excel', 'Impor CSV', "supabase.rpc('admin_update_package_pricing'"]) assert.ok(admin.includes(text), `missing ${text}`);
+  for (const text of ['Pratinjau Perubahan Harga', 'Konfirmasi & Simpan', 'setBulkReport', 'Unduh laporan CSV', 'Ekspor CSV / Excel', 'Impor CSV', "supabase.rpc('admin_apply_package_pricing_batch'"]) assert.ok(admin.includes(text), `missing ${text}`);
 });
 
 test('supplier cost remains private and pricing RPC is guarded without rewriting existing selling prices', () => {

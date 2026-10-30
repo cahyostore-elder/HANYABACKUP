@@ -73,7 +73,7 @@ test('atomic package save and bulk pricing record the admin who supplied a modal
     assert.match(body, /auth\.uid\(\) IS NULL OR NOT public\.is_admin\(\)/);
     assert.match(body, /updated_by = auth\.uid\(\)/);
   }
-  assert.match(admin, /supabase\.rpc\('admin_update_package_pricing'/);
+  assert.match(admin, /supabase\.rpc\('admin_apply_package_pricing_batch'/);
   assert.match(admin, /supabase\.rpc\('admin_save_package'/);
 });
 
