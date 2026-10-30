@@ -13,8 +13,8 @@ test('server enforces configured fees for every enabled payment method', () => {
   for (const rule of ["WHEN 'qris' THEN 300", "WHEN 'seabank' THEN 1000", "WHEN 'dana' THEN 500", "WHEN 'gopay' THEN 500", "WHEN 'ovo' THEN 500", "WHEN 'shopeepay' THEN 500"]) assert.ok(sql.includes(rule), `missing fee rule: ${rule}`);
   assert.match(sql, /v_price \+ v_payment_fee \+ v_unique_code/);
 });
-test('unique code is generated server-side within inclusive Rp200-Rp500', () => {
-  assert.match(sql, /floor\(random\(\) \* 301\)::integer \+ 200/);
+test('unique code is generated server-side within inclusive Rp200-Rp999', () => {
+  assert.match(sql, /CREATE OR REPLACE FUNCTION public\.create_topup_order\(/);\n  assert.match(sql, /FOR v_attempt IN 0\.\.799 LOOP/);\n  assert.match(sql, /v_unique_code := 200 \+ \(\(v_start_offset \+ v_attempt\) % 800\)/);\n  assert.match(sql, /IF NOT v_code_found THEN/);
   assert.match(sql, /pg_advisory_xact_lock\(hashtext\('fityorastore-order-unique-code'\)\)/);
   assert.match(sql, /o\.total_amount = v_price \+ v_payment_fee \+ v_unique_code/);
 });
