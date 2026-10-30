@@ -39,9 +39,10 @@ test('sample costs are excluded from price audit and automatic selling-price rec
   assert.match(migration, /v_new_price := round\(p_supplier_cost \* 1\.07, 0\)/);
   assert.match(migration, /supplier_cost_status, supplier_cost_source/);
   assert.match(migration, /'verified', 'author_import'/);
-  assert.match(migration, /REVOKE ALL ON FUNCTION public\\.admin_preview_package_pricing\\(\\)[\\s\\S]*?FROM PUBLIC, anon, authenticated/);
-  assert.match(migration, /REVOKE ALL ON FUNCTION public\\.admin_set_package_supplier_cost\\(uuid, numeric\\)[\\s\\S]*?FROM PUBLIC, anon, authenticated/);
-  assert.match(migration, /REVOKE ALL ON FUNCTION public\\.admin_apply_package_pricing\\(uuid\\[\\]\\)[\\s\\S]*?FROM PUBLIC, anon, authenticated/);
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.admin_preview_package_pricing()'));
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.admin_set_package_supplier_cost(uuid, numeric)'));
+  assert.ok(migration.includes('REVOKE ALL ON FUNCTION public.admin_apply_package_pricing(uuid[])'));
+  assert.equal((migration.match(/FROM PUBLIC, anon, authenticated/g) ?? []).length >= 3, true);
 });
 
 test('Author dashboard visibly labels sample prices and requires verification for CSV modal imports', () => {
