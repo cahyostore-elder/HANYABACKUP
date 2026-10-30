@@ -55,6 +55,8 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(true);
   const [maintenanceEnabled, setMaintenanceEnabled] = useState(false);
   const [maintenanceMessage, setMaintenanceMessage] = useState('Kami sedang melakukan pemeliharaan. Silakan kembali beberapa saat lagi.');
+  const [orderMaintenanceEnabled, setOrderMaintenanceEnabled] = useState(false);
+  const [orderMaintenanceMessage, setOrderMaintenanceMessage] = useState('Pemesanan sedang dihentikan sementara. Silakan coba kembali nanti.');
   const [maintenanceSaving, setMaintenanceSaving] = useState(false);
   const [maintenanceSettingsAvailable, setMaintenanceSettingsAvailable] = useState(true);
 
@@ -68,7 +70,7 @@ export default function AdminPage() {
         supabase.from('promo_banners').select('*').order('sort_order'),
         supabase.from('testimonials').select('*').order('sort_order'),
         supabase.from('faqs').select('*').order('sort_order'),
-        supabase.from('site_settings').select('maintenance_enabled, maintenance_message').eq('id', true).maybeSingle(),
+        supabase.from('site_settings').select('maintenance_enabled, maintenance_message, order_maintenance_enabled, order_maintenance_message').eq('id', true).maybeSingle(),
         supabase.rpc('admin_list_package_supplier_costs'),
       ]);
       // Maintenance settings are an optional Phase 44 database feature. Do not let a missing
@@ -91,8 +93,15 @@ export default function AdminPage() {
       if (!pr.error) setPromos((pr.data as PromoBanner[]) ?? []);
       if (!t.error) setTestimonials((t.data as Testimonial[]) ?? []);
       if (!f.error) setFaqs((f.data as Faq[]) ?? []);
-      if (settings.data) { setMaintenanceEnabled(Boolean(settings.data.maintenance_enabled)); setMaintenanceMessage(String(settings.data.maintenance_message || 'Kami sedang melakukan pemeliharaan. Silakan kembali beberapa saat lagi.')); }
-      else if (settings.error) { setMaintenanceEnabled(false); }
+      if (settings.data) {
+        setMaintenanceEnabled(Boolean(settings.data.maintenance_enabled));
+        setMaintenanceMessage(String(settings.data.maintenance_message || 'Kami sedang melakukan pemeliharaan. Silakan kembali beberapa saat lagi.'));
+        setOrderMaintenanceEnabled(Boolean(settings.data.order_maintenance_enabled));
+        setOrderMaintenanceMessage(String(settings.data.order_maintenance_message || 'Pemesanan sedang dihentikan sementara. Silakan coba kembali nanti.'));
+      } else if (settings.error) {
+        setMaintenanceEnabled(false);
+        setOrderMaintenanceEnabled(false);
+      }
     } catch (err) {
       window.alert(`Data dashboard gagal dimuat: ${err instanceof Error ? err.message : 'Koneksi atau respons server bermasalah.'}. Periksa koneksi, lalu muat ulang.`);
     } finally {
@@ -128,25 +137,32 @@ export default function AdminPage() {
     }
   }, [loadAll]);
 
-  const saveMaintenance = useCallback(async (enabled: boolean) => {
+  const saveMaintenance = useCallback(async (globalEnabled: boolean, orderEnabled: boolean) => {
     if (!maintenanceSettingsAvailable) {
-      window.alert('Pengaturan maintenance belum tersedia di Supabase. Terapkan migration Phase 44 terlebih dahulu, lalu muat ulang dashboard.');
+      window.alert('Pengaturan dua mode maintenance belum tersedia. Terapkan migrasi Phase 61 terlebih dahulu, lalu muat ulang dashboard.');
       return;
     }
     setMaintenanceSaving(true);
     try {
-      const { data, error } = await supabase.rpc('admin_set_site_maintenance', {
-        p_enabled: enabled, p_message: maintenanceMessage,
+      const { data, error } = await supabase.rpc('admin_set_maintenance_modes', {
+        p_global_enabled: globalEnabled,
+        p_global_message: maintenanceMessage,
+        p_order_enabled: orderEnabled,
+        p_order_message: orderMaintenanceMessage,
       });
-      if (error) { window.alert(`Pengaturan maintenance gagal disimpan: ${error.message}. Pastikan migrasi Phase 44 sudah diterapkan.`); return; }
-      setMaintenanceEnabled(Boolean(data?.maintenance_enabled ?? enabled));
-      window.alert(enabled ? 'Mode maintenance diaktifkan untuk seluruh pengunjung.' : 'Mode maintenance dinonaktifkan. Website kembali dibuka.');
+      if (error) {
+        window.alert(`Pengaturan maintenance gagal disimpan: ${error.message}. Pastikan migrasi Phase 61 sudah diterapkan.`);
+        return;
+      }
+      setMaintenanceEnabled(Boolean(data?.maintenance_enabled ?? globalEnabled));
+      setOrderMaintenanceEnabled(Boolean(data?.order_maintenance_enabled ?? orderEnabled));
+      window.alert('Kedua pengaturan maintenance berhasil disimpan.');
     } catch (err) {
       window.alert(`Pengaturan maintenance gagal disimpan: ${err instanceof Error ? err.message : 'Kesalahan koneksi.'}`);
     } finally {
       setMaintenanceSaving(false);
     }
-  }, [maintenanceMessage, maintenanceSettingsAvailable]);
+  }, [maintenanceMessage, orderMaintenanceMessage, maintenanceSettingsAvailable]);
 
   useEffect(() => {
     if (authLoading) {
@@ -269,7 +285,20 @@ export default function AdminPage() {
           {tab === 'promos' && <PromosTab promos={promos} onChange={loadAll} />}
           {tab === 'testimonials' && <TestimonialsTab items={testimonials} onChange={loadAll} />}
           {tab === 'faqs' && <FaqsTab items={faqs} onChange={loadAll} />}
-          {tab === 'maintenance' && <MaintenanceTab enabled={maintenanceEnabled} message={maintenanceMessage} saving={maintenanceSaving} available={maintenanceSettingsAvailable} onMessageChange={setMaintenanceMessage} onToggle={saveMaintenance} />}
+          {tab === 'maintenance' && (
+            <MaintenanceTab
+              globalEnabled={maintenanceEnabled}
+              globalMessage={maintenanceMessage}
+              orderEnabled={orderMaintenanceEnabled}
+              orderMessage={orderMaintenanceMessage}
+              saving={maintenanceSaving}
+              available={maintenanceSettingsAvailable}
+              onGlobalMessageChange={setMaintenanceMessage}
+              onOrderMessageChange={setOrderMaintenanceMessage}
+              onToggleGlobal={(enabled) => saveMaintenance(enabled, orderMaintenanceEnabled)}
+              onToggleOrders={(enabled) => saveMaintenance(maintenanceEnabled, enabled)}
+            />
+          )}
         </>
       )}
     </div>
@@ -455,23 +484,71 @@ function OrdersTab({ orders, onStatusChange, onDelete }: { orders: Order[]; onSt
 
 
 /* ============ SITE MAINTENANCE ============ */
-function MaintenanceTab({ enabled, message, saving, available, onMessageChange, onToggle }: { enabled: boolean; message: string; saving: boolean; available: boolean; onMessageChange: (value: string) => void; onToggle: (enabled: boolean) => Promise<void> }) {
+function MaintenanceTab({
+  globalEnabled, globalMessage, orderEnabled, orderMessage, saving, available,
+  onGlobalMessageChange, onOrderMessageChange, onToggleGlobal, onToggleOrders,
+}: {
+  globalEnabled: boolean;
+  globalMessage: string;
+  orderEnabled: boolean;
+  orderMessage: string;
+  saving: boolean;
+  available: boolean;
+  onGlobalMessageChange: (value: string) => void;
+  onOrderMessageChange: (value: string) => void;
+  onToggleGlobal: (enabled: boolean) => Promise<void>;
+  onToggleOrders: (enabled: boolean) => Promise<void>;
+}) {
   return (
-    <section className="glass rounded-2xl p-6 sm:p-8 max-w-3xl">
-      <div className="flex items-start gap-4 mb-6">
-        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${enabled ? 'bg-rose-500/15 text-rose-300' : 'bg-emerald-500/15 text-emerald-300'}`}><ShieldAlert className="w-6 h-6" /></div>
-        <div className="min-w-0 flex-1"><h2 className="font-display text-xl font-bold">Maintenance seluruh website</h2><p className="text-sm text-slate-400 mt-1">Saat aktif, seluruh website untuk pengunjung ditutup dan hanya menampilkan halaman “Sedang Maintenance”, termasuk beranda, katalog, login/daftar, dashboard pelanggan, checkout, dan cek status pesanan. Hanya dashboard admin yang tetap bisa dibuka untuk mengelola dan menonaktifkan maintenance.</p></div>
+    <section className="glass rounded-2xl p-6 sm:p-8 max-w-3xl space-y-7">
+      <div>
+        <div className="flex items-start gap-4 mb-4">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${globalEnabled ? 'bg-rose-500/15 text-rose-300' : 'bg-emerald-500/15 text-emerald-300'}`}><ShieldAlert className="w-6 h-6" /></div>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-bold">1. Tutup keseluruhan website</h2>
+            <p className="text-sm text-slate-400 mt-1">Pengunjung tidak dapat membuka beranda, katalog, dashboard pelanggan, checkout, atau cek status. Hanya Author/Admin yang dapat masuk dan memakai dashboard. Halaman login tetap tersedia sebagai jalur masuk Author.</p>
+          </div>
+        </div>
+        <div className={`rounded-xl border p-4 mb-4 ${globalEnabled ? 'border-rose-400/30 bg-rose-500/10' : 'border-emerald-400/25 bg-emerald-500/5'}`} role="status">
+          <p className="font-semibold">Status: {globalEnabled ? 'WEBSITE DITUTUP' : 'WEBSITE TERBUKA'}</p>
+          <p className="text-xs text-slate-400 mt-1">Mode ini menutup seluruh tampilan pelanggan. Author/Admin tetap mendapat akses.</p>
+        </div>
+        <label className="block text-sm font-medium mb-2" htmlFor="global-maintenance-message">Pesan penutupan website</label>
+        <textarea id="global-maintenance-message" disabled={!available || saving} maxLength={240} rows={3} value={globalMessage} onChange={(event) => onGlobalMessageChange(event.target.value)} className="w-full rounded-xl glass-soft p-3 text-sm focus:outline-none focus:border-amber-400/40" placeholder="Kami sedang melakukan pemeliharaan…" />
+        <div className="flex flex-wrap gap-3 mt-3">
+          <button type="button" disabled={!available || saving || globalEnabled} onClick={() => { if (window.confirm('Tutup seluruh website untuk pelanggan? Author/Admin tetap dapat masuk.')) void onToggleGlobal(true); }} className="btn-primary px-4 py-2.5 rounded-xl disabled:opacity-50">{saving ? 'Menyimpan…' : 'Tutup Website'}</button>
+          <button type="button" disabled={!available || saving || !globalEnabled} onClick={() => { if (window.confirm('Buka kembali seluruh website untuk pelanggan?')) void onToggleGlobal(false); }} className="btn-ghost px-4 py-2.5 rounded-xl disabled:opacity-50">Buka Website</button>
+        </div>
       </div>
-      {!available && <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 mb-5 text-sm text-amber-100" role="alert"><p className="font-semibold">Database maintenance belum disiapkan</p><p className="mt-1 text-xs leading-relaxed">Tabel <code>public.site_settings</code> belum tersedia atau belum dapat dibaca. Terapkan file <code>supabase/migrations/20261027050000_phase44_site_settings_maintenance_only.sql</code> di Supabase SQL Editor, lalu muat ulang dashboard. Fitur admin lain tetap bisa digunakan.</p></div>}
-      <div className={`rounded-xl border p-4 mb-5 ${enabled ? 'border-rose-400/30 bg-rose-500/10' : 'border-emerald-400/25 bg-emerald-500/5'}`} role="status"><p className="font-semibold">Status: {enabled ? 'Maintenance AKTIF' : 'Website ONLINE'}</p><p className="text-xs text-slate-400 mt-1">Perubahan disimpan ke Supabase sehingga berlaku lintas pengunjung/perangkat setelah migration diterapkan.</p></div>
-      <label className="block text-sm font-medium mb-2" htmlFor="maintenance-message">Pesan untuk pengunjung</label>
-      <textarea id="maintenance-message" disabled={!available} maxLength={240} rows={3} value={message} onChange={(event) => onMessageChange(event.target.value)} className="w-full rounded-xl glass-soft p-3 text-sm focus:outline-none focus:border-amber-400/40" placeholder="Kami sedang melakukan pemeliharaan…" />
-      <div className="text-xs text-slate-500 mt-1 mb-5">Maksimal 240 karakter. Pesan ini tampil saat maintenance aktif.</div>
-      <div className="flex flex-wrap gap-3">
-        <button type="button" disabled={!available || saving || enabled} onClick={() => { if (window.confirm('Aktifkan maintenance untuk seluruh pengunjung? Katalog dan checkout akan ditutup sampai dinonaktifkan.')) void onToggle(true); }} className="btn-primary px-4 py-2.5 rounded-xl disabled:opacity-50">{saving ? 'Menyimpan…' : 'Aktifkan Maintenance'}</button>
-        <button type="button" disabled={!available || saving || !enabled} onClick={() => { if (window.confirm('Nonaktifkan maintenance dan buka kembali website untuk pengunjung?')) void onToggle(false); }} className="btn-ghost px-4 py-2.5 rounded-xl disabled:opacity-50">Buka Kembali Website</button>
+
+      <div className="h-px bg-white/10" />
+
+      <div>
+        <div className="flex items-start gap-4 mb-4">
+          <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${orderEnabled ? 'bg-amber-500/15 text-amber-300' : 'bg-emerald-500/15 text-emerald-300'}`}><Wrench className="w-6 h-6" /></div>
+          <div className="min-w-0 flex-1">
+            <h2 className="font-display text-xl font-bold">2. Maintenance pemesanan</h2>
+            <p className="text-sm text-slate-400 mt-1">Website dan katalog tetap dapat dibuka, tetapi pelanggan tidak bisa membuat pesanan baru. Riwayat, cek status, dan penyelesaian pesanan lama tetap tersedia. Author/Admin dapat melakukan pengujian.</p>
+          </div>
+        </div>
+        <div className={`rounded-xl border p-4 mb-4 ${orderEnabled ? 'border-amber-400/30 bg-amber-500/10' : 'border-emerald-400/25 bg-emerald-500/5'}`} role="status">
+          <p className="font-semibold">Status: {orderEnabled ? 'ORDER DITUTUP' : 'ORDER AKTIF'}</p>
+          <p className="text-xs text-slate-400 mt-1">Pemblokiran order juga dijalankan di database, bukan hanya menonaktifkan tombol.</p>
+        </div>
+        <label className="block text-sm font-medium mb-2" htmlFor="order-maintenance-message">Pesan untuk pelanggan</label>
+        <textarea id="order-maintenance-message" disabled={!available || saving} maxLength={240} rows={3} value={orderMessage} onChange={(event) => onOrderMessageChange(event.target.value)} className="w-full rounded-xl glass-soft p-3 text-sm focus:outline-none focus:border-amber-400/40" placeholder="Pemesanan sedang dihentikan sementara…" />
+        <div className="flex flex-wrap gap-3 mt-3">
+          <button type="button" disabled={!available || saving || orderEnabled} onClick={() => { if (window.confirm('Hentikan pembuatan pesanan baru untuk pelanggan? Pesanan lama tetap bisa dicek.')) void onToggleOrders(true); }} className="btn-primary px-4 py-2.5 rounded-xl disabled:opacity-50">{saving ? 'Menyimpan…' : 'Tutup Pemesanan'}</button>
+          <button type="button" disabled={!available || saving || !orderEnabled} onClick={() => { if (window.confirm('Aktifkan kembali pembuatan pesanan pelanggan?')) void onToggleOrders(false); }} className="btn-ghost px-4 py-2.5 rounded-xl disabled:opacity-50">Buka Pemesanan</button>
+        </div>
       </div>
-      <p className="text-xs text-slate-500 mt-5">Maintenance global ini menutup seluruh halaman website untuk pengunjung; pengecualian hanya /admin. Ini adalah gerbang tampilan aplikasi, bukan firewall API. RLS dan RPC database tetap wajib membatasi akses langsung; jangan menaruh secret key di frontend.</p>
+
+      {!available && (
+        <div className="rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100" role="alert">
+          <p className="font-semibold">Pengaturan maintenance belum tersedia</p>
+          <p className="mt-1 text-xs leading-relaxed">Terapkan migrasi <code>supabase/migrations/20261030040000_phase61_dual_maintenance_controls.sql</code>, lalu muat ulang dashboard.</p>
+        </div>
+      )}
     </section>
   );
 }
