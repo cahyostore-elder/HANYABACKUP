@@ -8,8 +8,10 @@ const admin = read('src/pages/AdminPage.tsx');
 const pkg = JSON.parse(read('package.json'));
 
 function functionBody(name) {
-  const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const match = migration.match(new RegExp('CREATE OR REPLACE FUNCTION public\\.' + escaped + '\\\\([\\s\\S]*?AS \\\$function\\\$([\\s\\S]*?)\\\$function\\\$;', 'i'));
+  const match = migration.match(new RegExp(
+    'CREATE OR REPLACE FUNCTION public\\.' + name + '\\([\\s\\S]*?AS \\$function\\$([\\s\\S]*?)\\$function\\$;',
+    'i',
+  ));
   assert.ok(match, 'missing SQL function ' + name);
   return match[1];
 }
@@ -76,14 +78,11 @@ test('unknown supplier cost remains blank, not zero or copied from the selling p
   assert.match(admin, /supplierCosts\[p\.id\] \?\? null/);
   assert.match(admin, /supplierCost: supplierCosts\[existing\.id\] \?\? null/);
   assert.match(admin, /supplierCost === null \? 'Belum diisi'/);
-  assert.match(saveBodyOptionalPattern(), /p_supplier_cost numeric/);
+  assert.match(saveBody, /IF p_supplier_cost IS NOT NULL THEN/);
   assert.match(migration, /IF p_supplier_cost IS NOT NULL THEN/);
   assert.match(migration, /RETURN QUERY SELECT v_package_id, p_price, v_supplier_cost/);
 });
 
-function saveBodyOptionalPattern() {
-  return functionBody('admin_save_package');
-}
 
 test('Phase 57 audit runs in both focused and full release commands', () => {
   assert.equal(pkg.scripts['audit:phase57'], 'node --test scripts/phase57-supplier-cost-security.test.mjs');
