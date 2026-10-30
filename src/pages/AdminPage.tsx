@@ -721,21 +721,20 @@ function PackagesManager({
         let newSupplierCost: number | undefined;
         const rawSupplierCost = String(row.supplier_cost ?? '').trim();
         const requestedCostStatus = String(row.supplier_cost_status ?? '').trim().toLowerCase();
-        if (rawSupplierCost !== '') {
-          if (requestedCostStatus !== 'verified') {
-            errors.push({
-              row: line,
-              id,
-              message: 'Harga contoh tidak diimpor sebagai modal asli. Masukkan harga supplier aktual lalu ubah supplier_cost_status menjadi verified.',
-            });
-            return;
-          }
+        if (rawSupplierCost !== '' && requestedCostStatus === 'verified') {
           const parsedSupplierCost = parseRupiah(rawSupplierCost);
           if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) {
-            errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' });
+            errors.push({ row: line, id, message: 'Harga modal supplier terverifikasi tidak valid.' });
             return;
           }
           newSupplierCost = parsedSupplierCost;
+        } else if (rawSupplierCost !== '' && requestedCostStatus !== 'sample') {
+          errors.push({
+            row: line,
+            id,
+            message: 'Status harga supplier tidak dikenal. Gunakan sample untuk nilai contoh atau verified hanya setelah mengecek harga asli.',
+          });
+          return;
         }
         const rawPrice = String(row.price ?? '').trim();
         const price = rawPrice === '' && newSupplierCost !== undefined
@@ -745,7 +744,7 @@ function PackagesManager({
           errors.push({
             row: line,
             id,
-            message: 'Isi harga jual. Harga modal hanya boleh menghitung otomatis setelah kolom supplier_cost_status diubah menjadi verified.',
+            message: 'Isi harga jual, atau masukkan harga supplier asli dan set supplier_cost_status ke verified untuk menghitung otomatis. Nilai sample tidak dihitung.',
           });
           return;
         }
