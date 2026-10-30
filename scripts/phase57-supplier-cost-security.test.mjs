@@ -4,6 +4,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 
 const read = (file) => readFileSync(new URL('../' + file, import.meta.url), 'utf8');
 const migration = read('supabase/migrations/20261028050000_phase57_supplier_cost_rpc_security.sql');
+const lockdown = read('supabase/migrations/20261028060000_phase57b_supplier_cost_table_lockdown.sql');
 const admin = read('src/pages/AdminPage.tsx');
 const pkg = JSON.parse(read('package.json'));
 
@@ -16,20 +17,25 @@ function functionBody(name) {
   return match[1];
 }
 
-test('Phase 57 is timestamped after Phase 56 and has a rollback-safe transaction boundary', () => {
+test('Phase 57A RPC and Phase 57B table lockdown are timestamped after Phase 56 in safe order', () => {
   const files = readdirSync(new URL('../supabase/migrations/', import.meta.url)).filter((name) => name.endsWith('.sql')).sort();
   assert.ok(files.includes('20261028050000_phase57_supplier_cost_rpc_security.sql'));
+  assert.ok(files.includes('20261028060000_phase57b_supplier_cost_table_lockdown.sql'));
   assert.ok(files.indexOf('20261028050000_phase57_supplier_cost_rpc_security.sql') > files.indexOf('20261028040000_phase56_atomic_admin_package_save.sql'));
+  assert.ok(files.indexOf('20261028060000_phase57b_supplier_cost_table_lockdown.sql') > files.indexOf('20261028050000_phase57_supplier_cost_rpc_security.sql'));
   assert.match(migration, /\nBEGIN;/);
   assert.match(migration, /NOTIFY pgrst, 'reload schema'/);
   assert.match(migration, /COMMIT;\s*$/);
+  assert.match(lockdown, /\nBEGIN;/);
+  assert.match(lockdown, /COMMIT;\s*$/);
 });
 
-test('supplier cost table is not directly readable or writable by browser roles', () => {
-  assert.match(migration, /ALTER TABLE public\.package_supplier_costs ENABLE ROW LEVEL SECURITY/);
-  assert.match(migration, /REVOKE ALL ON TABLE public\.package_supplier_costs FROM PUBLIC, anon, authenticated/);
-  assert.match(migration, /GRANT ALL ON TABLE public\.package_supplier_costs TO service_role/);
-  assert.match(migration, /DROP POLICY IF EXISTS staff_manage_package_supplier_costs/);
+test('supplier cost table is locked only in Phase 57B after frontend migration', () => {
+  assert.match(lockdown, /ALTER TABLE public\.package_supplier_costs ENABLE ROW LEVEL SECURITY/);
+  assert.match(lockdown, /REVOKE ALL ON TABLE public\.package_supplier_costs FROM PUBLIC, anon, authenticated/);
+  assert.match(lockdown, /GRANT SELECT, INSERT, UPDATE, DELETE[\s\S]*TO service_role/);
+  assert.match(lockdown, /DROP POLICY IF EXISTS staff_manage_package_supplier_costs/);
+  assert.doesNotMatch(migration, /REVOKE ALL ON TABLE public\.package_supplier_costs/);
   assert.doesNotMatch(admin, /\.from\(['"]package_supplier_costs['"]\)/);
   assert.match(admin, /supabase\.rpc\('admin_list_package_supplier_costs'\)/);
 });
