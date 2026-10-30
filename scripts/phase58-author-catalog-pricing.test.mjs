@@ -51,7 +51,7 @@ test('supplier-only CSV template supports late bulk entry', () => {
 
 test('bulk and manual price updates create audit rows and preserve unknown costs', () => {
   assert.ok(migration58.includes('IF p_supplier_cost IS NOT NULL THEN'));
-  assert.ok(migration58.includes('IF v_cost IS NOT NULL THEN'));
+  assert.ok(migration58.includes('IF v_cost IS NOT NULL AND v_old_price IS DISTINCT FROM p_price THEN'));
   assert.ok(migration58.includes('RETURN QUERY SELECT p_package_id, p_price, v_cost'));
   assert.ok(migration58.includes('auth.uid()'));
 });
