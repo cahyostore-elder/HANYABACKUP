@@ -45,7 +45,8 @@ test('Author dashboard visibly labels sample prices and requires verification fo
   assert.match(admin, /supplierCostStatuses/);
   assert.match(admin, /CONTOH/);
   assert.match(admin, /belum diverifikasi/);
-  assert.match(admin, /requestedCostStatus !== 'verified'/);
+  assert.match(admin, /requestedCostStatus === 'verified'/);
+  assert.match(admin, /requestedCostStatus !== 'sample'/);
   assert.match(admin, /supplier_cost_status menjadi verified/);
   assert.match(admin, /supplier_cost_status: supplierCostStatuses\[p\.id\] \?\? 'missing'/);
   assert.match(admin, /supplier_cost: supplierCostStatuses\[p\.id\] === 'sample' \? ''/);
