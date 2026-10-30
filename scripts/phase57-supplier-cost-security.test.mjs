@@ -94,3 +94,13 @@ test('catalog displays an unknown supplier cost as not recorded, never Rp0', () 
   assert.ok(admin.includes("{supplierCosts[p.id] == null ? 'Modal belum diisi' : `Modal ${formatPrice(Number(supplierCosts[p.id]))}"));
   assert.ok(!admin.includes('Number(supplierCosts[p.id] ?? 0)'));
 });
+
+test('shared admin role helper pins search_path and schema-qualifies the profile table', () => {
+  const body = functionBody('is_admin');
+  assert.match(migration, /CREATE OR REPLACE FUNCTION public\\.is_admin\\(\\)[\\s\\S]*?SECURITY INVOKER[\\s\\S]*?SET search_path = pg_catalog/);
+  assert.match(body, /FROM public\\.profiles AS p/);
+  assert.match(body, /p\\.role IN \\('admin', 'author'\\)/);
+  assert.doesNotMatch(body, /\\bFROM\\s+profiles\\b/i);
+  assert.match(migration, /REVOKE EXECUTE ON FUNCTION public\\.is_admin\\(\\) FROM PUBLIC, anon/);
+  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\\.is_admin\\(\\) TO authenticated/);
+});
