@@ -1,12 +1,36 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checks = [];
 const add = (name, pass, detail = '') => checks.push({ name, pass: Boolean(pass), detail });
 const exists = (p) => fs.existsSync(path.join(root, p));
 const read = (p) => fs.readFileSync(path.join(root, p), 'utf8');
+const isExcludedFromGit = (relative) => {
+  if (!new RegExp(`^${relative}import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
+
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const checks = [];
+const add = (name, pass, detail = '') => checks.push({ name, pass: Boolean(pass), detail });
+const exists = (p) => fs.existsSync(path.join(root, p));
+, 'm').test(read('.gitignore'))) return false;
+  try {
+    const tracked = execFileSync('git', ['ls-files', '--', relative], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return tracked.trim().length === 0;
+  } catch {
+    // In an extracted release archive there is no Git index to inspect.
+    return !exists(relative);
+  }
+};
 const walk = (dir) => fs.readdirSync(path.join(root, dir), { withFileTypes: true }).flatMap((entry) => {
   const rel = path.posix.join(dir, entry.name);
   if (entry.isDirectory()) return ['node_modules', 'dist', '.git'].includes(entry.name) ? [] : walk(rel);
@@ -36,7 +60,7 @@ const localEnvIsPublicOnly = !exists('.env.local') || (
   !suspicious.test(localEnv) &&
   !/VITE_SUPABASE_SERVICE_ROLE_KEY|VITE_SUPABASE_SECRET_KEY/i.test(localEnv)
 );
-add('local config is public-only and node_modules/dist are excluded', !exists('.env') && localEnvIsPublicOnly && !exists('node_modules') && !exists('dist'));
+add('local config is public-only and node_modules/dist are excluded', !exists('.env') && localEnvIsPublicOnly && isExcludedFromGit('node_modules') && isExcludedFromGit('dist'));
 
 let failed = 0;
 for (const c of checks) {
