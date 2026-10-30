@@ -81,7 +81,7 @@ export default function AdminPage() {
       const costsError = costs.error;
       if (firstError || costsError) {
         const detail = firstError?.message ?? costsError?.message ?? 'Kesalahan tidak diketahui.';
-        window.alert(`Sebagian data admin gagal dimuat: ${detail}${costsError ? '\n\nPastikan migrasi Phase 52 dan Phase 57 untuk RPC harga modal sudah diterapkan.' : ''}`);
+        window.alert(`Sebagian data admin gagal dimuat: ${detail}${costsError ? '\n\nPastikan migrasi Phase 57 dan Phase 63 untuk modal supplier sudah diterapkan.' : ''}`);
       }
       if (!o.error) setOrders((o.data as Order[]) ?? []);
       if (!b.error) setBrands((b.data as Brand[]) ?? []);
@@ -635,7 +635,16 @@ function PackagesManager({
   const [filterBrand, setFilterBrand] = useState<string>('all');
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [adjustment, setAdjustment] = useState('10');
-  const [bulkPreview, setBulkPreview] = useState<Array<{ id: string; name: string; oldPrice: number; newPrice: number; supplierCost: number | null; newSupplierCost?: number; source: 'adjust' | 'import' }>>([]);
+  const [bulkPreview, setBulkPreview] = useState<Array<{
+    id: string;
+    name: string;
+    oldPrice: number;
+    newPrice: number;
+    supplierCost: number | null;
+    supplierCostStatus: 'sample' | 'verified';
+    newSupplierCost?: number;
+    source: 'adjust' | 'import';
+  }>>([]);
   const [bulkErrors, setBulkErrors] = useState<Array<{ row: number; id: string; message: string }>>([]);
   const [bulkMode, setBulkMode] = useState<'adjust' | 'import' | null>(null);
   const [bulkBusy, setBulkBusy] = useState(false);
@@ -746,7 +755,7 @@ function PackagesManager({
           oldPrice: Number(existing.price),
           newPrice: price,
           supplierCost: supplierCosts[existing.id] ?? null,
-          supplierCostStatus: supplierCostStatuses[existing.id] ?? 'sample',
+          supplierCostStatus: newSupplierCost !== undefined ? 'verified' : supplierCostStatuses[existing.id] ?? 'sample',
           ...(newSupplierCost === undefined ? {} : { newSupplierCost }),
           source: 'import',
         });
@@ -1056,7 +1065,7 @@ function PackagesManager({
         <Modal title={bulkMode === 'adjust' ? 'Pratinjau Perubahan Harga' : 'Pratinjau Impor Harga CSV'} onClose={() => { if (!bulkBusy) { setBulkMode(null); setBulkPreview([]); } }}>
           <div className="text-sm text-slate-300 space-y-1"><p><strong>{bulkPreview.length}</strong> produk valid untuk diproses.</p><p><strong>{bulkErrors.length}</strong> baris bermasalah akan dilewati dan masuk laporan.</p><p className="text-amber-200">Belum ada harga yang berubah. Perubahan hanya diterapkan setelah tombol konfirmasi.</p></div>
           {bulkErrors.length > 0 && <div className="max-h-32 overflow-auto rounded-lg border border-rose-400/20 p-3 text-xs text-rose-200 space-y-1">{bulkErrors.slice(0, 30).map((e, i) => <p key={`${e.row}-${i}`}>Baris {e.row} ({e.id || 'tanpa ID'}): {e.message}</p>)}{bulkErrors.length > 30 && <p>Dan {bulkErrors.length - 30} baris lain.</p>}</div>}
-          <div className="max-h-64 overflow-auto rounded-lg border border-white/10"><table className="w-full text-xs"><thead className="sticky top-0 bg-slate-900"><tr><th className="p-2 text-left">Produk</th><th className="p-2 text-right">Harga lama</th><th className="p-2 text-right">Harga baru</th><th className="p-2 text-right">Modal</th></tr></thead><tbody>{bulkPreview.map((r) => <tr key={r.id} className="border-t border-white/5"><td className="p-2">{r.name}</td><td className="p-2 text-right">{money(r.oldPrice)}</td><td className="p-2 text-right text-amber-200">{money(r.newPrice)}</td><td className="p-2 text-right">{r.newSupplierCost !== undefined ? money(r.newSupplierCost) : r.supplierCost === null ? 'Belum diisi' : money(r.supplierCost)}</td></tr>)}</tbody></table></div>
+          <div className="max-h-64 overflow-auto rounded-lg border border-white/10"><table className="w-full text-xs"><thead className="sticky top-0 bg-slate-900"><tr><th className="p-2 text-left">Produk</th><th className="p-2 text-right">Harga lama</th><th className="p-2 text-right">Harga baru</th><th className="p-2 text-right">Modal</th></tr></thead><tbody>{bulkPreview.map((r) => <tr key={r.id} className="border-t border-white/5"><td className="p-2">{r.name}</td><td className="p-2 text-right">{money(r.oldPrice)}</td><td className="p-2 text-right text-amber-200">{money(r.newPrice)}</td><td className="p-2 text-right">{r.newSupplierCost !== undefined ? money(r.newSupplierCost) : r.supplierCost === null ? 'Belum diisi' : r.supplierCostStatus === 'sample' ? `CONTOH ${money(r.supplierCost)}` : money(r.supplierCost)}</td></tr>)}</tbody></table></div>
           {!bulkBusy && bulkReport.length === 0 && <div className="flex gap-2"><button onClick={() => { setBulkMode(null); setBulkPreview([]); }} className="btn-ghost px-4 py-2 rounded-lg flex-1">Batal</button><button onClick={() => void applyBulk()} disabled={!bulkPreview.length} className="btn-primary px-4 py-2 rounded-lg flex-1 disabled:opacity-50">Konfirmasi & Simpan</button></div>}
           {bulkBusy && <p className="text-sm text-amber-200">Menyimpan perubahan dan memeriksa hasil…</p>}
           {bulkReport.length > 0 && <div className="space-y-2"><p className="font-semibold">Laporan hasil: {bulkReport.filter((r) => r.status === 'Berhasil').length} berhasil, {bulkReport.filter((r) => r.status === 'Gagal').length} gagal.</p><div className="max-h-36 overflow-auto text-xs space-y-1">{bulkReport.map((r, i) => <p key={`${r.id}-${i}`} className={r.status === 'Berhasil' ? 'text-emerald-300' : 'text-rose-300'}>{r.status} — {r.name}: {r.message}</p>)}</div><button onClick={exportReport} className="btn-ghost px-3 py-2 rounded-lg text-sm flex items-center gap-2"><Download className="w-4 h-4"/> Unduh laporan CSV</button><button onClick={() => { setBulkMode(null); setBulkPreview([]); setBulkErrors([]); setBulkReport([]); }} className="btn-primary px-4 py-2 rounded-lg w-full">Selesai</button></div>}
