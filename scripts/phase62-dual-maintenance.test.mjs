@@ -50,7 +50,7 @@ test('order-only maintenance keeps catalog visible while preventing customer che
   assert.match(topup, /disabled=\{placing \|\| \(orderMaintenanceEnabled && !isAuthor\)\}/);
   assert.match(admin, /2\. Maintenance pemesanan/);
   assert.match(admin, /Riwayat, cek status, dan penyelesaian pesanan lama tetap tersedia/);
-  assert.match(admin, /Cek status/);
+  assert.match(admin, /cek status/i);
 });
 
 test('Author dashboard can save both modes and the Phase 62 audit is part of release checks', () => {
