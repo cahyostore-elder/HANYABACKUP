@@ -29,6 +29,15 @@ test('password controls are accessible and do not submit the form', () => {
   }
 });
 
+test('new account profile uses signup metadata and preserves a draft during profile refresh', () => {
+  const auth = read('src/context/AuthContext.tsx');
+  const dashboard = read('src/pages/DashboardPage.tsx');
+  assert.match(auth, /initialDisplayName\.trim\(\)\.slice\(0, 40\)/);
+  assert.match(auth, /user_metadata\?\.display_name/);
+  assert.match(dashboard, /if \(profile && !profileDirty\)/);
+  assert.match(dashboard, /\[profile, profileDirty\]/);
+});
+
 test('mobile navigation can be dismissed with Escape and exposes navigation landmarks', () => {
   assert.match(navbar, /if \(event\.key === 'Escape'\) setMobileOpen\(false\)/);
   assert.match(navbar, /aria-label="Navigasi utama"/);
