@@ -626,8 +626,9 @@ function PackagesManager({
         setBulkReport([...invalidRows, ...failure]);
         setSelectedIds(bulkPreview.map((item) => item.id));
       } else {
-        const savedRows = Array.isArray(data) ? data : data ? [data] : [];
-        const savedById = new Map(savedRows.map((row: any) => [row.package_id, row]));
+        type SavedBulkRow = { package_id: string; price: number; supplier_cost: number | null };
+        const savedRows = (Array.isArray(data) ? data : data ? [data] : []) as SavedBulkRow[];
+        const savedById = new Map<string, SavedBulkRow>(savedRows.map((row) => [row.package_id, row]));
         const report = bulkPreview.map((item) => {
           const saved = savedById.get(item.id) as { price?: number; supplier_cost?: number | null } | undefined;
           const matches = Boolean(saved)
@@ -635,7 +636,7 @@ function PackagesManager({
             && (item.newSupplierCost === undefined || Number(saved?.supplier_cost) === item.newSupplierCost);
           return matches
             ? { id: item.id, name: item.name, status: 'Berhasil', message: `Harga jual ${money(item.newPrice)}${item.newSupplierCost === undefined ? '' : `; modal ${money(item.newSupplierCost)}`}` }
-            : { id: item.id, name: item.name, status: 'Perlu diperiksa', message: 'Hasil RPC tidak cocok dengan pratinjau. Muat ulang katalog dan periksa Supabase sebelum mengulangi batch.' };
+            : { id: item.id, name: item.name, status: 'Gagal', message: 'Hasil RPC tidak cocok dengan pratinjau. Muat ulang katalog dan periksa Supabase sebelum mengulangi batch.' };
         });
         setBulkReport([...invalidRows, ...report]);
         setSelectedIds(report.filter((item) => item.status !== 'Berhasil').map((item) => item.id));
@@ -650,7 +651,7 @@ function PackagesManager({
       }
     } catch (error) {
       setBulkReport([...invalidRows, ...bulkPreview.map((item) => ({
-        id: item.id, name: item.name, status: 'Perlu diperiksa',
+        id: item.id, name: item.name, status: 'Gagal',
         message: `Respons batch tidak pasti: ${error instanceof Error ? error.message : 'Kesalahan koneksi'}. Muat ulang katalog sebelum mengulangi proses.`,
       }))]);
       try { await onChange(); } catch { /* Keep the uncertainty report visible. */ }

@@ -20,7 +20,6 @@ test('bulk pricing is a single authenticated admin RPC with bounded payload size
 
 test('batch validates IDs, duplicate rows, integer rupiah values, and optional supplier cost zero', () => {
   for (const token of ["v_item ? 'id'", "v_item ? 'price'", 'v_package_id = ANY(v_seen_ids)', 'v_price <> trunc(v_price)', 'v_supplier_cost < 0', 'v_supplier_cost <> trunc(v_supplier_cost)', "jsonb_typeof(v_item->'supplier_cost') <> 'number'"]) assert.ok(sql.includes(token));
-  assert.ok(sql.includes('CHECK') === false || true);
 });
 
 test('batch locks rows, updates supplier cost and sale price together, and writes audit rows', () => {
