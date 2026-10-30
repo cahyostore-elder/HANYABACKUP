@@ -49,6 +49,7 @@ export default function AdminPage() {
   const [categories, setCategories] = useState<TopupCategory[]>([]);
   const [packages, setPackages] = useState<Package[]>([]);
   const [supplierCosts, setSupplierCosts] = useState<Record<string, number>>({});
+  const [supplierCostStatuses, setSupplierCostStatuses] = useState<Record<string, 'sample' | 'verified'>>({});
   const [promos, setPromos] = useState<PromoBanner[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [faqs, setFaqs] = useState<Faq[]>([]);
@@ -87,8 +88,16 @@ export default function AdminPage() {
       if (!c.error) setCategories((c.data as TopupCategory[]) ?? []);
       if (!p.error) setPackages((p.data as Package[]) ?? []);
       if (!costs.error) {
-        const supplierCostRows = (costs.data ?? []) as Array<{ package_id: string; supplier_cost: number | string }>;
+        const supplierCostRows = (costs.data ?? []) as Array<{
+          package_id: string;
+          supplier_cost: number | string;
+          supplier_cost_status?: 'sample' | 'verified';
+        }>;
         setSupplierCosts(Object.fromEntries(supplierCostRows.map((row) => [String(row.package_id), Number(row.supplier_cost)])));
+        setSupplierCostStatuses(Object.fromEntries(supplierCostRows.map((row) => [
+          String(row.package_id),
+          row.supplier_cost_status === 'verified' ? 'verified' : 'sample',
+        ])));
       }
       if (!pr.error) setPromos((pr.data as PromoBanner[]) ?? []);
       if (!t.error) setTestimonials((t.data as Testimonial[]) ?? []);
@@ -280,7 +289,7 @@ export default function AdminPage() {
           )}
           {tab === 'orders' && <OrdersTab orders={orders} onStatusChange={updateOrderStatus} onDelete={deleteOrder} />}
           {tab === 'products' && (
-            <ProductsTab packages={packages} supplierCosts={supplierCosts} brands={brands} categories={categories} onChange={loadAll} />
+            <ProductsTab packages={packages} supplierCosts={supplierCosts} supplierCostStatuses={supplierCostStatuses} brands={brands} categories={categories} onChange={loadAll} />
           )}
           {tab === 'promos' && <PromosTab promos={promos} onChange={loadAll} />}
           {tab === 'testimonials' && <TestimonialsTab items={testimonials} onChange={loadAll} />}
@@ -561,9 +570,14 @@ function MaintenanceTab({
 
 /* ============ PRODUCTS (Kelola Produk) ============ */
 function ProductsTab({
-  packages, supplierCosts, brands, categories, onChange,
+  packages, supplierCosts, supplierCostStatuses, brands, categories, onChange,
 }: {
-  packages: Package[]; supplierCosts: Record<string, number>; brands: Brand[]; categories: TopupCategory[]; onChange: () => Promise<void>;
+  packages: Package[];
+  supplierCosts: Record<string, number>;
+  supplierCostStatuses: Record<string, 'sample' | 'verified'>;
+  brands: Brand[];
+  categories: TopupCategory[];
+  onChange: () => Promise<void>;
 }) {
   const [subTab, setSubTab] = useState<'packages' | 'brands' | 'categories'>('packages');
 
@@ -590,7 +604,7 @@ function ProductsTab({
         </button>
       </div>
       {subTab === 'packages' ? (
-        <PackagesManager packages={packages} supplierCosts={supplierCosts} brands={brands} onChange={onChange} />
+        <PackagesManager packages={packages} supplierCosts={supplierCosts} supplierCostStatuses={supplierCostStatuses} brands={brands} onChange={onChange} />
       ) : subTab === 'brands' ? (
         <BrandsManager brands={brands} categories={categories} onChange={onChange} />
       ) : (
@@ -601,13 +615,21 @@ function ProductsTab({
 }
 
 function PackagesManager({
-  packages, supplierCosts, brands, onChange,
+  packages, supplierCosts, supplierCostStatuses, brands, onChange,
 }: {
-  packages: Package[]; supplierCosts: Record<string, number>; brands: Brand[]; onChange: () => Promise<void>;
+  packages: Package[];
+  supplierCosts: Record<string, number>;
+  supplierCostStatuses: Record<string, 'sample' | 'verified'>;
+  brands: Brand[];
+  onChange: () => Promise<void>;
 }) {
   // Keep the price as text while typing. Converting each keystroke to Number can
   // make mobile numeric inputs jump/reset and prevents reliable multi-digit entry.
-  type PackageEditor = Omit<Partial<Package>, 'price'> & { price?: number | string; supplier_cost?: number | string };
+  type PackageEditor = Omit<Partial<Package>, 'price'> & {
+    price?: number | string;
+    supplier_cost?: number | string;
+    supplier_cost_status?: 'sample' | 'verified';
+  };
   const [editing, setEditing] = useState<PackageEditor | null>(null);
   const [saving, setSaving] = useState(false);
   const [filterBrand, setFilterBrand] = useState<string>('all');
@@ -629,18 +651,43 @@ function PackagesManager({
     const anchor = document.createElement('a'); anchor.href = url; anchor.download = filename; anchor.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  const exportCsv = () => downloadCsv(packages.map((p) => ({ id: p.id, brand: brandName(p.brand_id), package_name: p.name, supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]), price: p.price })), 'fityorastore-harga-produk.csv');
+  const exportCsv = () => downloadCsv(
+    packages.map((p) => ({
+      id: p.id,
+      brand: brandName(p.brand_id),
+      package_name: p.name,
+      supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]),
+      supplier_cost_status: supplierCostStatuses[p.id] ?? 'missing',
+      price: p.price,
+    })),
+    'fityorastore-harga-produk.csv',
+    ['id', 'brand', 'package_name', 'supplier_cost', 'supplier_cost_status', 'price'],
+  );
   const exportSupplierCsv = () => downloadCsv(
-    packages.map((p) => ({ id: p.id, brand: brandName(p.brand_id), package_name: p.name, supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]) })),
+    packages.map((p) => ({
+      id: p.id,
+      brand: brandName(p.brand_id),
+      package_name: p.name,
+      supplier_cost: supplierCosts[p.id] == null ? '' : Number(supplierCosts[p.id]),
+      supplier_cost_status: supplierCostStatuses[p.id] ?? 'missing',
+    })),
     'fityorastore-template-modal-supplier.csv',
-    ['id', 'brand', 'package_name', 'supplier_cost'],
+    ['id', 'brand', 'package_name', 'supplier_cost', 'supplier_cost_status'],
   );
 
   const prepareAdjustment = () => {
     const amount = parseRupiah(adjustment);
     if (selectedPackages.length === 0) { window.alert('Pilih minimal satu produk terlebih dahulu.'); return; }
     if (amount === null || amount > 99_999_999) { window.alert('Nominal perubahan harus angka rupiah bulat antara Rp0 dan Rp99.999.999.'); return; }
-    const preview = selectedPackages.map((p) => ({ id: p.id, name: `${brandName(p.brand_id)} — ${p.name}`, oldPrice: Number(p.price), newPrice: Number(p.price) + amount, supplierCost: supplierCosts[p.id] ?? null, source: 'adjust' as const }));
+    const preview = selectedPackages.map((p) => ({
+      id: p.id,
+      name: `${brandName(p.brand_id)} — ${p.name}`,
+      oldPrice: Number(p.price),
+      newPrice: Number(p.price) + amount,
+      supplierCost: supplierCosts[p.id] ?? null,
+      supplierCostStatus: supplierCostStatuses[p.id] ?? 'sample',
+      source: 'adjust' as const,
+    }));
     if (preview.some((x) => !Number.isSafeInteger(x.oldPrice) || x.oldPrice < 0 || x.newPrice > 99_999_999)) { window.alert('Ada harga yang tidak valid atau melewati batas maksimum.'); return; }
     setBulkErrors([]); setBulkReport([]); setBulkMode('adjust'); setBulkPreview(preview);
   };
@@ -663,9 +710,22 @@ function PackagesManager({
         const existing = known.get(id);
         if (!existing) { errors.push({ row: line, id, message: 'ID tidak ditemukan pada katalog saat ini.' }); return; }
         let newSupplierCost: number | undefined;
-        if (String(row.supplier_cost ?? '').trim() !== '') {
-          const parsedSupplierCost = parseRupiah(row.supplier_cost);
-          if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) { errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' }); return; }
+        const rawSupplierCost = String(row.supplier_cost ?? '').trim();
+        const requestedCostStatus = String(row.supplier_cost_status ?? '').trim().toLowerCase();
+        if (rawSupplierCost !== '') {
+          if (requestedCostStatus !== 'verified') {
+            errors.push({
+              row: line,
+              id,
+              message: 'Harga contoh tidak diimpor sebagai modal asli. Masukkan harga supplier aktual lalu ubah supplier_cost_status menjadi verified.',
+            });
+            return;
+          }
+          const parsedSupplierCost = parseRupiah(rawSupplierCost);
+          if (parsedSupplierCost === null || parsedSupplierCost > 99_999_999) {
+            errors.push({ row: line, id, message: 'Harga modal supplier tidak valid.' });
+            return;
+          }
           newSupplierCost = parsedSupplierCost;
         }
         const rawPrice = String(row.price ?? '').trim();
@@ -673,10 +733,23 @@ function PackagesManager({
           ? Math.round(newSupplierCost * 1.07)
           : parseRupiah(rawPrice);
         if (price === null || price > 99_999_999) {
-          errors.push({ row: line, id, message: 'Isi harga jual, atau isi harga modal supplier agar harga jual dihitung otomatis dengan markup 7%.' });
+          errors.push({
+            row: line,
+            id,
+            message: 'Isi harga jual. Harga modal hanya boleh menghitung otomatis setelah kolom supplier_cost_status diubah menjadi verified.',
+          });
           return;
         }
-        preview.push({ id, name: `${brandName(existing.brand_id)} — ${existing.name}`, oldPrice: Number(existing.price), newPrice: price, supplierCost: supplierCosts[existing.id] ?? null, ...(newSupplierCost === undefined ? {} : { newSupplierCost }), source: 'import' });
+        preview.push({
+          id,
+          name: `${brandName(existing.brand_id)} — ${existing.name}`,
+          oldPrice: Number(existing.price),
+          newPrice: price,
+          supplierCost: supplierCosts[existing.id] ?? null,
+          supplierCostStatus: supplierCostStatuses[existing.id] ?? 'sample',
+          ...(newSupplierCost === undefined ? {} : { newSupplierCost }),
+          source: 'import',
+        });
       });
       setBulkErrors(errors); setBulkReport([]); setBulkMode('import'); setBulkPreview(preview);
       if (!preview.length) window.alert(`Tidak ada baris valid untuk dipratinjau. ${errors.length} baris bermasalah.`);
@@ -923,7 +996,11 @@ function PackagesManager({
       </div>
       <div className="glass rounded-2xl p-4 space-y-3">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-          <div><h3 className="font-semibold">Manajemen Harga Massal</h3><p className="text-xs text-slate-400 mt-1">Harga modal supplier dipisahkan dari harga jual. Semua perubahan ditinjau sebelum disimpan.</p></div>
+          <div>
+            <h3 className="font-semibold">Manajemen Harga Massal</h3>
+            <p className="text-xs text-slate-400 mt-1">Harga modal supplier dipisahkan dari harga jual. Semua perubahan ditinjau sebelum disimpan.</p>
+            <p className="text-xs text-amber-300 mt-1">Harga berlabel CONTOH belum terverifikasi dan tidak boleh dipakai sebagai modal asli. Untuk impor modal, ubah supplier_cost_status menjadi verified setelah mengisi harga supplier sebenarnya.</p>
+          </div>
           <div className="flex flex-wrap gap-2">
             <button onClick={exportCsv} className="btn-ghost px-3 py-2 rounded-lg text-xs flex items-center gap-1.5"><Download className="w-4 h-4"/> Ekspor CSV / Excel</button>
             <button onClick={exportSupplierCsv} className="btn-ghost px-3 py-2 rounded-lg text-xs flex items-center gap-1.5"><Download className="w-4 h-4"/> Template Modal Supplier</button>
@@ -948,9 +1025,26 @@ function PackagesManager({
               </div>
               <div className="text-xs text-slate-500 mt-0.5">{brandName(p.brand_id)} • #{p.sort_order}</div>
             </div>
-            <div className="text-right shrink-0"><div className="text-sm font-semibold text-amber-300">{formatPrice(p.price)}</div><div className="text-[10px] text-slate-500">{supplierCosts[p.id] == null ? 'Modal belum diisi' : `Modal ${formatPrice(Number(supplierCosts[p.id]))} · Margin ${formatPrice(Number(p.price) - Number(supplierCosts[p.id]))}`}</div></div>
+            <div className="text-right shrink-0">
+              <div className="text-sm font-semibold text-amber-300">{formatPrice(p.price)}</div>
+              <div className={`text-[10px] ${supplierCostStatuses[p.id] === 'sample' ? 'text-amber-300' : 'text-slate-500'}`}>
+                {supplierCosts[p.id] == null
+                  ? 'Modal supplier belum diisi'
+                  : supplierCostStatuses[p.id] === 'sample'
+                    ? `CONTOH ${formatPrice(Number(supplierCosts[p.id]))} · belum diverifikasi`
+                    : `Modal asli ${formatPrice(Number(supplierCosts[p.id]))} · tersimpan`}
+              </div>
+            </div>
             <div className="flex gap-1 shrink-0">
-              <button aria-label={`Edit paket ${p.name}`} onClick={() => setEditing({ ...p, supplier_cost: supplierCosts[p.id] ?? '' })} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-amber-300 transition"><Pencil className="w-4 h-4" /></button>
+              <button
+                aria-label={`Edit paket ${p.name}`}
+                onClick={() => setEditing({
+                  ...p,
+                  supplier_cost: supplierCostStatuses[p.id] === 'sample' ? '' : supplierCosts[p.id] ?? '',
+                  supplier_cost_status: supplierCostStatuses[p.id] ?? 'sample',
+                })}
+                className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-amber-300 transition"
+              ><Pencil className="w-4 h-4" /></button>
               <button aria-label={`Hapus paket ${p.name}`} onClick={() => remove(p.id)} className="p-2 rounded-lg hover:bg-white/5 text-slate-400 hover:text-rose-300 transition"><Trash2 className="w-4 h-4" /></button>
             </div>
           </div>
@@ -987,9 +1081,17 @@ function PackagesManager({
             <input maxLength={2000} value={editing.description ?? ''} onChange={(e) => setEditing({ ...editing, description: e.target.value })} className="inp" />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Harga modal supplier (Rp)">
-              <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.supplier_cost ?? '')} onChange={(e) => setEditing({ ...editing, supplier_cost: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga modal supplier dalam rupiah" placeholder="Kosong jika belum ada data" />
-              <p className="mt-1 text-[11px] leading-relaxed text-slate-500">Paket baru: kosong berarti belum dicatat. Paket lama: kosong mempertahankan modal tersimpan. Masukkan 0 hanya jika harga supplier memang Rp0.</p>
+            <Field label="Harga modal supplier asli (Rp)">
+              <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.supplier_cost ?? '')} onChange={(e) => setEditing({ ...editing, supplier_cost: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga modal supplier asli dalam rupiah" placeholder="Masukkan harga dari supplier" />
+              {editing.supplier_cost_status === 'sample' ? (
+                <p className="mt-1 text-[11px] leading-relaxed text-amber-300">
+                  Nilai contoh tersimpan: {formatPrice(Number(supplierCosts[String(editing.id)] ?? 0))}. Ini bukan harga asli dan tidak dipakai menghitung harga jual. Masukkan harga supplier sebenarnya untuk menggantinya.
+                </p>
+              ) : (
+                <p className="mt-1 text-[11px] leading-relaxed text-slate-500">
+                  Kosong berarti tidak mengubah modal tersimpan. Masukkan 0 hanya bila supplier memang memberi harga Rp0.
+                </p>
+              )}
             </Field>
             <Field label="Harga jual (Rp)">
               <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" value={String(editing.price ?? '')} onChange={(e) => setEditing({ ...editing, price: e.target.value.replace(/[^\d]/g, '') })} className="inp" aria-label="Harga paket dalam rupiah" placeholder="Contoh: 15000" />
