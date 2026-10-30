@@ -607,43 +607,53 @@ function PackagesManager({
     const invalid = bulkPreview.some((r) => !Number.isSafeInteger(r.newPrice) || r.newPrice < 0 || r.newPrice > 99_999_999 || (r.newSupplierCost !== undefined && (!Number.isSafeInteger(r.newSupplierCost) || r.newSupplierCost < 0 || r.newSupplierCost > 99_999_999)));
     if (invalid) { window.alert('Pratinjau berisi harga tidak valid. Tidak ada perubahan yang disimpan.'); return; }
     const label = bulkMode === 'adjust' ? `mengubah harga ${bulkPreview.length} produk` : `mengimpor harga ${bulkPreview.length} produk`;
-    if (!window.confirm(`Konfirmasi: ${label}?\n\nPerubahan baru diterapkan setelah Anda menyetujui ini. Pastikan pratinjau harga sudah benar.`)) return;
+    if (!window.confirm(`Konfirmasi: ${label}?\\n\\nSeluruh baris valid akan disimpan dalam satu transaksi. Jika satu baris gagal, seluruh batch dibatalkan.`)) return;
+
     setBulkBusy(true);
-    const report = [...bulkErrors.map((e) => ({ id: e.id || `baris ${e.row}`, name: `Baris ${e.row}`, status: 'Gagal', message: e.message }))];
+    const invalidRows = bulkErrors.map((e) => ({ id: e.id || `baris ${e.row}`, name: `Baris ${e.row}`, status: 'Gagal', message: e.message }));
+    const payload = bulkPreview.map((item) => ({
+      id: item.id,
+      price: item.newPrice,
+      ...(item.newSupplierCost === undefined ? {} : { supplier_cost: item.newSupplierCost }),
+    }));
     try {
-      for (const item of bulkPreview) {
-        try {
-          const { data, error } = await supabase.rpc('admin_update_package_pricing', { p_package_id: item.id, p_price: item.newPrice, p_supplier_cost: item.newSupplierCost ?? null });
-          const saved = Array.isArray(data) ? data[0] : data;
-          if (error || !saved) report.push({ id: item.id, name: item.name, status: 'Gagal', message: error?.message ?? 'Tidak ada baris berubah; periksa sesi dan kebijakan RLS admin.' });
-          else if (Number(saved.price) !== item.newPrice || (item.newSupplierCost !== undefined && Number(saved.supplier_cost) !== item.newSupplierCost)) report.push({ id: item.id, name: item.name, status: 'Gagal', message: 'Nilai tersimpan tidak cocok dengan pratinjau. Muat ulang dan periksa database.' });
-          else report.push({ id: item.id, name: item.name, status: 'Berhasil', message: `Harga jual ${money(item.newPrice)}${item.newSupplierCost === undefined ? '' : `; modal ${money(item.newSupplierCost)}`}` });
-        } catch (error) {
-          report.push({ id: item.id, name: item.name, status: 'Gagal', message: error instanceof Error ? error.message : 'Kesalahan jaringan tak terduga.' });
-        }
+      const { data, error } = await supabase.rpc('admin_apply_package_pricing_batch', { p_items: payload });
+      if (error) {
+        const failure = bulkPreview.map((item) => ({
+          id: item.id, name: item.name, status: 'Gagal',
+          message: `Batch dibatalkan oleh database: ${error.message}. Periksa koneksi dan data sebelum mencoba ulang.`,
+        }));
+        setBulkReport([...invalidRows, ...failure]);
+        setSelectedIds(bulkPreview.map((item) => item.id));
+      } else {
+        const savedRows = Array.isArray(data) ? data : data ? [data] : [];
+        const savedById = new Map(savedRows.map((row: any) => [row.package_id, row]));
+        const report = bulkPreview.map((item) => {
+          const saved = savedById.get(item.id) as { price?: number; supplier_cost?: number | null } | undefined;
+          const matches = Boolean(saved)
+            && Number(saved?.price) === item.newPrice
+            && (item.newSupplierCost === undefined || Number(saved?.supplier_cost) === item.newSupplierCost);
+          return matches
+            ? { id: item.id, name: item.name, status: 'Berhasil', message: `Harga jual ${money(item.newPrice)}${item.newSupplierCost === undefined ? '' : `; modal ${money(item.newSupplierCost)}`}` }
+            : { id: item.id, name: item.name, status: 'Perlu diperiksa', message: 'Hasil RPC tidak cocok dengan pratinjau. Muat ulang katalog dan periksa Supabase sebelum mengulangi batch.' };
+        });
+        setBulkReport([...invalidRows, ...report]);
+        setSelectedIds(report.filter((item) => item.status !== 'Berhasil').map((item) => item.id));
       }
-      setBulkReport(report);
-      const retryableIds = report
-        .filter((item) => item.status === 'Gagal' && packages.some((pkg) => pkg.id === item.id))
-        .map((item) => item.id);
-      setSelectedIds(retryableIds);
       try {
         await onChange();
-      } catch (error) {
+      } catch (refreshError) {
         setBulkReport((previous) => [...previous, {
-          id: 'catalog-refresh',
-          name: 'Refresh katalog',
-          status: 'Gagal',
-          message: error instanceof Error ? error.message : 'Harga diproses, tetapi katalog gagal dimuat ulang. Refresh sebelum mencoba ulang.',
+          id: 'catalog-refresh', name: 'Refresh katalog', status: 'Gagal',
+          message: refreshError instanceof Error ? refreshError.message : 'Batch diproses, tetapi katalog gagal dimuat ulang. Refresh sebelum operasi berikutnya.',
         }]);
       }
     } catch (error) {
-      setBulkReport((previous) => [...previous, {
-        id: 'bulk-operation',
-        name: 'Proses harga massal',
-        status: 'Gagal',
-        message: error instanceof Error ? error.message : 'Operasi harga massal gagal. Periksa koneksi dan laporan hasil.',
-      }]);
+      setBulkReport([...invalidRows, ...bulkPreview.map((item) => ({
+        id: item.id, name: item.name, status: 'Perlu diperiksa',
+        message: `Respons batch tidak pasti: ${error instanceof Error ? error.message : 'Kesalahan koneksi'}. Muat ulang katalog sebelum mengulangi proses.`,
+      }))]);
+      try { await onChange(); } catch { /* Keep the uncertainty report visible. */ }
     } finally {
       setBulkBusy(false);
     }
