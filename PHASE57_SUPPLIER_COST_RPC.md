@@ -35,6 +35,8 @@ Pastikan migration Phase 52 (tabel package_supplier_costs) dan Phase 56 (admin_s
 
 **Penting:** jangan menerapkan Tahap B sebelum frontend production memakai RPC. Jika menggunakan supabase db push, tool dapat menerapkan semua migration yang masih pending sekaligus; jalankan Tahap A dan B secara terkontrol sesuai urutan di atas.
 
+CI release juga menyelaraskan tool TypeScript ESLint, memperbarui lockfile dalam rentang versi yang diizinkan, lalu menjalankan `npm audit --audit-level=low`. Rilis dihentikan bila masih ada advisory dengan severity low atau lebih tinggi.
+
 ## Pemeriksaan source
 
 ```bash
