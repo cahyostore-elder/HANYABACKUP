@@ -73,9 +73,18 @@ function clearStoredOrderRequestId(storageKey: string): void {
   }
 }
 
-export default function TopupPage({ category: categorySlug }: { category: string }) {
+export default function TopupPage({
+  category: categorySlug,
+  orderMaintenanceEnabled = false,
+  orderMaintenanceMessage = 'Pemesanan sedang dihentikan sementara. Silakan coba kembali nanti.',
+}: {
+  category: string;
+  orderMaintenanceEnabled?: boolean;
+  orderMaintenanceMessage?: string;
+}) {
   const { navigate } = useRoute();
-  const { session } = useAuth();
+  const { session, profile } = useAuth();
+  const isAuthor = profile?.role === 'author' || profile?.role === 'admin';
 
   const [category, setCategory] = useState<TopupCategory | null>(null);
   const [brands, setBrands] = useState<Brand[]>([]);
@@ -319,6 +328,10 @@ export default function TopupPage({ category: categorySlug }: { category: string
       navigate('/login');
       return;
     }
+    if (orderMaintenanceEnabled && !isAuthor) {
+      setError(orderMaintenanceMessage);
+      return;
+    }
     if (placingLock.current || !validateTarget() || !category || !selectedBrand || !selectedPackage || Number(selectedPackage.price) <= 0 || !selectedMethod) {
       if (selectedPackage && Number(selectedPackage.price) <= 0) setError('Paket ini belum bisa dipesan karena harga belum ditetapkan admin.');
       return;
@@ -409,6 +422,14 @@ export default function TopupPage({ category: categorySlug }: { category: string
           <p className="text-slate-400 text-sm">Pesanan diproses setelah pembayaran terverifikasi.</p>
         </div>
       </div>
+
+      {orderMaintenanceEnabled && !isAuthor && (
+        <div role="alert" className="mt-5 rounded-xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm text-amber-100">
+          <p className="font-semibold">Pemesanan sedang ditutup sementara</p>
+          <p className="mt-1 text-xs leading-relaxed text-amber-100/80">{orderMaintenanceMessage}</p>
+          <p className="mt-2 text-xs text-slate-400">Katalog tetap dapat dilihat. Pesanan yang sudah dibuat dan cek status tetap dapat diakses.</p>
+        </div>
+      )}
 
       {/* Stepper */}
       <div className="flex items-center gap-1 mt-6 mb-6 text-xs">
@@ -853,13 +874,15 @@ export default function TopupPage({ category: categorySlug }: { category: string
 
             <button
               onClick={placeOrder}
-              disabled={placing}
+              disabled={placing || (orderMaintenanceEnabled && !isAuthor)}
               className="btn-primary w-full mt-5 px-5 py-3 rounded-xl flex items-center justify-center gap-2 disabled:opacity-60"
             >
               {placing ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" /> Memproses…
                 </>
+              ) : orderMaintenanceEnabled && !isAuthor ? (
+                <>Pemesanan Ditutup Sementara</>
               ) : (
                 <>
                   <Check className="w-4 h-4" /> Buat Pesanan & Lihat Instruksi
