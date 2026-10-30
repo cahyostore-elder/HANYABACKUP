@@ -112,7 +112,7 @@ test('shared admin role helper pins search_path and schema-qualifies the profile
   assert.ok(body.includes('SELECT private.is_admin()'));
   assert.ok(migration.includes('REVOKE EXECUTE ON FUNCTION public.is_admin() FROM PUBLIC, anon'));
   assert.ok(migration.includes('GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated'));
-  assert.match(migration, /CHECK \(supplier_cost >= 0\)/);
+  assert.ok(migration.includes('CHECK (supplier_cost >= 0)'));
 });
 
 test('blank modal input preserves an existing package cost without a false mismatch alert', () => {
