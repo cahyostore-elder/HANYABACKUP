@@ -1,4 +1,4 @@
-import { AuthProvider } from '@/context/AuthContext';
+import { AuthProvider, useAuth } from '@/context/AuthContext';
 import AnimatedBackground from '@/components/AnimatedBackground';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -12,10 +12,12 @@ import OrderStatusPage from '@/pages/OrderStatusPage';
 import { useRoute, parseRoute } from '@/lib/router';
 import { useEffect, useState } from 'react';
 import { Wrench } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
-import { supabaseConfigured } from '@/lib/supabase';
+import { supabase, supabaseConfigured } from '@/lib/supabase';
 
-function Routes() {
+function Routes({ orderMaintenanceEnabled, orderMaintenanceMessage }: {
+  orderMaintenanceEnabled: boolean;
+  orderMaintenanceMessage: string;
+}) {
   const { path } = useRoute();
   const route = parseRoute(path);
 
@@ -23,7 +25,13 @@ function Routes() {
     case 'home':
       return <HomePage />;
     case 'topup':
-      return <TopupPage category={route.params.category || 'game'} />;
+      return (
+        <TopupPage
+          category={route.params.category || 'game'}
+          orderMaintenanceEnabled={orderMaintenanceEnabled}
+          orderMaintenanceMessage={orderMaintenanceMessage}
+        />
+      );
     case 'login':
       return <LoginPage />;
     case 'signup':
@@ -39,10 +47,18 @@ function Routes() {
   }
 }
 
+type MaintenanceState = {
+  globalEnabled: boolean;
+  globalMessage: string;
+  orderEnabled: boolean;
+  orderMessage: string;
+};
+
 function Shell() {
-  const { path } = useRoute();
+  const { path, navigate } = useRoute();
   const route = parseRoute(path);
-  const [maintenance, setMaintenance] = useState<{ enabled: boolean; message: string } | null>(null);
+  const { profile } = useAuth();
+  const [maintenance, setMaintenance] = useState<MaintenanceState | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -50,17 +66,35 @@ function Shell() {
     let refreshTimer: number | undefined;
     let unavailableLogged = false;
     const loadMaintenance = async () => {
-      const { data, error } = await supabase.from('site_settings').select('maintenance_enabled, maintenance_message').eq('id', true).maybeSingle();
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('maintenance_enabled, maintenance_message, order_maintenance_enabled, order_maintenance_message')
+        .eq('id', true)
+        .maybeSingle();
       if (!active) return;
-      // Fail open when the optional maintenance table is missing. Do not keep polling a broken
-      // endpoint or spam the console; refresh the page after applying the Phase 44 migration.
-      if (error) {
-        if (!unavailableLogged) console.warn('Global maintenance is unavailable until the Phase 44 Supabase migration is applied.', error.message);
+
+      // Fail closed if the maintenance state cannot be verified. PostgreSQL also
+      // guards order INSERTs, so this is an additional customer-facing safeguard.
+      if (error || !data) {
+        if (!unavailableLogged) {
+          console.warn('Maintenance state could not be verified. Customer access is restricted.', error?.message ?? 'Missing site_settings row');
+        }
         unavailableLogged = true;
-        setMaintenance({ enabled: false, message: '' });
+        setMaintenance({
+          globalEnabled: true,
+          globalMessage: 'Status operasional toko belum dapat diverifikasi. Silakan coba kembali nanti.',
+          orderEnabled: true,
+          orderMessage: 'Pemesanan sementara dihentikan karena status layanan belum dapat diverifikasi.',
+        });
         return;
       }
-      setMaintenance({ enabled: Boolean(data?.maintenance_enabled), message: String(data?.maintenance_message || 'Kami sedang melakukan pemeliharaan. Silakan kembali beberapa saat lagi.') });
+
+      setMaintenance({
+        globalEnabled: Boolean(data.maintenance_enabled),
+        globalMessage: String(data.maintenance_message || 'Kami sedang melakukan pemeliharaan. Silakan kembali nanti.'),
+        orderEnabled: Boolean(data.order_maintenance_enabled),
+        orderMessage: String(data.order_maintenance_message || 'Pemesanan sedang dihentikan sementara. Silakan coba kembali nanti.'),
+      });
       if (!channel) {
         channel = supabase.channel('site-maintenance-status').on('postgres_changes', { event: '*', schema: 'public', table: 'site_settings' }, () => { void loadMaintenance(); }).subscribe();
         refreshTimer = window.setInterval(() => { void loadMaintenance(); }, 30000);
@@ -70,8 +104,30 @@ function Shell() {
     return () => { active = false; if (refreshTimer !== undefined) window.clearInterval(refreshTimer); if (channel) void supabase.removeChannel(channel); };
   }, []);
 
-  if (maintenance?.enabled && route.name !== 'admin') {
-    return <div className="relative min-h-screen flex items-center justify-center px-5 py-12 text-center"><AnimatedBackground /><section className="relative z-10 glass rounded-3xl p-8 sm:p-12 max-w-xl w-full"><div className="mx-auto mb-5 w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-300/20 flex items-center justify-center"><Wrench className="w-8 h-8 text-amber-300" /></div><p className="text-xs uppercase tracking-[0.24em] text-amber-300 mb-3">FITYORA TOPUP</p><h1 className="font-display text-3xl sm:text-4xl font-bold">Sedang Maintenance</h1><p className="text-slate-300 mt-4 leading-relaxed">{maintenance.message}</p><p className="text-xs text-slate-500 mt-6">Terima kasih atas pengertiannya. Silakan kunjungi kembali nanti.</p></section></div>;
+  if (!maintenance) {
+    return (
+      <div className="relative min-h-screen flex items-center justify-center px-5 py-12 text-center">
+        <AnimatedBackground />
+        <div className="relative z-10 text-sm text-slate-300" role="status">Memeriksa status layanan FityoraStore…</div>
+      </div>
+    );
+  }
+
+  const isAuthor = profile?.role === 'author' || profile?.role === 'admin';
+  if (maintenance.globalEnabled && !isAuthor && route.name !== 'login') {
+    return (
+      <div className="relative min-h-screen flex items-center justify-center px-5 py-12 text-center">
+        <AnimatedBackground />
+        <section className="relative z-10 glass rounded-3xl p-8 sm:p-12 max-w-xl w-full">
+          <div className="mx-auto mb-5 w-16 h-16 rounded-2xl bg-amber-400/10 border border-amber-300/20 flex items-center justify-center"><Wrench className="w-8 h-8 text-amber-300" /></div>
+          <p className="text-xs uppercase tracking-[0.24em] text-amber-300 mb-3">FITYORA TOPUP</p>
+          <h1 className="font-display text-3xl sm:text-4xl font-bold">Website Ditutup Sementara</h1>
+          <p className="text-slate-300 mt-4 leading-relaxed">{maintenance.globalMessage}</p>
+          <p className="text-xs text-slate-500 mt-6">Akses website hanya tersedia bagi Author/Admin selama penutupan.</p>
+          <button type="button" onClick={() => navigate('/login')} className="btn-primary mt-6 px-5 py-2.5 rounded-xl">Masuk sebagai Author</button>
+        </section>
+      </div>
+    );
   }
 
   return (
@@ -83,7 +139,12 @@ function Shell() {
           Konfigurasi Supabase belum valid atau belum diatur. Isi <code>VITE_SUPABASE_URL</code> dan <code>VITE_SUPABASE_PUBLISHABLE_KEY</code> (nama lama <code>VITE_SUPABASE_ANON_KEY</code> tetap didukung). Gunakan hanya publishable/anon key; secret atau service-role key tidak boleh dipakai di frontend.
         </div>
       )}
-      <main className="flex-1 page-transition"><Routes /></main>
+      <main className="flex-1 page-transition">
+        <Routes
+          orderMaintenanceEnabled={maintenance.orderEnabled && !isAuthor}
+          orderMaintenanceMessage={maintenance.orderMessage}
+        />
+      </main>
       <Footer />
     </div>
   );
