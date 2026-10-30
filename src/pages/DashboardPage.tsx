@@ -62,12 +62,12 @@ export default function DashboardPage() {
   }, [session?.user?.id, reloadOrders]);
 
   useEffect(() => {
-    if (profile) {
+    // Do not overwrite an in-progress profile edit when auth/profile data refreshes.
+    if (profile && !profileDirty) {
       setDisplayName(profile.display_name ?? '');
       setBio(profile.bio ?? '');
-      setProfileDirty(false);
     }
-  }, [profile]);
+  }, [profile, profileDirty]);
 
   // Keep hooks unconditional: AuthContext can resolve the session after the first render.
   const visibleOrders = useMemo(() => {
