@@ -58,7 +58,7 @@ No full, restorable production backup was created or verified during this audit.
 2. Create a separate off-project logical backup before DDL. Preserve schema, data and custom roles as appropriate. Supabase CLI examples are documented at [Backup and Restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore). Remember that the standard CLI dump excludes Supabase-managed `auth` and `storage` schemas; storage object files also need their own handling.
 3. Export the live public schema for diff/review, e.g. `npx supabase db dump --linked --schema public -f supabase/production-baseline-20261030.sql`. This is schema-only and must not be described as a complete backup.
 4. Run `supabase/audits/20261030_remote_migration_baseline_readonly.sql` and compare the output with the schema dump, functions, constraints, grants and RLS policies.
-5. Inventory every migration file, especially the Phase 52 and Phase 53 prerequisites. Reconcile historical versions one by one only after each migration's complete effects are verified.
+5. Run `npx supabase migration list --linked` and inventory every migration file, especially the Phase 52 and Phase 53 prerequisites. Reconcile historical versions one by one only after each migration's complete effects are verified.
 
 **Do not proceed with production DDL until the backup and baseline have been confirmed.** The assistant's connected Supabase tools do not provide a downloadable full-project backup or a safe rollback snapshot. Do not use a development branch as a substitute: it does not carry production data.
 
