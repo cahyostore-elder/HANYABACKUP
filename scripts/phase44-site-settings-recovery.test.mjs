@@ -26,7 +26,7 @@ test('migration does not overwrite order deletion workflow', () => {
 test('missing optional settings no longer blocks the rest of admin data', () => {
   assert.match(admin, /const firstError = \[o, b, c, p, pr, t, f\]/);
   assert.match(admin, /maintenanceSettingsAvailable/);
-  assert.match(admin, /Terapkan migrasi Phase 61 terlebih dahulu/i);
+  assert.match(admin, /Terapkan migrasi Phase 62 terlebih dahulu/i);
 });
 
 test('app fails closed and keeps retrying maintenance state if settings are unavailable', () => {
