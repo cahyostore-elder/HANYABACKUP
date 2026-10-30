@@ -32,7 +32,7 @@ test('Phase 57A RPC and Phase 57B table lockdown are timestamped after Phase 56 
 
 test('supplier cost table is locked only in Phase 57B after frontend migration', () => {
   assert.match(lockdown, /ALTER TABLE public\.package_supplier_costs ENABLE ROW LEVEL SECURITY/);
-  assert.match(lockdown, /REVOKE ALL ON TABLE public\.package_supplier_costs\\s+FROM PUBLIC, anon, authenticated/);
+  assert.match(lockdown, /REVOKE ALL ON TABLE public\.package_supplier_costs\s+FROM PUBLIC, anon, authenticated/);
   assert.match(lockdown, /GRANT SELECT, INSERT, UPDATE, DELETE[\s\S]*TO service_role/);
   assert.match(lockdown, /DROP POLICY IF EXISTS staff_manage_package_supplier_costs/);
   assert.doesNotMatch(migration, /REVOKE ALL ON TABLE public\.package_supplier_costs/);
