@@ -27,6 +27,7 @@ test('batch locks rows, updates supplier cost and sale price together, and write
   assert.ok(sql.includes('INSERT INTO public.package_supplier_costs'));
   assert.ok(sql.includes('UPDATE public.packages AS p SET price = v_price'));
   assert.ok(sql.includes('INSERT INTO public.package_pricing_audit'));
+  assert.ok(sql.includes('v_old_price IS DISTINCT FROM v_price'));
   assert.ok(sql.includes('RETURN NEXT;'));
   assert.ok(sql.includes('BEGIN;') && sql.includes('COMMIT;'));
 });

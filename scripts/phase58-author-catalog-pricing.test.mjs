@@ -25,6 +25,8 @@ test('single-product Author action updates supplier cost and sale price atomical
   assert.ok(migration58.includes('CREATE OR REPLACE FUNCTION public.admin_update_supplier_cost_and_price'));
   assert.ok(migration58.includes('round(p_supplier_cost * 1.07, 0)'));
   assert.ok(migration58.includes('INSERT INTO public.package_pricing_audit'));
+  assert.ok(migration58.includes('v_old_price IS DISTINCT FROM p_price'));
+  assert.ok(migration58.includes('v_old_price IS DISTINCT FROM v_new_price'));
   assert.ok(migration58.includes('REVOKE ALL ON FUNCTION public.admin_update_supplier_cost_and_price(uuid, numeric) FROM PUBLIC, anon'));
   assert.ok(migration58.includes('GRANT EXECUTE ON FUNCTION public.admin_update_supplier_cost_and_price(uuid, numeric) TO authenticated'));
 });
