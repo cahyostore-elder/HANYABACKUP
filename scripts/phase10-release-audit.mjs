@@ -28,7 +28,7 @@ check('lockfile exists and parses', (() => { try { JSON.parse(read('package-lock
 check('build/typecheck/lint scripts defined', Boolean(pkg.scripts?.build && pkg.scripts?.typecheck && pkg.scripts?.lint));
 check('phase 5-9 audit scripts are registered', ['audit:static','audit:phase6','audit:phase7','audit:phase8','audit:phase9'].every(k => typeof pkg.scripts?.[k] === 'string'));
 check('Vercel SPA fallback exists', /"destination"\s*:\s*"\/index\.html"/.test(read('vercel.json')));
-check('node_modules is ignored and no dependency files are committed', /^node_modules\\/?$/m.test(read('.gitignore')) && !hasTrackedNodeModules());
+check('node_modules is ignored and no dependency files are committed', /^node_modules$/m.test(read('.gitignore')) && !hasTrackedNodeModules());
 check('no production .env file bundled', !exists('.env'));
 check('environment template uses public Vite key only', /VITE_SUPABASE_ANON_KEY=/.test(read('.env.example')) && !/SERVICE_ROLE|SECRET_KEY/i.test(read('.env.example')));
 check('release report included', exists('PHASE10_RELEASE_CANDIDATE.md'));
