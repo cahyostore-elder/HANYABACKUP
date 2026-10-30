@@ -1,12 +1,28 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checks = [];
 const add = (label, pass, detail = '') => checks.push({ label, pass: Boolean(pass), detail });
 const exists = (relative) => fs.existsSync(path.join(root, relative));
 const read = (relative) => fs.readFileSync(path.join(root, relative), 'utf8');
+function hasTrackedNodeModules() {
+  try {
+    const tracked = execFileSync('git', ['ls-files', '--', 'node_modules'], {
+      cwd: root,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore'],
+    });
+    return tracked.trim().length > 0;
+  } catch {
+    // Outside a Git checkout (for example, an extracted release archive),
+    // fall back to checking whether the dependency directory is present.
+    return fs.existsSync(path.join(root, 'node_modules'));
+  }
+}
+
 
 let pkg;
 let lock;
@@ -23,7 +39,7 @@ add('Environment template has placeholders only', /YOUR_PROJECT_REF|PASTE_YOUR_S
 add('Environment files are ignored', /\.env\.\*/.test(read('.gitignore')) && /!\.env\.example/.test(read('.gitignore')));
 add('CI quality workflow exists', exists('.github/workflows/quality.yml'));
 add('Manual payment is disclosed in release docs', /manual/i.test(read('README.md')) && /manual/i.test(read('PHASE28_RELEASE_READINESS.md')));
-add('No local dependency folder is packaged', !exists('node_modules'));
+add('node_modules is ignored and no dependency files are committed', /^node_modules\\/?$/m.test(read('.gitignore')) && !hasTrackedNodeModules());
 const localEnv = exists('.env.local') ? read('.env.local') : '';
 const localEnvIsPublicOnly = !exists('.env.local') || (
   /^VITE_SUPABASE_URL=https:\/\/[^\s]+$/m.test(localEnv) &&
