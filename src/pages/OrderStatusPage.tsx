@@ -99,7 +99,7 @@ export default function OrderStatusPage() {
           </div>
           <button
             onClick={() => void lookup()}
-            disabled={isChecking || !code.trim()}
+            disabled={isChecking || result.kind === 'loading' || !code.trim()}
             className="btn-primary px-5 py-3 rounded-xl text-sm flex items-center gap-2 justify-center disabled:opacity-50"
           >
             {isChecking ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
