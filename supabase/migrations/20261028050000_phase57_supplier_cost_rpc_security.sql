@@ -3,6 +3,25 @@
 -- Blank supplier cost stays absent; it is never inferred from the selling price.
 BEGIN;
 
+-- Harden the shared role helper used by admin RLS policies and RPCs.
+-- Schema-qualify the profile table so a temporary relation cannot shadow it.
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+STABLE
+SECURITY INVOKER
+SET search_path = pg_catalog
+AS $function$
+  SELECT EXISTS (
+    SELECT 1
+    FROM public.profiles AS p
+    WHERE p.id = auth.uid()
+      AND p.role IN ('admin', 'author')
+  );
+$function$;
+REVOKE EXECUTE ON FUNCTION public.is_admin() FROM PUBLIC, anon;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;
+
 ALTER TABLE public.package_supplier_costs
   ADD COLUMN IF NOT EXISTS updated_by uuid REFERENCES auth.users(id) ON DELETE SET NULL;
 
