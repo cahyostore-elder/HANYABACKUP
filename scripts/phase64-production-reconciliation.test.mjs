@@ -9,7 +9,7 @@ const pkg = JSON.parse(read('package.json'));
 
 test('Phase 64 documents the empty remote ledger and reconciles the 19 legacy migrations', () => {
   assert.match(report, /schema_migrations.*absent/i);
-  assert.match(report, /19.*pre-Phase-52/i);
+  assert.match(report, /Files 1–19 below predate Phase 52/i);
   assert.match(report, /Phase 39.*258/i);
   assert.match(report, /253 exact brand\/name matches/i);
   assert.match(report, /Phase 40.*11 Roblox/i);
