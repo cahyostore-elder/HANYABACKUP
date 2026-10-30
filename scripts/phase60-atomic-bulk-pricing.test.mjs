@@ -35,7 +35,7 @@ test('Author preview and confirmation occur before batch submission', () => {
   assert.ok(admin.includes('Seluruh baris valid akan disimpan dalam satu transaksi'));
   assert.ok(admin.includes('window.confirm('));
   assert.ok(admin.includes('new Map<string, SavedBulkRow>(savedRows.map((row) => [row.package_id, row]))'));
-  assert.ok(admin.includes('status: \'Perlu diperiksa\''));
+  assert.ok(admin.includes('status: \'Gagal\''));
 });
 
 test('Phase 60 is registered in the release audit', () => {
